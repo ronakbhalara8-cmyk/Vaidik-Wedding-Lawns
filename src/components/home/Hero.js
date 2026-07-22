@@ -90,7 +90,7 @@ export default function Hero() {
           stagger={0.02}
           duration={1.2}
           tag="h1"
-          className="font-serif-heading text-4xl sm:text-6xl md:text-8xl tracking-[0.1em] text-ivory uppercase leading-[1.1] mb-6 max-w-5xl text-shadow-premium font-bold"
+          className="font-serif-heading text-4xl sm:text-6xl md:text-7xl tracking-[0.1em] text-ivory uppercase leading-[1.1] mb-6 max-w-4xl text-shadow-premium font-bold"
         >
           Where Royal Dreams Meet Timeless Celebrations
         </SplitReveal>

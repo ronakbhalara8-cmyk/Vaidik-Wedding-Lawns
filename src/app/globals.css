@@ -31,12 +31,12 @@
   /* Brand Theme Colors - Light Theme */
   --color-maroon-dark: #8d2c3f;
   --color-maroon-base: #813241;
-  --color-maroon-light: #C09585;
+  --color-maroon-light: #a37362;
 
   --color-orange-warm: #DC873E;
   --color-gold-dark: #DC873E;
   --color-gold-base: #DC873E;
-  --color-gold-light: #F0D0CA;
+  --color-gold-light: #f8c4bb;
 
   --color-ivory: #FDF2EF;
   --color-cream: #FDF2EF;
@@ -134,11 +134,15 @@
 
   /* Typography shortcuts */
   .font-serif-heading {
-    font-family: var(--font-cinzel), serif;
+    font-family: var(--font-heading), Georgia, serif;
+  }
+
+  .font-serif {
+    font-family: var(--font-subheading), Georgia, serif;
   }
 
   .font-sans {
-    font-family: var(--font-cormorant), serif;
+    font-family: var(--font-body), Arial, Helvetica, sans-serif;
   }
 
   .text-shadow-premium {
