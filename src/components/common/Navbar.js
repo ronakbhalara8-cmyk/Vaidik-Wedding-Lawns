@@ -150,9 +150,9 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`relative uppercase tracking-[0.2em] text-[11px] font-serif-heading ${active
+                  className={`relative tracking-[0.2em] text-sm  ${active
                     ? "text-gold-base"
-                    : "text-ivory/80 hover:text-gold-light"
+                    : "text-white  hover:text-gold-light"
                     }`}
                 >
                   {link.label}

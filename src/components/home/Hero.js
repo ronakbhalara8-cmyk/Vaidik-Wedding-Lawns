@@ -67,7 +67,7 @@ export default function Hero() {
       <div
         ref={bgRef}
         className="absolute inset-0 w-full h-[110%] bg-cover bg-center pointer-events-none brightness-[0.4]"
-        style={{ backgroundImage: `url('/images/wedding_lawn.png')` }}
+        style={{ backgroundImage: `url('/images/reception_hall.png')` }}
       />
 
       {/* Premium Luxury Overlay Grid */}

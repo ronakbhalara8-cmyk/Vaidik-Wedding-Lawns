@@ -49,41 +49,23 @@ export default function VenuesHorizontal() {
       // Check if on desktop screen size before enabling horizontal scroll pin
       const mediaQuery = window.matchMedia("(min-width: 1024px)");
 
-      const initScroll = () => {
-        if (!isMountedRef.current) return;
+      const ctx = gsap.context(() => {
+        const getScrollAmount = () =>
+          scrollSection.scrollWidth - window.innerWidth;
 
-        try {
-          const ctx = gsap.context(() => {
-            gsap.to(scrollSection, {
-              x: () => -(scrollSection.scrollWidth - window.innerWidth),
-              ease: "none",
-              scrollTrigger: {
-                trigger: container,
-                pin: true,
-                scrub: 0.8,
-                start: "top top",
-                end: () => `+=${scrollSection.scrollWidth - window.innerWidth}`,
-                invalidateOnRefresh: true,
-              },
-            });
-          }, container);
-
-          ctxRef.current = ctx;
-
-          // Delayed refresh after render to guarantee exact scrollWidth
-          setTimeout(() => {
-            if (isMountedRef.current) {
-              ScrollTrigger.refresh();
-            }
-          }, 200);
-        } catch (error) {
-          console.warn("VenuesHorizontal scroll animation error:", error);
-        }
-      };
-
-      if (mediaQuery.matches) {
-        initScroll();
-      }
+        gsap.to(scrollSection, {
+          x: () => -getScrollAmount(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: container,
+            pin: true,
+            scrub: 1,
+            start: "top top",
+            end: () => `+=${getScrollAmount()}`,
+            invalidateOnRefresh: true,
+          },
+        });
+      }, container);
 
       // Refresh scrolltrigger on resize
       const handleResize = () => {
@@ -117,7 +99,7 @@ export default function VenuesHorizontal() {
   }, []);
 
   return (
-    <section className="w-full relative overflow-hidden">
+    <section className="w-full relative overflow-hidden min-h-screen">
       <div
         ref={containerRef}
         className="relative bg-maroon-dark text-ivory lg:overflow-hidden"
@@ -125,10 +107,33 @@ export default function VenuesHorizontal() {
         {/* Horizontal scrolling wrapper */}
         <div
           ref={scrollSectionRef}
-          className="flex flex-col lg:flex-row lg:h-screen lg:w-[320vw] xl:w-[280vw] select-none"
+          className="
+    flex
+    flex-row
+    h-screen
+    w-max
+    select-none
+  "
         >
           {/* Intro Slide */}
-          <div className="w-full lg:w-[80vw] h-screen shrink-0 flex flex-col justify-center px-6 md:px-20 relative border-r border-gold-base/10 bg-[radial-gradient(circle_at_left,rgba(74,18,26,0.5)_0%,transparent_60%)]">
+          <div
+            className="
+    w-screen
+    h-screen
+    shrink-0
+    flex
+    flex-col
+    justify-center
+    px-5
+    sm:px-8
+    md:px-12
+    lg:px-20
+    relative
+    border-r
+    border-gold-base/10
+    bg-[radial-gradient(circle_at_left,rgba(74,18,26,0.5)_0%,transparent_60%)]
+  "
+          >
             <div className="max-w-xl">
               <span className="font-serif-heading text-xs tracking-[0.3em] text-gold-base uppercase inline-block border-b border-gold-base/20 pb-2 mb-6">
                 Our Curated Venues
@@ -156,10 +161,33 @@ export default function VenuesHorizontal() {
           {venues.map((venue, idx) => (
             <div
               key={idx}
-              className="w-full lg:w-[80vw] h-screen shrink-0 flex flex-col lg:flex-row items-center justify-between border-r border-gold-base/10 bg-maroon-dark overflow-hidden"
+              className="
+    w-screen
+    h-screen
+    shrink-0
+    flex
+    flex-col
+    lg:flex-row
+    items-center
+    justify-between
+    border-r
+    border-gold-base/10
+    bg-maroon-dark
+    overflow-hidden
+  "
             >
               {/* Visual Panel */}
-              <div className="w-full lg:w-[45vw] h-1/2 lg:h-full relative overflow-hidden group">
+              <div
+                className="
+    w-full
+    lg:w-1/2
+    h-[45vh]
+    lg:h-full
+    relative
+    overflow-hidden
+    group
+  "
+              >
                 <Image
                   src={venue.image}
                   alt={venue.title}
@@ -175,23 +203,58 @@ export default function VenuesHorizontal() {
               </div>
 
               {/* Info Panel */}
-              <div className="w-full lg:w-[35vw] h-1/2 lg:h-full flex flex-col justify-center px-6 md:px-16 py-12 lg:py-0 relative">
+              <div
+                className="
+    w-full
+    lg:w-1/2
+    h-[55vh]
+    lg:h-full
+    flex
+    flex-col
+    justify-center
+    px-5
+    sm:px-8
+    md:px-12
+    lg:px-16
+    py-8
+    lg:pt-0
+    relative
+  "
+              >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(212,175,55,0.02)_0%,transparent_60%)] pointer-events-none" />
                 <div className="max-w-md relative z-10">
-                  <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase block mb-3">
+                  <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase block">
                     VENUE CAPACITY: {venue.capacity}
                   </span>
-                  <h3 className="font-serif-heading text-3xl md:text-4xl tracking-wide uppercase text-ivory mb-6 font-semibold">
+                  <h3 className="font-serif-heading text-xl
+sm:text-2xl
+md:text-3xl
+pt-5
+lg:text-4xl tracking-wide uppercase text-ivory mb-2 font-semibold">
                     {venue.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gold-light/60 leading-relaxed font-light mb-8">
+                  <p className="text-sm md:text-base text-gold-light/60 leading-relaxed font-light mb-3">
                     {venue.description}
                   </p>
-                  <div className="flex gap-4">
-                    <Button href="/book-visit" variant="secondary" className="px-6 py-3.5 text-[9px] tracking-[0.2em]">
+                  <div className="flex flex-col sm:flex-row gap-3 mb-14 sm:gap-4">
+                    <Button href="/book-visit" variant="secondary" className="
+w-full
+sm:w-auto
+px-6
+py-3.5
+text-[10px]
+tracking-[0.2em]
+">
                       Request Details
                     </Button>
-                    <Button href="/venues" variant="outline" className="px-6 py-3.5 text-[9px] tracking-[0.2em]">
+                    <Button href="/venues" variant="outline" className="
+w-full
+sm:w-auto
+px-6
+py-3.5
+text-[10px]
+tracking-[0.2em]
+">
                       View Gallery
                     </Button>
                   </div>
