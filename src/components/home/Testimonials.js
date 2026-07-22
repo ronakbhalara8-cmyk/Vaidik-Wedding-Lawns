@@ -76,7 +76,7 @@ export default function Testimonials() {
       <div className="absolute left-0 bottom-1/4 w-[400px] h-[400px] bg-maroon-base/3 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-        
+
         {/* Section Title */}
         <div className="text-center max-w-xl mx-auto mb-16 flex flex-col items-center">
           <FadeIn direction="down" duration={0.8}>
@@ -102,7 +102,7 @@ export default function Testimonials() {
 
           <p
             ref={textRef}
-            className="font-serif-sub italic text-xl md:text-2xl text-charcoal/90 leading-relaxed font-light mb-8 max-w-2xl mx-auto"
+            className="font-sans text-xl md:text-xl text-charcoal/90 leading-relaxed font-light mb-8 max-w-2xl mx-auto"
           >
             "{testimonials[activeIndex].quote}"
           </p>
@@ -125,7 +125,7 @@ export default function Testimonials() {
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            
+
             {/* Slide Indicators */}
             <div className="flex gap-2">
               {testimonials.map((_, idx) => (
@@ -141,9 +141,8 @@ export default function Testimonials() {
                       }
                     });
                   }}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    idx === activeIndex ? "bg-gold-base w-6" : "bg-maroon-base/10"
-                  }`}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === activeIndex ? "bg-gold-base w-6" : "bg-maroon-base/10"
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}

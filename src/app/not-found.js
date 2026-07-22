@@ -27,7 +27,7 @@ export default function NotFound() {
         </SplitReveal>
 
         <FadeIn direction="up" duration={1.0} delay={0.4} distance={20}>
-          <p className="font-serif-sub italic text-lg md:text-xl text-gold-light/60 leading-relaxed font-light mb-8">
+          <p className="font-sans text-lg md:text-xl text-gold-light/60 leading-relaxed font-light mb-8">
             The path you followed has wandered away from the wedding celebration. Let us guide you back to the main ceremony.
           </p>
         </FadeIn>

@@ -97,7 +97,7 @@ export default function Hero() {
 
         {/* Subtitle Description */}
         <FadeIn direction="up" duration={1.0} delay={0.8} distance={20} className="mb-10 max-w-2xl">
-          <p className="font-serif-sub italic text-lg md:text-2xl text-gold-light/80 leading-relaxed font-light">
+          <p className="font-sans text-lg md:text-2xl text-gold-light/80 leading-relaxed font-light">
             Celebrate your grand union amidst lush manicured lawns, majestic mandaps, and curated hospitality crafted for royals.
           </p>
         </FadeIn>

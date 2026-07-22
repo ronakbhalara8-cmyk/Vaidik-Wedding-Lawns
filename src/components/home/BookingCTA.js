@@ -16,7 +16,7 @@ export default function BookingCTA() {
           {/* Decorative luxury vector lines */}
           <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.03)_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.05)_0%,transparent_70%)] pointer-events-none" />
-          
+
           {/* Subtle gold frames in corners */}
           <div className="absolute top-6 left-6 bottom-6 right-6 border border-gold-base/10 rounded-2xl pointer-events-none" />
 
@@ -36,7 +36,7 @@ export default function BookingCTA() {
             </SplitReveal>
 
             <FadeIn direction="up" duration={1.0} delay={0.3} distance={20}>
-              <p className="font-serif-sub italic text-lg md:text-2xl text-gold-light/60 leading-relaxed font-light mb-10">
+              <p className="font-sans text-lg md:text-2xl text-gold-light/60 leading-relaxed font-light mb-10">
                 Let us shape your timeless love story into an unforgettable grand experience. Schedule a private guided tour of our majestic lawns today.
               </p>
             </FadeIn>

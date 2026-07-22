@@ -86,7 +86,7 @@ export default function Preloader() {
         </h1>
         <p
           ref={subtitleRef}
-          className="font-serif-sub italic text-lg md:text-3xl text-gold-light/80 tracking-wider"
+          className="font-sans text-lg md:text-3xl text-gold-light/80 tracking-wider"
         >
           Where Royal Dreams Meet Timeless Celebrations
         </p>

@@ -161,7 +161,7 @@ export default function InstaGallery() {
           <h2 className="font-serif-heading text-2xl sm:text-4xl md:text-5xl tracking-wide uppercase font-extrabold text-gold-light text-shadow-premium leading-tight">
             Celebrated Moments
           </h2>
-          <p className="font-serif-sub italic text-sm sm:text-lg text-gold-light/75 mt-3 max-w-xs">
+          <p className="font-sans text-sm sm:text-lg text-gold-light/75 mt-3 max-w-xs">
             Scroll to rotate through our luxury celebration showcase
           </p>
 

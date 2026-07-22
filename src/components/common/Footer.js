@@ -83,9 +83,6 @@ export default function Footer() {
               <li>
                 <Link href="/gallery" className="hover:text-gold-base transition-colors duration-300">Luxury Gallery</Link>
               </li>
-              <li>
-                <Link href="/faq" className="hover:text-gold-base transition-colors duration-300">Frequently Asked</Link>
-              </li>
             </ul>
           </div>
 

@@ -15,7 +15,7 @@ export default function About() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-          
+
           {/* Story Copy Block */}
           <div className="flex flex-col gap-6">
             <FadeIn direction="right" duration={0.8}>
@@ -36,7 +36,7 @@ export default function About() {
               <p>
                 At <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span>, we believe that weddings are not just events, but sacred unions that deserve a setting of unmatched grandeur. Established as Mumbai’s premier open-air luxury venue, we offer a canvas where heritage meets modern sophistication.
               </p>
-              <p className="font-serif-sub italic text-lg text-maroon-light border-l-2 border-gold-base pl-4 my-2">
+              <p className="font-sans text-md text-maroon-light border-l-2 border-gold-base pl-4 my-2">
                 "Where lush green tapestries meet the majestic glow of starry skies, orchestrating an ambient symphony that stays etched in hearts forever."
               </p>
               <p>
@@ -45,7 +45,7 @@ export default function About() {
             </FadeIn>
 
             <FadeIn direction="up" duration={0.8} delay={0.5} distance={20} className="mt-4">
-              <Button href="/about" variant="primary" className="px-8 py-4 text-[10px] tracking-[0.2em]">
+              <Button href="/about" variant="outline" className="px-10 py-3 text-[11px] tracking-[0.25em]">
                 Read Our Story
               </Button>
             </FadeIn>

@@ -15,7 +15,6 @@ const navLinks = [
   { label: "Packages", href: "/packages" },
   { label: "Services", href: "/services" },
   { label: "Gallery", href: "/gallery" },
-  { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -23,77 +22,118 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const navbarRef = useRef(null);
   const mobileMenuRef = useRef(null);
-  const mobileBgRef = useRef(null);
+  const backdropRef = useRef(null);
   const linkRefs = useRef([]);
 
-  // Handle scroll trigger for styling
+  // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle mobile menu slide animation with GSAP
-  useEffect(() => {
-    const menu = mobileMenuRef.current;
-    const bg = mobileBgRef.current;
-    const links = linkRefs.current;
-
-    if (isOpen) {
-      document.body.style.overflow = "hidden"; // disable scroll
-
-      // Setup initial positions
-      gsap.set(bg, { opacity: 0 });
-      gsap.set(menu, { xPercent: 100 });
-      gsap.set(links, { opacity: 0, y: 30 });
-
-      // Animate opening
-      const tl = gsap.timeline();
-      tl.to(bg, { opacity: 1, duration: 0.4, ease: "power2.out" })
-        .to(menu, { xPercent: 0, duration: 0.6, ease: "power3.out" }, "-=0.3")
-        .to(links, { opacity: 1, y: 0, stagger: 0.08, duration: 0.4, ease: "power2.out" }, "-=0.2");
-    } else {
-      document.body.style.overflow = ""; // restore scroll
-
-      // Animate closing
-      if (menu && bg) {
-        const tl = gsap.timeline();
-        tl.to(links, { opacity: 0, y: -20, stagger: 0.05, duration: 0.3, ease: "power2.in" })
-          .to(menu, { xPercent: 100, duration: 0.5, ease: "power3.in" }, "-=0.15")
-          .to(bg, { opacity: 0, duration: 0.4, ease: "power2.in" }, "-=0.3");
-      }
-    }
-  }, [isOpen]);
-
-  // Close mobile drawer on route change
+  // Close drawer on route change
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Mobile menu animation
+  useEffect(() => {
+    const menu = mobileMenuRef.current;
+    const backdrop = backdropRef.current;
+    const links = linkRefs.current;
+
+    if (!menu || !backdrop) return;
+
+    let tl = gsap.timeline();
+
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+
+      gsap.set(menu, { x: "100%" });
+      gsap.set(backdrop, { opacity: 0 });
+      gsap.set(links, { opacity: 0, x: 40 });
+
+      tl.to(backdrop, {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      })
+        .to(
+          menu,
+          {
+            x: "0%",
+            duration: 0.55,
+            ease: "power3.out",
+          },
+          "-=0.1"
+        )
+        .to(
+          links,
+          {
+            opacity: 1,
+            x: 0,
+            stagger: 0.08,
+            duration: 0.35,
+            ease: "power2.out",
+          },
+          "-=0.25"
+        );
+    } else {
+      document.body.style.overflow = "";
+
+      tl.to(links, {
+        opacity: 0,
+        x: 20,
+        stagger: 0.05,
+        duration: 0.2,
+      })
+        .to(
+          menu,
+          {
+            x: "100%",
+            duration: 0.45,
+            ease: "power3.in",
+          },
+          "-=0.1"
+        )
+        .to(
+          backdrop,
+          {
+            opacity: 0,
+            duration: 0.25,
+          },
+          "-=0.2"
+        );
+    }
+
+    return () => {
+      tl.kill();
+    };
+  }, [isOpen]);
+
   return (
     <>
+      {/* HEADER */}
       <header
-        ref={navbarRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 ${isScrolled
-          ? "bg-maroon-dark/90 backdrop-blur-md border-b border-gold-base/20 shadow-lg py-3"
-          : "bg-transparent border-b border-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+          ? "bg-maroon-dark/95 backdrop-blur-md border-b border-gold-base/20 shadow-xl py-3"
+          : "bg-transparent py-4"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Brand Logo */}
-          <Link href="/" className="relative z-50 flex items-center gap-3 group">
-            <div className="relative w-14 h-14 overflow-hidden rounded-full border border-gold-base/30 group-hover:border-gold-base transition-colors duration-500">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12 flex items-center justify-between">
+          {/* LOGO */}
+          <Link
+            href="/"
+            className="relative z-[60] flex items-center gap-3"
+          >
+            <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border border-gold-base/30">
               <Image
                 src="/images/logo.png"
-                alt="Vaidik Wedding Lawns Logo"
+                alt="Logo"
                 fill
                 sizes="56px"
                 className="object-cover"
@@ -101,21 +141,24 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const active = pathname === link.href;
+
               return (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={`relative font-serif-heading text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 py-2 group ${isActive ? "text-gold-base" : "text-ivory/80 hover:text-gold-light"
+                  className={`relative uppercase tracking-[0.2em] text-[11px] font-serif-heading ${active
+                    ? "text-gold-base"
+                    : "text-ivory/80 hover:text-gold-light"
                     }`}
                 >
-                  <span>{link.label}</span>
-                  {/* Underline hover effect */}
+                  {link.label}
+
                   <span
-                    className={`absolute bottom-0 left-0 h-[1px] bg-gold-base transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"
+                    className={`absolute left-0 bottom-[-6px] h-[1px] bg-gold-base transition-all duration-300 ${active ? "w-full" : "w-0 hover:w-full"
                       }`}
                   />
                 </Link>
@@ -123,51 +166,65 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Booking CTA Button (Desktop) */}
+          {/* DESKTOP BUTTON */}
           <div className="hidden lg:block">
-            <Button href="/book-visit" variant="secondary" className="px-6 py-2.5 text-[10px] tracking-[0.15em]">
-              <Calendar className="w-3.5 h-3.5" /> Book Visit
+            <Button
+              href="/book-visit"
+              variant="secondary"
+              className="px-6 py-2.5"
+            >
+              <Calendar className="w-4 h-4" />
+              Book Visit
             </Button>
           </div>
 
-          {/* Mobile Menu Toggle Button */}
+          {/* MOBILE MENU BUTTON */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-gold-base hover:text-gold-light transition-colors duration-300 relative z-50 p-2"
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="lg:hidden relative z-[60] text-gold-base"
             aria-label="Toggle Menu"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? (
+              <X className="w-7 h-7" />
+            ) : (
+              <Menu className="w-7 h-7" />
+            )}
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
+      {/* BACKDROP */}
       <div
-        ref={mobileBgRef}
-        className="fixed inset-0 bg-maroon-dark/60 backdrop-blur-sm z-40 pointer-events-none opacity-0"
-        style={{ pointerEvents: isOpen ? "auto" : "none" }}
+        ref={backdropRef}
         onClick={() => setIsOpen(false)}
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-25 ${isOpen ? "pointer-events-auto" : "pointer-events-none"
+          }`}
       />
 
-      <div
+      {/* MOBILE DRAWER */}
+      <aside
         ref={mobileMenuRef}
-        className="fixed top-0 right-0 bottom-0 w-full sm:w-[380px] bg-maroon-dark border-l border-gold-base/20 z-45 p-8 pt-28 flex flex-col justify-between shadow-2xl translate-x-full"
+        className="fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 pt-9 pb-8 flex flex-col justify-between shadow-2xl"
       >
-        <div className="flex flex-col gap-6">
-          <span className="font-serif-heading text-[10px] tracking-[0.3em] uppercase text-gold-base/50 mb-4 border-b border-gold-base/10 pb-2">
-            Navigation Menu
-          </span>
+        <div className="mt-8">
+          {/* <p className=" text-[10px] text-center mb-8 w-full uppercase tracking-[0.3em] text-gold-base/50">
+            Navigation
+          </p> */}
+
           <nav className="flex flex-col gap-5">
-            {navLinks.map((link, idx) => {
-              const isActive = pathname === link.href;
+            {navLinks.map((link, index) => {
+              const active = pathname === link.href;
+
               return (
                 <div
                   key={link.label}
-                  ref={(el) => (linkRefs.current[idx] = el)}
+                  ref={(el) => (linkRefs.current[index] = el)}
                 >
                   <Link
                     href={link.href}
-                    className={`font-serif-heading text-lg tracking-[0.2em] uppercase transition-colors duration-300 block ${isActive ? "text-gold-base" : "text-ivory/70 hover:text-gold-light"
+                    className={`block text-lg uppercase tracking-[0.15em] font-serif-heading ${active
+                      ? "text-gold-base"
+                      : "text-ivory/75 hover:text-gold-light"
                       }`}
                   >
                     {link.label}
@@ -178,16 +235,21 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Mobile menu CTA */}
-        <div className="flex flex-col gap-4">
-          <Button href="/book-visit" variant="secondary" className="w-full text-center">
-            <Calendar className="w-4 h-4 mr-2" /> Book Venue Visit
+        <div className="space-y-4">
+          <Button
+            href="/book-visit"
+            variant="secondary"
+            className="w-full justify-center"
+          >
+            <Calendar className="w-4 h-4" />
+            Book Venue Visit
           </Button>
-          <p className="text-[10px] text-gold-light/40 text-center tracking-wider font-light">
-            Vaidik Wedding Lawns © 2026. All rights reserved.
+
+          <p className="text-center text-[10px] text-gold-light/40 tracking-wider">
+            Vaidik Wedding Lawns © 2026
           </p>
         </div>
-      </div>
+      </aside>
     </>
   );
 }

@@ -101,7 +101,7 @@ export default function Packages() {
               )}
 
               <div>
-                <span className="font-serif-sub italic text-sm text-gold-base/80 mb-1 block">
+                <span className="font-sans text-sm text-gold-base/80 mb-1 block">
                   {pkg.subtitle}
                 </span>
                 <h3 className="font-serif-heading text-2xl tracking-wide uppercase text-ivory mb-4 font-semibold">
@@ -110,7 +110,7 @@ export default function Packages() {
 
                 {/* Price Display */}
                 <div className="border-b border-gold-base/15 pb-6 mb-8">
-                  <span className="font-serif-heading text-3xl text-gold-light font-medium">
+                  <span className="font-serif-heading text-2xl text-gold-light font-medium">
                     {pkg.price}
                   </span>
                   <span className="text-xs text-gold-light/50 font-light block mt-1">
