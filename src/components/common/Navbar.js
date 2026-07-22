@@ -40,6 +40,25 @@ export default function Navbar() {
     setIsOpen(false);
   }, [pathname]);
 
+  // Handle body scroll lock
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
+
   // Mobile menu animation
   useEffect(() => {
     const menu = mobileMenuRef.current;
@@ -51,8 +70,6 @@ export default function Navbar() {
     let tl = gsap.timeline();
 
     if (isOpen) {
-      document.body.style.overflow = "hidden";
-
       gsap.set(menu, { x: "100%" });
       gsap.set(backdrop, { opacity: 0 });
       gsap.set(links, { opacity: 0, x: 40 });
@@ -83,8 +100,6 @@ export default function Navbar() {
           "-=0.25"
         );
     } else {
-      document.body.style.overflow = "";
-
       tl.to(links, {
         opacity: 0,
         x: 20,
@@ -204,13 +219,10 @@ export default function Navbar() {
       {/* MOBILE DRAWER */}
       <aside
         ref={mobileMenuRef}
-        className="fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 pt-9 pb-8 flex flex-col justify-between shadow-2xl"
+        className="fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 py-9 flex flex-col shadow-2xl"
       >
-        <div className="mt-8">
-          {/* <p className=" text-[10px] text-center mb-8 w-full uppercase tracking-[0.3em] text-gold-base/50">
-            Navigation
-          </p> */}
-
+        {/* Navigation - takes available space and scrolls if needed */}
+        <div className="flex-1 overflow-y-auto mt-16 pb-4">
           <nav className="flex flex-col gap-5">
             {navLinks.map((link, index) => {
               const active = pathname === link.href;
@@ -235,7 +247,8 @@ export default function Navbar() {
           </nav>
         </div>
 
-        <div className="space-y-4">
+        {/* Bottom section - always at bottom */}
+        <div className="flex-shrink-0 space-y-4 pt-4 border-t border-gold-base/10">
           <Button
             href="/book-visit"
             variant="secondary"
