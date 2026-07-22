@@ -222,7 +222,7 @@ export default function Navbar() {
         className="fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 py-9 flex flex-col shadow-2xl"
       >
         {/* Navigation - takes available space and scrolls if needed */}
-        <div className="flex-1 overflow-y-auto mt-16 pb-4">
+        <div className="flex flex-col justify-between gap-6 mt-16">
           <nav className="flex flex-col gap-5">
             {navLinks.map((link, index) => {
               const active = pathname === link.href;
@@ -245,22 +245,21 @@ export default function Navbar() {
               );
             })}
           </nav>
-        </div>
 
-        {/* Bottom section - always at bottom */}
-        <div className="flex-shrink-0 space-y-4 pt-4 border-t border-gold-base/10">
-          <Button
-            href="/book-visit"
-            variant="secondary"
-            className="w-full justify-center"
-          >
-            <Calendar className="w-4 h-4" />
-            Book Venue Visit
-          </Button>
+          <div className="flex-shrink-0 space-y-4 pt-4 border-t border-gold-base/10">
+            <Button
+              href="/book-visit"
+              variant="secondary"
+              className="w-full justify-center"
+            >
+              <Calendar className="w-4 h-4" />
+              Book Venue Visit
+            </Button>
 
-          <p className="text-center text-[10px] text-gold-light/40 tracking-wider">
-            Vaidik Wedding Lawns © 2026
-          </p>
+            <p className="text-center text-[10px] text-gold-light/40 tracking-wider">
+              Vaidik Wedding Lawns © 2026
+            </p>
+          </div>
         </div>
       </aside>
     </>
