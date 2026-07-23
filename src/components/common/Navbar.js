@@ -26,14 +26,28 @@ export default function Navbar() {
   const backdropRef = useRef(null);
   const linkRefs = useRef([]);
 
-  // Scroll effect
+  // Check if current route is book-visit
+  const isBookVisitPage = pathname === "/book-visit";
+
+  // Scroll effect - always scrolled true on book-visit page
   useEffect(() => {
     const handleScroll = () => {
+      // If on book-visit page, always set isScrolled to true
+      if (isBookVisitPage) {
+        setIsScrolled(true);
+        return;
+      }
+
+      // For other pages, check scroll position
       setIsScrolled(window.scrollY > 40);
     };
+
+    // Initial check
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isBookVisitPage]);
 
   // Close drawer on route change
   useEffect(() => {
@@ -130,11 +144,22 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // Function to handle Home click with page refresh
+  const handleHomeClick = (e) => {
+    if (pathname === "/") {
+      // If already on home page, just refresh
+      window.location.reload();
+    } else {
+      // Navigate to home with full page refresh
+      window.location.href = "/";
+    }
+  };
+
   return (
     <>
       {/* HEADER */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isBookVisitPage
           ? "bg-maroon-dark/95 backdrop-blur-md border-b border-gold-base/20 shadow-xl py-3"
           : "bg-transparent py-4"
           }`}
@@ -160,6 +185,28 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => {
               const active = pathname === link.href;
+
+              // For Home link, use regular anchor tag for full page refresh
+              if (link.href === "/") {
+                return (
+                  <a
+                    key={link.label}
+                    href="/"
+                    onClick={handleHomeClick}
+                    className={`relative tracking-[0.2em] text-sm  ${active
+                      ? "text-gold-base"
+                      : "text-white  hover:text-gold-light"
+                      }`}
+                  >
+                    {link.label}
+
+                    <span
+                      className={`absolute left-0 bottom-[-6px] h-[1px] bg-gold-base transition-all duration-300 ${active ? "w-full" : "w-0 hover:w-full"
+                        }`}
+                    />
+                  </a>
+                );
+              }
 
               return (
                 <Link
@@ -226,6 +273,27 @@ export default function Navbar() {
           <nav className="flex flex-col gap-5">
             {navLinks.map((link, index) => {
               const active = pathname === link.href;
+
+              // For Home link in mobile menu
+              if (link.href === "/") {
+                return (
+                  <div
+                    key={link.label}
+                    ref={(el) => (linkRefs.current[index] = el)}
+                  >
+                    <a
+                      href="/"
+                      onClick={handleHomeClick}
+                      className={`block text-lg uppercase tracking-[0.15em] font-serif-heading ${active
+                        ? "text-gold-base"
+                        : "text-ivory/75 hover:text-gold-light"
+                        }`}
+                    >
+                      {link.label}
+                    </a>
+                  </div>
+                );
+              }
 
               return (
                 <div

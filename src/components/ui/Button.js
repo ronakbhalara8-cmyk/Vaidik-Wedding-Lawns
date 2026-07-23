@@ -5,96 +5,96 @@ export default function Button({
   children,
   href,
   onClick,
-  variant = "primary", // primary, secondary, outline, text
+  variant = "primary",
   magnetic = true,
   className = "",
   ...props
 }) {
-  const baseStyle =
-    "relative overflow-hidden inline-flex items-center justify-center px-8 py-4 font-serif-heading text-xs tracking-[0.2em] uppercase transition-all duration-500 rounded-full select-none cursor-pointer";
+  const base =
+    "group relative inline-flex items-center justify-center overflow-hidden rounded-full px-9 py-4 uppercase tracking-[0.22em] text-xs font-medium transition-all duration-500 cursor-pointer";
 
   let variantStyle = "";
-  if (variant === "primary") {
-    // Maroon bg, gold border, ivory text, gold hover background
-    variantStyle =
-      "bg-maroon-dark text-gold-light border border-gold-base/30 hover:border-gold-base shadow-xl hover:shadow-maroon-light/25";
-  } else if (variant === "secondary") {
-    // Gold bg, dark maroon text
-    variantStyle =
-      "bg-grad-gold text-maroon-dark border border-gold-light/40 shadow-xl hover:shadow-gold-base/20 font-medium";
-  } else if (variant === "outline") {
-    // Transparent, gold border, gold text
-    variantStyle =
-      "bg-transparent text-gold-base border border-gold-base/50 hover:border-gold-light";
-  } else if (variant === "text") {
-    // Luxury text-only button with animated underline
-    return (
-      <Link
-        href={href || "#"}
-        className={`group inline-flex items-center gap-2 font-serif-heading text-xs tracking-[0.25em] uppercase text-gold-base hover:text-gold-light transition-colors duration-300 ${className}`}
-        onClick={onClick}
-        {...props}
-      >
-        <span>{children}</span>
-        <span className="w-0 h-[1px] bg-gold-base group-hover:w-full transition-all duration-500 ease-out" />
-      </Link>
-    );
+
+  switch (variant) {
+    case "primary":
+      variantStyle = `
+      bg-[#4D1721]
+      text-[#F7E6B3]
+      border
+      border-[#C89B3C]
+      hover:-translate-y-1
+      hover:shadow-[0_18px_40px_rgba(164,111,35,.35)]
+      `;
+      break;
+
+    case "secondary":
+      variantStyle = `
+      bg-gradient-to-r
+      from-[#D5B05C]
+      via-[#F2DE9A]
+      to-[#C89B3C]
+      text-[#4D1721]
+      border
+      border-[#D5B05C]
+      hover:-translate-y-1
+      hover:shadow-[0_18px_45px_rgba(210,165,70,.35)]
+      `;
+      break;
+
+    case "outline":
+      variantStyle = `
+      bg-transparent
+      text-[#D5B05C]
+      border
+      border-[#D5B05C]
+      hover:bg-[#D5B05C]
+      hover:text-[#4D1721]
+      hover:-translate-y-1
+      `;
+      break;
+
+    default:
+      variantStyle = "";
   }
 
-  const InnerContent = () => (
+  const Content = (
     <>
-      {/* Background slide animation layer */}
-      <span
-        className={`absolute inset-0 w-full h-full scale-y-0 origin-bottom transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] -z-10
-          ${variant === "primary" ? "bg-grad-gold" : ""}
-          ${variant === "secondary" ? "bg-maroon-dark" : ""}
-          ${variant === "outline" ? "bg-grad-gold" : ""}
-          group-hover:scale-y-100`}
-      />
-      <span
-        className={`relative z-10 flex items-center gap-2 transition-colors duration-500
-          ${
-            variant === "primary"
-              ? "text-gold-light group-hover:text-maroon-dark font-medium"
-              : ""
-          }
-          ${
-            variant === "secondary"
-              ? "text-maroon-dark group-hover:text-gold-light"
-              : ""
-          }
-          ${
-            variant === "outline"
-              ? "text-gold-base group-hover:text-maroon-dark"
-              : ""
-          }`}
-      >
+      {/* Shine */}
+      <span className="absolute -left-32 top-0 h-full w-20 rotate-12 bg-white/20 blur-md transition-all duration-700 group-hover:left-[130%]" />
+
+      {/* Glow Border */}
+      <span className="absolute inset-[1px] rounded-full border border-white/10" />
+
+      {/* Text */}
+      <span className="relative z-20 flex items-center gap-3">
         {children}
       </span>
     </>
   );
 
-  const buttonContent = href ? (
+  const button = href ? (
     <Link
       href={href}
-      className={`group ${baseStyle} ${variantStyle} ${className}`}
+      className={`${base} ${variantStyle} ${className}`}
       {...props}
     >
-      <InnerContent />
+      {Content}
     </Link>
   ) : (
     <button
       onClick={onClick}
-      className={`group ${baseStyle} ${variantStyle} ${className}`}
+      className={`${base} ${variantStyle} ${className}`}
       {...props}
     >
-      <InnerContent />
+      {Content}
     </button>
   );
 
-  if (magnetic) {
-    return <Magnetic speed={0.2} range={30}>{buttonContent}</Magnetic>;
-  }
-
-  return buttonContent;
+  return magnetic ? (
+    <Magnetic speed={0.2} range={30}>
+      {button}
+    </Magnetic>
+  ) : (
+    button
+  );
 }

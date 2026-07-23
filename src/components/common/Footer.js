@@ -12,6 +12,18 @@ export default function Footer() {
     alert("Thank you for subscribing to our luxury newsletter.");
   };
 
+  // Function to handle Home click with page refresh
+  const handleHomeClick = (e) => {
+    const currentPath = window.location.pathname;
+    if (currentPath === "/") {
+      // If already on home page, just refresh
+      window.location.reload();
+    } else {
+      // Navigate to home with full page refresh
+      window.location.href = "/";
+    }
+  };
+
   return (
     <footer className="bg-dark-brown text-ivory border-t border-gold-base/20 pt-20 pb-8 relative overflow-hidden">
       {/* Subtle luxury pattern background effect */}
@@ -21,7 +33,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-16 border-b border-gold-base/15">
           {/* Brand Info */}
           <div className="flex flex-col gap-6">
-            <Link href="/" className="flex items-center gap-3 group">
+            {/* Logo - Now using regular anchor tag for full page refresh */}
+            <a href="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
               <div className="relative w-24 h-24 overflow-hidden rounded-full border border-gold-base/30">
                 <Image
                   src="/images/logo.png"
@@ -30,15 +43,7 @@ export default function Footer() {
                   className="object-cover"
                 />
               </div>
-              {/* <div className="flex flex-col">
-                <span className="font-serif-heading text-base tracking-[0.25em] text-gold-base">
-                  VAIDIK
-                </span>
-                <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-light/70 uppercase">
-                  Wedding Lawns
-                </span>
-              </div> */}
-            </Link>
+            </a>
             <p className="text-sm text-ivory/60 leading-relaxed font-light">
               Crafting royal dreams into eternal realities. Experience the finest outdoor wedding lawn and luxury event services, tailored to perfection.
             </p>
