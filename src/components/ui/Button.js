@@ -43,14 +43,18 @@ export default function Button({
 
     case "outline":
       variantStyle = `
-      bg-transparent
-      text-[#D5B05C]
-      border
-      border-[#D5B05C]
-      hover:bg-[#D5B05C]
-      hover:text-[#4D1721]
-      hover:-translate-y-1
-      `;
+    bg-transparent
+    text-gold-base
+    border-2
+    border-gold-base
+    hover:bg-gold-base
+    hover:text-maroon-dark
+    hover:border-gold-light
+    hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]
+    hover:-translate-y-1
+    transition-all
+    duration-300
+  `;
       break;
 
     default:
