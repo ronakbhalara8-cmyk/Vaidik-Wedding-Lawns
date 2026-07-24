@@ -99,11 +99,11 @@ export default function Footer() {
             <ul className="flex flex-col gap-4 text-sm text-ivory/70 font-light">
               <li className="flex gap-3 items-start">
                 <MapPin className="w-5 h-5 text-gold-base shrink-0 mt-0.5" />
-                <span>Vaidik Wedding Lawns, Near Royal Circle, VIP Road, Mumbai, India</span>
+                <span>Near Kanad fatak, 300 feet, Sayan Hazira Ring Road, opp. Variyav Check Post, Surat, Gujarat 394520</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone className="w-4 h-4 text-gold-base shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-gold-base transition-colors duration-300">+91 98765 43210</a>
+                <a href="tel:+919876543210" className="hover:text-gold-base transition-colors duration-300">+91 99133 03351</a>
               </li>
               <li className="flex gap-3 items-center">
                 <Mail className="w-4 h-4 text-gold-base shrink-0" />
@@ -147,7 +147,7 @@ export default function Footer() {
         {/* Embedded Map Section */}
         <div className="mt-12 rounded-2xl overflow-hidden border border-gold-base/20 h-64 relative group">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.835158652396!2d72.8273641!3d19.0713783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c9117621c1ff%3A0xe54d241c099be9eb!2sJuhu%20Beach!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.263742560714!2d72.7932418!3d21.2554343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04bb4c96faac1%3A0x23787582c7f01b85!2sVaidik%20Lawns!5e0!3m2!1sen!2sin!4v1690000000000"
             width="100%"
             height="100%"
             style={{ border: 0, filter: "grayscale(1) invert(0.9) sepia(0.5) hue-rotate(330deg)" }}

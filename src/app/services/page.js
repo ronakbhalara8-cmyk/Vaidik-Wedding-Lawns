@@ -48,7 +48,7 @@ export default function ServicesPage() {
           style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
         />
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
-        
+
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
             <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
@@ -76,7 +76,7 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <FadeIn direction="up" duration={1.0} stagger={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <FadeIn direction="up" duration={0.1} stagger={0.12} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {list.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -88,11 +88,11 @@ export default function ServicesPage() {
                   <div className="w-12 h-12 rounded-xl bg-maroon-light/5 border border-maroon-base/10 flex items-center justify-center mb-6 text-maroon-base group-hover:bg-maroon-base group-hover:text-gold-light transition-all duration-300">
                     <Icon className="w-5 h-5" />
                   </div>
-                  
+
                   <h3 className="font-serif-heading text-base tracking-wide uppercase text-maroon-dark mb-3 font-semibold">
                     {service.title}
                   </h3>
-                  
+
                   <p className="text-sm text-charcoal/65 leading-relaxed font-light mb-6">
                     {service.description}
                   </p>

@@ -33,7 +33,7 @@ export default function AboutPage() {
           style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
         />
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
-        
+
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
             <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
@@ -56,7 +56,7 @@ export default function AboutPage() {
           {/* Parallax Image Grid */}
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl">
             <ParallaxImage
-              src="/images/wedding_lawn.png"
+              src="/images/about-page.jpg"
               alt="Lush gardens at Vaidik Wedding Lawns"
               className="w-full h-full"
               yOffset={8}
@@ -105,7 +105,7 @@ export default function AboutPage() {
             </SplitReveal>
           </div>
 
-          <FadeIn direction="up" duration={1.0} stagger={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <FadeIn direction="up" duration={0.1} stagger={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((val, idx) => {
               const Icon = val.icon;
               return (

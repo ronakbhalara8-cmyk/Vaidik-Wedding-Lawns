@@ -34,7 +34,7 @@ export default function About() {
 
             <FadeIn direction="up" duration={1.0} delay={0.3} distance={20} className="flex flex-col gap-5 text-base text-charcoal/80 font-light leading-relaxed">
               <p>
-                At <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span>, we believe that weddings are not just events, but sacred unions that deserve a setting of unmatched grandeur. Established as Mumbai’s premier open-air luxury venue, we offer a canvas where heritage meets modern sophistication.
+                At <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span>, we believe that weddings are not just events, but sacred unions that deserve a setting of unmatched grandeur. Established as Mumbai's premier open-air luxury venue, we offer a canvas where heritage meets modern sophistication.
               </p>
               <p className="font-sans text-md text-maroon-light border-l-2 border-gold-base pl-4 my-2">
                 "Where lush green tapestries meet the majestic glow of starry skies, orchestrating an ambient symphony that stays etched in hearts forever."
@@ -51,22 +51,24 @@ export default function About() {
             </FadeIn>
           </div>
 
-          {/* Visual Composition Block (Parallax Images) */}
+          {/* Visual Composition Block (Video + Image) */}
           <div className="relative flex items-center justify-center">
-            {/* Main large image */}
+            {/* Main large video container */}
             <div className="w-[85%] aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">
-              <ParallaxImage
-                src="/images/wedding_mandap.png"
-                alt="Vaidik Luxury Mandap Setup"
-                className="w-full h-full"
-                yOffset={10}
+              <video
+                src="/videos/Video_20260514_170024.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
               />
             </div>
 
             {/* Overlapping secondary floating image */}
             <div className="absolute bottom-[-10%] left-[-5%] w-[55%] aspect-square rounded-2xl overflow-hidden border border-gold-base/30 shadow-2xl z-20">
               <ParallaxImage
-                src="/images/reception_hall.png"
+                src="/images/about.png"
                 alt="Vaidik Banquet Reception Setup"
                 className="w-full h-full"
                 yOffset={20}

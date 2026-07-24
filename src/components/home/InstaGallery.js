@@ -6,18 +6,16 @@ import { Heart, Camera } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const galleryItems = [
-  { image: "/images/wedding_lawn.png", alt: "Lawn Evening Lighting Setup", title: "Royal Lawn" },
-  { image: "/images/wedding_mandap.png", alt: "Royal Canopy Mandap Decoration", title: "Vedic Mandap" },
-  { image: "/images/reception_hall.png", alt: "Grand Chandelier Banquet Hall", title: "Grand Banquet" },
-  { image: "/images/wedding_lawn.png", alt: "Outdoor Reception Lawn Area", title: "Starry Night" },
-  { image: "/images/wedding_mandap.png", alt: "Fresh Floral Mandap Details", title: "Floral Canopy" },
-  { image: "/images/reception_hall.png", alt: "Elegant Table Banquet Setting", title: "Luxury Dining" },
-  { image: "/images/wedding_lawn.png", alt: "Lush Palm Gardens", title: "Manicured Palms" },
-  { image: "/images/wedding_mandap.png", alt: "Golden Mandap Lighting", title: "Golden Mandap" },
-  { image: "/images/reception_hall.png", alt: "Crystal Chandelier View", title: "Crystal Hall" },
-  { image: "/images/wedding_lawn.png", alt: "Sunset Ceremony Setup", title: "Sunset Lawn" },
-  { image: "/images/wedding_mandap.png", alt: "Traditional Phera Setup", title: "Sacred Pheras" },
-  { image: "/images/reception_hall.png", alt: "Royal Stage Setup", title: "Royal Stage" },
+  { image: "/images/gallery-2.jpg", alt: "Lawn Evening Lighting Setup", title: "Royal Lawn" },
+  { image: "/images/gallery-3.jpg", alt: "Royal Canopy Mandap Decoration", title: "Vedic Mandap" },
+  { image: "/images/gallery-4.jpg", alt: "Grand Chandelier Banquet Hall", title: "Grand Banquet" },
+  { image: "/images/gallery-5.jpg", alt: "Outdoor Reception Lawn Area", title: "Starry Night" },
+  { image: "/images/gallery-6.jpg", alt: "Fresh Floral Mandap Details", title: "Floral Canopy" },
+  { image: "/images/gallery-7.jpg", alt: "Elegant Table Banquet Setting", title: "Luxury Dining" },
+  { image: "/images/gallery-8.jpg", alt: "Lush Palm Gardens", title: "Manicured Palms" },
+  { image: "/images/gallery-9.jpg", alt: "Golden Mandap Lighting", title: "Golden Mandap" },
+  { image: "/images/gallery-10.jpg", alt: "Crystal Chandelier View", title: "Crystal Hall" },
+  { image: "/images/gallery-11.jpg", alt: "Sunset Ceremony Setup", title: "Sunset Lawn" },
 ];
 
 export default function InstaGallery() {

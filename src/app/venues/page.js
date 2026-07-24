@@ -5,6 +5,7 @@ import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import ParallaxImage from "@/components/ui/ParallaxImage";
+import { useRef, useEffect } from "react";
 
 const items = [
   {
@@ -12,7 +13,8 @@ const items = [
     tag: "Flagship Outdoor Space",
     capacity: "800 - 2,500 Guests",
     size: "45,000 Sq. Ft.",
-    image: "/images/wedding_lawn.png",
+    image: "/images/gallery-11.jpg",
+    video: "", // Add your video path here
     description: "Our crown jewel. A sprawling manicured green carpet illuminated by high-mast and architectural lighting arrays. Designed to frame grand receptions, starry dinners, and cinematic stages.",
     features: [
       "Accommodates massive multi-tier mandap structures",
@@ -27,7 +29,8 @@ const items = [
     tag: "Traditional Phera Venue",
     capacity: "300 - 1,000 Guests",
     size: "25,000 Sq. Ft.",
-    image: "/images/wedding_mandap.png",
+    image: "/images/gallery-8.jpg",
+    video: "", // Add your video path here
     description: "Designed specifically to cultivate an intimate, spiritual energy for traditional Indian pheras. Framed by delicate floral arches, standard temple-style setup capability, and premium acoustics.",
     features: [
       "Sacred hawan fire-safe structural points",
@@ -41,7 +44,8 @@ const items = [
     tag: "Luxury Indoor Space",
     capacity: "200 - 800 Guests",
     size: "18,000 Sq. Ft.",
-    image: "/images/reception_hall.png",
+    image: "", // Add your image path here
+    video: "/videos/banquet-hall.mp4", // Add your video path here
     description: "A state-of-the-art temperature-controlled indoor hall with soaring 22-foot double-height ceilings, majestic crystal chandeliers, and glass walls overlooking the lawns.",
     features: [
       "Centrally air-conditioned climate systems",
@@ -52,6 +56,41 @@ const items = [
     ],
   },
 ];
+
+// Video Component with Autoplay
+const VideoPlayer = ({ src, poster, title }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    // Auto-play video when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        // Auto-play might be blocked by browser, but we try anyway
+        console.log("Autoplay blocked:", error);
+      });
+    }
+  }, []);
+
+  return (
+    <div className="relative w-full h-full">
+      <video
+        ref={videoRef}
+        className="w-full h-full object-cover"
+        poster={poster}
+        playsInline
+        muted
+        loop
+        autoPlay
+        preload="metadata"
+      >
+        <source src={src} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* No button overlay - keeping it clean */}
+    </div>
+  );
+};
 
 export default function VenuesPage() {
   return (
@@ -92,12 +131,20 @@ export default function VenuesPage() {
             >
               {/* Visual Panel */}
               <div className="w-full lg:w-1/2 aspect-[4/3] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">
-                <ParallaxImage
-                  src={venue.image}
-                  alt={venue.title}
-                  className="w-full h-full"
-                  yOffset={8}
-                />
+                {venue.video ? (
+                  <VideoPlayer
+                    src={venue.video}
+                    poster={venue.image}
+                    title={venue.title}
+                  />
+                ) : (
+                  <ParallaxImage
+                    src={venue.image}
+                    alt={venue.title}
+                    className="w-full h-full"
+                    yOffset={8}
+                  />
+                )}
                 <span className="absolute top-6 left-6 bg-maroon-dark/85 text-gold-base border border-gold-base/30 px-4 py-1.5 rounded-full font-serif-heading text-[9px] tracking-[0.25em] uppercase z-10">
                   {venue.tag}
                 </span>
