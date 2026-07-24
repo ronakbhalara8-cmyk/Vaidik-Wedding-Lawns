@@ -30,7 +30,7 @@ export default function Footer() {
       <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.03)_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-16 border-b border-gold-base/15">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-4">
           {/* Brand Info */}
           <div className="flex flex-col gap-6">
             {/* Logo - Now using regular anchor tag for full page refresh */}
@@ -107,7 +107,7 @@ export default function Footer() {
               </li>
               <li className="flex gap-3 items-center">
                 <Mail className="w-4 h-4 text-gold-base shrink-0" />
-                <a href="mailto:info@vaidiklawns.com" className="hover:text-gold-base transition-colors duration-300">info@vaidiklawns.com</a>
+                <a href="mailto:vaidiklawns@gmail.com" className="hover:text-gold-base transition-colors duration-300">vaidiklawns@gmail.com</a>
               </li>
               <li className="flex gap-3 items-center">
                 <Clock className="w-4 h-4 text-gold-base shrink-0" />
@@ -144,43 +144,18 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Embedded Map Section */}
-        <div className="mt-12 rounded-2xl overflow-hidden border border-gold-base/20 h-64 relative group">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.263742560714!2d72.7932418!3d21.2554343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04bb4c96faac1%3A0x23787582c7f01b85!2sVaidik%20Lawns!5e0!3m2!1sen!2sin!4v1690000000000"
-            width="100%"
-            height="100%"
-            style={{ border: 0, filter: "grayscale(1) invert(0.9) sepia(0.5) hue-rotate(330deg)" }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Vaidik Wedding Lawns Location Map"
-          />
-          {/* Transparent color overlay to make it look matching */}
-          <div className="absolute inset-0 bg-maroon-dark/10 pointer-events-none mix-blend-color group-hover:bg-transparent transition-all duration-500" />
-        </div>
-
-        <div className="pt-5">
+        <div className="py-5">
           <SplitReveal
             type="chars"
             tag="h1"
-            className="font-serif-heading text-3xl sm:text-5xl tracking-widest uppercase font-bold text-shadow-premium text-gold-light"
+            className="font-serif-heading text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl tracking-widest uppercase font-bold text-shadow-premium text-gold-light"
           >
             Vaidik Wedding Lawns
           </SplitReveal>
         </div>
 
         {/* Footer Bottom copyright & terms */}
-        <div className="mt-12 pt-8 border-t border-gold-base/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-ivory/40 font-light">
-          <p>© {new Date().getFullYear()} Vaidik Wedding Lawns. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy-policy" className="hover:text-gold-base transition-colors duration-300">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gold-base transition-colors duration-300">Terms of Service</Link>
-          </div>
-          <p className="tracking-wide">
-            Designed with Elegance for a Lifetime Experience.
-          </p>
-        </div>
+        <p className="text-xs text-end">© {new Date().getFullYear()} Vaidik Wedding Lawns. All rights reserved.</p>
       </div>
     </footer>
   );

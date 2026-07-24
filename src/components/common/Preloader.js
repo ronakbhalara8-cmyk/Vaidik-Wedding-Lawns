@@ -82,7 +82,7 @@ export default function Preloader() {
           ref={titleRef}
           className="font-serif-heading text-4xl md:text-7xl tracking-[0.3em] text-gold-base uppercase font-bold"
         >
-          VAIDIK
+          VAIDIK LAWNS
         </h1>
         <p
           ref={subtitleRef}
