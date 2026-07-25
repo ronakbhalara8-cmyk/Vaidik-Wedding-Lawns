@@ -1,22 +1,225 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Heart, Camera } from "lucide-react";
+import { Heart, Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const galleryItems = [
-  { image: "/images/gallery-2.jpg", alt: "Lawn Evening Lighting Setup", title: "Royal Lawn" },
-  { image: "/images/gallery-3.jpg", alt: "Royal Canopy Mandap Decoration", title: "Vedic Mandap" },
-  { image: "/images/gallery-4.jpg", alt: "Grand Chandelier Banquet Hall", title: "Grand Banquet" },
-  { image: "/images/gallery-5.jpg", alt: "Outdoor Reception Lawn Area", title: "Starry Night" },
-  { image: "/images/gallery-6.jpg", alt: "Fresh Floral Mandap Details", title: "Floral Canopy" },
-  { image: "/images/gallery-7.jpg", alt: "Elegant Table Banquet Setting", title: "Luxury Dining" },
-  { image: "/images/gallery-8.jpg", alt: "Lush Palm Gardens", title: "Manicured Palms" },
-  { image: "/images/gallery-9.jpg", alt: "Golden Mandap Lighting", title: "Golden Mandap" },
-  { image: "/images/gallery-10.jpg", alt: "Crystal Chandelier View", title: "Crystal Hall" },
-  { image: "/images/gallery-11.jpg", alt: "Sunset Ceremony Setup", title: "Sunset Lawn" },
+  {
+    image: null,
+    video: "/videos/slider-1.mp4",
+    alt: "Lawn Evening Lighting Setup",
+    title: "Royal Lawn"
+  },
+  {
+    image: null,
+    video: "/videos/046A9853.mp4",
+    alt: "Royal Canopy Mandap Decoration",
+    title: "Vedic Mandap"
+  },
+  {
+    image: null,
+    video: "/videos/046A9856.mp4",
+    alt: "Grand Chandelier Banquet Hall",
+    title: "Grand Banquet"
+  },
+  {
+    image: null,
+    video: "/videos/046A9880.mp4",
+    alt: "Outdoor Reception Lawn Area",
+    title: "Starry Night"
+  },
+  {
+    image: null,
+    video: "/videos/046A9887.mp4",
+    alt: "Fresh Floral Mandap Details",
+    title: "Floral Canopy"
+  },
+  {
+    image: null,
+    video: "/videos/046A9892.mp4",
+    alt: "Elegant Table Banquet Setting",
+    title: "Luxury Dining"
+  },
+  {
+    image: null,
+    video: "/videos/slider-2.mp4",
+    alt: "Lush Palm Gardens",
+    title: "Manicured Palms"
+  },
+  {
+    image: null,
+    video: "/videos/slider-3.mp4",
+    alt: "Golden Mandap Lighting",
+    title: "Golden Mandap"
+  },
+  {
+    image: null,
+    video: "/videos/Video_20260514_170024.mp4",
+    alt: "Crystal Chandelier View",
+    title: "Crystal Hall"
+  },
+  {
+    image: null,
+    video: "/videos/Video 20260106 130800.mp4",
+    alt: "Sunset Ceremony Setup",
+    title: "Sunset Lawn"
+  },
 ];
+
+// Video Card Component for Circle - No play button
+const VideoCard = ({ src, poster, alt, className = "" }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch(() => { });
+    }
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      className={`w-full h-full object-cover ${className}`}
+      poster={poster || ""}
+      playsInline
+      muted
+      loop
+      autoPlay
+      preload="metadata"
+    >
+      <source src={src} type="video/mp4" />
+    </video>
+  );
+};
+
+// Full Screen Slider Component
+const FullScreenSlider = ({ items, initialIndex, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const videoRef = useRef(null);
+
+  const totalItems = items.length;
+
+  const goToPrevious = () => {
+    if (isTransitioning || totalItems === 0) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  const goToNext = () => {
+    if (isTransitioning || totalItems === 0) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev === totalItems - 1 ? 0 : prev + 1));
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") onClose();
+    if (e.key === "ArrowLeft") goToPrevious();
+    if (e.key === "ArrowRight") goToNext();
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [handleKeyDown]);
+
+  // Handle video playback when slide changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = 0;
+      video.play().catch(() => { });
+    }
+  }, [currentIndex]);
+
+  const currentItem = items[currentIndex];
+  const hasVideo = currentItem?.video ? true : false;
+  const hasImage = currentItem?.image ? true : false;
+
+  if (!currentItem) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 text-white hover:text-gold-base transition-colors duration-300"
+        aria-label="Close slider"
+      >
+        <X className="w-8 h-8" />
+      </button>
+
+      {/* Previous Button */}
+      <button
+        onClick={goToPrevious}
+        className="absolute left-4 z-10 text-white hover:text-gold-base transition-colors duration-300 p-2"
+        aria-label="Previous"
+      >
+        <ChevronLeft className="w-10 h-10" />
+      </button>
+
+      {/* Next Button */}
+      <button
+        onClick={goToNext}
+        className="absolute right-4 z-10 text-white hover:text-gold-base transition-colors duration-300 p-2"
+        aria-label="Next"
+      >
+        <ChevronRight className="w-10 h-10" />
+      </button>
+
+      {/* Counter */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 font-serif-heading text-sm tracking-wider">
+        {currentIndex + 1} / {totalItems}
+      </div>
+
+      {/* Main Content */}
+      <div className="relative w-full h-full max-w-6xl max-h-[85vh] flex items-center justify-center p-4 md:p-8">
+        <div className="relative w-full h-full flex items-center justify-center">
+          {hasVideo ? (
+            <video
+              ref={videoRef}
+              key={`video-${currentIndex}`}
+              className="max-h-[85vh] w-auto object-contain rounded-lg"
+              poster={currentItem.image || ""}
+              playsInline
+              muted
+              loop
+              controls
+              preload="metadata"
+            >
+              <source src={currentItem.video} type="video/mp4" />
+            </video>
+          ) : hasImage ? (
+            <Image
+              key={`image-${currentIndex}`}
+              src={currentItem.image}
+              alt={currentItem.alt}
+              fill
+              sizes="100vw"
+              className="object-contain"
+              priority
+            />
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function InstaGallery() {
   const sectionRef = useRef(null);
@@ -24,6 +227,19 @@ export default function InstaGallery() {
   const cardsRef = useRef([]);
   const centerTextRef = useRef(null);
   const isMountedRef = useRef(true);
+
+  // Slider state
+  const [sliderOpen, setSliderOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleCardClick = (index) => {
+    setSelectedIndex(index);
+    setSliderOpen(true);
+  };
+
+  const handleSliderClose = () => {
+    setSliderOpen(false);
+  };
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -178,32 +394,57 @@ export default function InstaGallery() {
           ref={ringRef}
           className="relative w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] md:w-[650px] md:h-[650px] flex items-center justify-center z-10"
         >
-          {galleryItems.map((item, index) => (
-            <div
-              key={index}
-              ref={(el) => (cardsRef.current[index] = el)}
-              className="absolute w-28 h-36 sm:w-36 sm:h-48 rounded-2xl overflow-hidden border border-gold-base/30 shadow-2xl shadow-black/80 bg-maroon-dark group cursor-pointer"
-            >
-              <Image
-                src={item.image}
-                alt={item.alt}
-                fill
-                sizes="(max-width: 640px) 120px, 160px"
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-maroon-dark/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-2 text-center">
-                <div>
-                  <Heart className="w-5 h-5 text-gold-base mx-auto mb-1 fill-gold-base/30" />
-                  <span className="font-serif-heading text-[9px] tracking-[0.15em] uppercase text-gold-light block font-semibold">
-                    {item.title}
-                  </span>
+          {galleryItems.map((item, index) => {
+            const hasVideo = item?.video ? true : false;
+
+            return (
+              <div
+                key={index}
+                ref={(el) => (cardsRef.current[index] = el)}
+                onClick={() => handleCardClick(index)}
+                className="absolute w-28 h-36 sm:w-36 sm:h-48 rounded-2xl overflow-hidden border border-gold-base/30 shadow-2xl shadow-black/80 bg-maroon-dark group cursor-pointer"
+              >
+                {hasVideo ? (
+                  // Video Card - No play button
+                  <VideoCard
+                    src={item.video}
+                    poster={item.image || ""}
+                    alt={item.alt}
+                  />
+                ) : (
+                  // Image Card
+                  <Image
+                    src={item.image}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 640px) 120px, 160px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                )}
+
+                {/* Hover overlay - Same for both images and videos */}
+                <div className="absolute inset-0 bg-maroon-dark/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-2 text-center">
+                  <div>
+                    <Heart className="w-5 h-5 text-gold-base mx-auto mb-1 fill-gold-base/30" />
+                    <span className="font-serif-heading text-[9px] tracking-[0.15em] uppercase text-gold-light block font-semibold">
+                      {item.title}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
+
+      {/* Full Screen Slider */}
+      {sliderOpen && (
+        <FullScreenSlider
+          items={galleryItems}
+          initialIndex={selectedIndex}
+          onClose={handleSliderClose}
+        />
+      )}
     </section>
   );
 }

@@ -13,8 +13,8 @@ const items = [
     tag: "Flagship Outdoor Space",
     capacity: "800 - 2,500 Guests",
     size: "45,000 Sq. Ft.",
-    image: "/images/gallery-11.jpg",
-    video: "", // Add your video path here
+    image: "",
+    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4", // Add your video path here
     description: "Our crown jewel. A sprawling manicured green carpet illuminated by high-mast and architectural lighting arrays. Designed to frame grand receptions, starry dinners, and cinematic stages.",
     features: [
       "Accommodates massive multi-tier mandap structures",
@@ -29,8 +29,8 @@ const items = [
     tag: "Traditional Phera Venue",
     capacity: "300 - 1,000 Guests",
     size: "25,000 Sq. Ft.",
-    image: "/images/gallery-8.jpg",
-    video: "", // Add your video path here
+    image: "",
+    video: "/videos/046A9880.mp4", // Add your video path here
     description: "Designed specifically to cultivate an intimate, spiritual energy for traditional Indian pheras. Framed by delicate floral arches, standard temple-style setup capability, and premium acoustics.",
     features: [
       "Sacred hawan fire-safe structural points",

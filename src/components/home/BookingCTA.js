@@ -31,18 +31,18 @@ export default function BookingCTA() {
           className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[42px] border border-gold-base/20 shadow-[0_20px_60px_rgba(0,0,0,.18)]">
 
           {/* Gradient */}
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,#6B2133_0%,#813241_35%,#A0525D_70%,#813241_100%)]" />
+          <div className="absolute inset-0 bg-[#813241]" />
 
           {/* Top Glow */}
-          <div
-            className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-gold-base/20 blur-[90px] sm:h-80 sm:w-80 lg:h-[450px] lg:w-[450px]" />
+          {/* <div
+            className="absolute left-1/2 top-0 h-64 w-64 -translate-x-1/2 rounded-full bg-gold-base/20 blur-[90px] sm:h-80 sm:w-80 lg:h-[450px] lg:w-[450px]" /> */}
 
           {/* Bottom Glow */}
-          <div
-            className="absolute bottom-[-100px] left-1/2 h-52 w-80 -translate-x-1/2 rounded-full bg-white/10 blur-[90px] sm:h-72 sm:w-[420px] lg:h-[420px] lg:w-[650px]" />
+          {/* <div
+            className="absolute bottom-[-100px] left-1/2 h-52 w-80 -translate-x-1/2 rounded-full bg-white/10 blur-[90px] sm:h-72 sm:w-[420px] lg:h-[420px] lg:w-[650px]" /> */}
 
           {/* Overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,.12),transparent_70%)]" />
+          {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,.12),transparent_70%)]" /> */}
 
           {/* Inner Border */}
           <div
@@ -84,10 +84,10 @@ export default function BookingCTA() {
 
             </FadeIn>
 
-            <SplitReveal tag="h2" type="words"
+            <h2
               className="font-serif-heading text-3xl leading-tight font-semibold uppercase text-ivory sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Begin Your Forever In Royal Elegance
-            </SplitReveal>
+            </h2>
 
             <FadeIn direction="up" delay={0.3}>
 

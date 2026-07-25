@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
 import SplitReveal from "../ui/SplitReveal";
 
-// Video files
+// Video files - only videos, no posters
 const VIDEOS = [
   "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
   "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
@@ -103,34 +103,44 @@ export default function Hero() {
   const isTransitioningRef = useRef(false);
   const autoPlayTimerRef = useRef(null);
   const isLoadingRef = useRef(false);
+  const loadCountRef = useRef(0);
+  const isFirstLoadRef = useRef(true);
 
   // Get current and next slide content
   const currentContent = SLIDE_CONTENT[currentSlide];
   const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
   const nextContent = SLIDE_CONTENT[nextIndex];
 
-  // Load video with lazy loading
-  const loadVideo = (videoElement, src) => {
+  // Optimized load video function
+  const loadVideo = useCallback((videoElement, src) => {
     return new Promise((resolve) => {
       if (!videoElement) {
         resolve(false);
         return;
       }
 
-      // If already loaded with same src
+      // If already loaded with same src and ready
       if (videoElement.src === src && videoElement.readyState >= 2) {
         resolve(true);
         return;
       }
 
-      // Set loading state
-      setIsVideoLoading(true);
+      // Prevent multiple simultaneous loads
+      if (isLoadingRef.current) {
+        resolve(false);
+        return;
+      }
+
       isLoadingRef.current = true;
+      setIsVideoLoading(true);
 
       // Reset video
       videoElement.pause();
       videoElement.currentTime = 0;
       videoElement.style.opacity = '0';
+
+      // Only load metadata first for faster initial load
+      videoElement.preload = isFirstLoadRef.current ? 'metadata' : 'auto';
 
       // Set source and load
       videoElement.src = src;
@@ -145,11 +155,12 @@ export default function Hero() {
         setIsVideoReady(true);
         isLoadingRef.current = false;
         videoElement.style.opacity = '1';
+        isFirstLoadRef.current = false;
 
         resolve(true);
       };
 
-      // Handle error - try to play anyway
+      // Handle error
       const handleError = () => {
         videoElement.removeEventListener('loadeddata', handleLoadedData);
         videoElement.removeEventListener('error', handleError);
@@ -158,14 +169,14 @@ export default function Hero() {
         setIsVideoReady(true);
         isLoadingRef.current = false;
         videoElement.style.opacity = '1';
+        isFirstLoadRef.current = false;
 
         // Try to play even if load failed partially
         videoElement.play().catch(() => { });
-
         resolve(false);
       };
 
-      // Set timeout for loading - fallback after 8 seconds
+      // Fallback timeout - reduced to 3 seconds
       const timeoutId = setTimeout(() => {
         videoElement.removeEventListener('loadeddata', handleLoadedData);
         videoElement.removeEventListener('error', handleError);
@@ -174,39 +185,39 @@ export default function Hero() {
         setIsVideoReady(true);
         isLoadingRef.current = false;
         videoElement.style.opacity = '1';
+        isFirstLoadRef.current = false;
 
-        // Try to play anyway
         videoElement.play().catch(() => { });
-
         resolve(false);
-      }, 4000);
+      }, 3000);
 
       videoElement.addEventListener('loadeddata', handleLoadedData);
       videoElement.addEventListener('error', handleError);
 
-      // Cleanup timeout
       return () => clearTimeout(timeoutId);
     });
-  };
+  }, []);
 
-  // Initialize first video with delay to reduce initial load
+  // Initialize first video
   useEffect(() => {
     const initVideo = async () => {
-      // Small delay to let page load first
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Small delay for page load
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       if (currentVideoRef.current) {
-        const loaded = await loadVideo(currentVideoRef.current, VIDEOS[currentSlide]);
-        if (loaded && currentVideoRef.current) {
+        await loadVideo(currentVideoRef.current, VIDEOS[currentSlide]);
+
+        if (currentVideoRef.current) {
           currentVideoRef.current.play().catch(() => { });
         }
-        // Preload next video in background
+
+        // Preload next video after 1.5 seconds
         setTimeout(() => {
           if (nextVideoRef.current) {
             const nextIdx = (currentSlide + 1) % VIDEOS.length;
             loadVideo(nextVideoRef.current, VIDEOS[nextIdx]);
           }
-        }, 1000);
+        }, 1500);
       }
     };
 
@@ -214,10 +225,11 @@ export default function Hero() {
 
     return () => {
       // Cleanup
+      isFirstLoadRef.current = true;
     };
-  }, []);
+  }, [loadVideo, currentSlide]);
 
-  // Auto-play timer
+  // Auto-play timer - 8 seconds
   useEffect(() => {
     const startAutoPlay = () => {
       if (autoPlayTimerRef.current) {
@@ -229,7 +241,7 @@ export default function Hero() {
           const nextIdx = (currentSlide + 1) % VIDEOS.length;
           animateSlideTransition(nextIdx);
         }
-      }, 20000);
+      }, 8000);
     };
 
     startAutoPlay();
@@ -241,8 +253,8 @@ export default function Hero() {
     };
   }, [currentSlide, isVideoReady]);
 
-  // Animate content on slide change
-  const animateContent = () => {
+  // Animate content
+  const animateContent = useCallback(() => {
     const content = contentRef.current;
     if (!content) return;
 
@@ -320,10 +332,10 @@ export default function Hero() {
     }
 
     animatePreview();
-  };
+  }, []);
 
-  // Animate next slide preview
-  const animatePreview = () => {
+  // Animate preview
+  const animatePreview = useCallback(() => {
     const preview = previewRef.current;
     if (!preview) return;
 
@@ -354,10 +366,10 @@ export default function Hero() {
         { scaleX: 1, duration: 0.5, ease: "power2.out" },
         "-=0.2"
       );
-  };
+  }, []);
 
-  // Slide transition with video swap
-  const animateSlideTransition = async (nextIdx) => {
+  // Slide transition
+  const animateSlideTransition = useCallback(async (nextIdx) => {
     if (isTransitioningRef.current || isLoadingRef.current) return;
     isTransitioningRef.current = true;
     setIsTransitioning(true);
@@ -376,11 +388,11 @@ export default function Hero() {
     const nextSrc = VIDEOS[nextIdx];
     await loadVideo(nextVideo, nextSrc);
 
-    // Prepare next video for transition
+    // Prepare next video
     nextVideo.style.opacity = '0';
     nextVideo.style.transform = 'scale(1.05)';
 
-    // Load preview video for next-next slide
+    // Load preview video
     if (previewVideo) {
       const previewNextIdx = (nextIdx + 1) % VIDEOS.length;
       loadVideo(previewVideo, VIDEOS[previewNextIdx]);
@@ -403,6 +415,10 @@ export default function Hero() {
             if (currentVideo) {
               currentVideo.pause();
               currentVideo.style.opacity = '0';
+              // Cleanup old video to free memory
+              if (currentVideo.src) {
+                currentVideo.src = '';
+              }
             }
           }
         });
@@ -415,11 +431,10 @@ export default function Hero() {
           duration: 0.3,
           ease: "power2.out",
           onComplete: () => {
-            // Swap videos
             if (currentVideo && nextVideo) {
-              const currentSrc = currentVideo.src;
               const nextSrc = nextVideo.src;
 
+              // Swap videos
               currentVideo.src = nextSrc;
               currentVideo.load();
               currentVideo.style.opacity = '1';
@@ -463,13 +478,13 @@ export default function Hero() {
         }
       }, 500);
     }
-  };
+  }, [loadVideo, animateContent]);
 
-  // Go to specific slide
-  const goToSlide = (index) => {
+  // Go to slide
+  const goToSlide = useCallback((index) => {
     if (index === currentSlide || isTransitioningRef.current || isLoadingRef.current) return;
     animateSlideTransition(index);
-  };
+  }, [currentSlide, animateSlideTransition]);
 
   // Background parallax
   useEffect(() => {
@@ -517,11 +532,11 @@ export default function Hero() {
         animRef.current = null;
       } catch (error) { }
     };
-  }, []);
+  }, [animateContent]);
 
   useEffect(() => {
     animateContent();
-  }, [currentSlide]);
+  }, [currentSlide, animateContent]);
 
   return (
     <section
@@ -669,7 +684,7 @@ export default function Hero() {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 pointer-events-none z-20">
-          <span className="font-serif-heading text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] uppercase text-gold-base/60 animate-pulse whitespace-nowrap">
+          <span className="font-serif-heading text-[7px] sm:text-[8px] md:text-[9px] tracking-[0.15em] sm:tracking-[0.2em] md:tracking-[0.3em] uppercase text-gold-base/60 animate-pulse whitespace-whitespace-nowrap">
             Scroll To Experience
           </span>
           <div className="w-[1px] h-5 sm:h-6 md:h-8 bg-gold-base/30 relative overflow-hidden">
