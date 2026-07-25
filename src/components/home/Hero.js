@@ -88,6 +88,9 @@ const SLIDE_CONTENT = [
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
+
   const currentVideoRef = useRef(null);
   const nextVideoRef = useRef(null);
   const previewVideoRef = useRef(null);
@@ -99,37 +102,119 @@ export default function Hero() {
   const isMountedRef = useRef(true);
   const isTransitioningRef = useRef(false);
   const autoPlayTimerRef = useRef(null);
+  const isLoadingRef = useRef(false);
 
   // Get current and next slide content
   const currentContent = SLIDE_CONTENT[currentSlide];
   const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
   const nextContent = SLIDE_CONTENT[nextIndex];
 
-  // Preload all videos on mount
-  useEffect(() => {
-    if (currentVideoRef.current) {
-      currentVideoRef.current.play().catch(() => { });
-    }
+  // Load video with lazy loading
+  const loadVideo = (videoElement, src) => {
+    return new Promise((resolve) => {
+      if (!videoElement) {
+        resolve(false);
+        return;
+      }
 
-    const nextIdx = (currentSlide + 1) % VIDEOS.length;
-    if (nextVideoRef.current) {
-      nextVideoRef.current.src = VIDEOS[nextIdx];
-      nextVideoRef.current.load();
-    }
+      // If already loaded with same src
+      if (videoElement.src === src && videoElement.readyState >= 2) {
+        resolve(true);
+        return;
+      }
 
-    if (previewVideoRef.current) {
-      previewVideoRef.current.src = VIDEOS[nextIdx];
-      previewVideoRef.current.load();
-    }
+      // Set loading state
+      setIsVideoLoading(true);
+      isLoadingRef.current = true;
 
-    VIDEOS.forEach((src) => {
-      const video = document.createElement('video');
-      video.preload = 'auto';
-      video.muted = true;
-      video.playsInline = true;
-      video.src = src;
-      video.load();
+      // Reset video
+      videoElement.pause();
+      videoElement.currentTime = 0;
+      videoElement.style.opacity = '0';
+
+      // Set source and load
+      videoElement.src = src;
+      videoElement.load();
+
+      // Handle loaded data
+      const handleLoadedData = () => {
+        videoElement.removeEventListener('loadeddata', handleLoadedData);
+        videoElement.removeEventListener('error', handleError);
+
+        setIsVideoLoading(false);
+        setIsVideoReady(true);
+        isLoadingRef.current = false;
+        videoElement.style.opacity = '1';
+
+        resolve(true);
+      };
+
+      // Handle error - try to play anyway
+      const handleError = () => {
+        videoElement.removeEventListener('loadeddata', handleLoadedData);
+        videoElement.removeEventListener('error', handleError);
+
+        setIsVideoLoading(false);
+        setIsVideoReady(true);
+        isLoadingRef.current = false;
+        videoElement.style.opacity = '1';
+
+        // Try to play even if load failed partially
+        videoElement.play().catch(() => { });
+
+        resolve(false);
+      };
+
+      // Set timeout for loading - fallback after 8 seconds
+      const timeoutId = setTimeout(() => {
+        videoElement.removeEventListener('loadeddata', handleLoadedData);
+        videoElement.removeEventListener('error', handleError);
+
+        setIsVideoLoading(false);
+        setIsVideoReady(true);
+        isLoadingRef.current = false;
+        videoElement.style.opacity = '1';
+
+        // Try to play anyway
+        videoElement.play().catch(() => { });
+
+        resolve(false);
+      }, 4000);
+
+      videoElement.addEventListener('loadeddata', handleLoadedData);
+      videoElement.addEventListener('error', handleError);
+
+      // Cleanup timeout
+      return () => clearTimeout(timeoutId);
     });
+  };
+
+  // Initialize first video with delay to reduce initial load
+  useEffect(() => {
+    const initVideo = async () => {
+      // Small delay to let page load first
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (currentVideoRef.current) {
+        const loaded = await loadVideo(currentVideoRef.current, VIDEOS[currentSlide]);
+        if (loaded && currentVideoRef.current) {
+          currentVideoRef.current.play().catch(() => { });
+        }
+        // Preload next video in background
+        setTimeout(() => {
+          if (nextVideoRef.current) {
+            const nextIdx = (currentSlide + 1) % VIDEOS.length;
+            loadVideo(nextVideoRef.current, VIDEOS[nextIdx]);
+          }
+        }, 1000);
+      }
+    };
+
+    initVideo();
+
+    return () => {
+      // Cleanup
+    };
   }, []);
 
   // Auto-play timer
@@ -140,11 +225,11 @@ export default function Hero() {
       }
 
       autoPlayTimerRef.current = setTimeout(() => {
-        if (!isTransitioningRef.current && isMountedRef.current) {
+        if (!isTransitioningRef.current && isMountedRef.current && isVideoReady) {
           const nextIdx = (currentSlide + 1) % VIDEOS.length;
           animateSlideTransition(nextIdx);
         }
-      }, 6000);
+      }, 20000);
     };
 
     startAutoPlay();
@@ -154,7 +239,7 @@ export default function Hero() {
         clearTimeout(autoPlayTimerRef.current);
       }
     };
-  }, [currentSlide]);
+  }, [currentSlide, isVideoReady]);
 
   // Animate content on slide change
   const animateContent = () => {
@@ -272,8 +357,8 @@ export default function Hero() {
   };
 
   // Slide transition with video swap
-  const animateSlideTransition = (nextIdx) => {
-    if (isTransitioningRef.current) return;
+  const animateSlideTransition = async (nextIdx) => {
+    if (isTransitioningRef.current || isLoadingRef.current) return;
     isTransitioningRef.current = true;
     setIsTransitioning(true);
 
@@ -287,68 +372,85 @@ export default function Hero() {
       return;
     }
 
-    nextVideo.src = VIDEOS[nextIdx];
-    nextVideo.currentTime = 0;
-    nextVideo.load();
+    // Load next video
+    const nextSrc = VIDEOS[nextIdx];
+    await loadVideo(nextVideo, nextSrc);
+
+    // Prepare next video for transition
     nextVideo.style.opacity = '0';
     nextVideo.style.transform = 'scale(1.05)';
 
+    // Load preview video for next-next slide
     if (previewVideo) {
       const previewNextIdx = (nextIdx + 1) % VIDEOS.length;
-      previewVideo.src = VIDEOS[previewNextIdx];
-      previewVideo.load();
+      loadVideo(previewVideo, VIDEOS[previewNextIdx]);
+      previewVideo.style.opacity = '0';
     }
 
+    // Start transition
     const playNextVideo = () => {
-      nextVideo.play().catch(() => { });
+      if (nextVideo) {
+        nextVideo.play().catch(() => { });
+      }
 
-      gsap.to(currentVideo, {
-        opacity: 0,
-        scale: 1.1,
-        duration: 0.25,
-        ease: "power2.inOut",
-        onComplete: () => {
-          currentVideo.pause();
-          currentVideo.style.opacity = '0';
-        }
-      });
-
-      gsap.to(nextVideo, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-        onComplete: () => {
-          const currentSrc = currentVideo.src;
-          const nextSrc = nextVideo.src;
-
-          currentVideo.src = nextSrc;
-          currentVideo.load();
-          currentVideo.style.opacity = '1';
-          currentVideo.style.transform = 'scale(1)';
-          currentVideo.play().catch(() => { });
-
-          nextVideo.style.opacity = '0';
-          nextVideo.style.transform = 'scale(1.05)';
-
-          setCurrentSlide(nextIdx);
-          isTransitioningRef.current = false;
-          setIsTransitioning(false);
-
-          const futureIndex = (nextIdx + 1) % VIDEOS.length;
-          nextVideo.src = VIDEOS[futureIndex];
-          nextVideo.load();
-          nextVideo.style.opacity = '0';
-
-          if (previewVideo) {
-            const previewFuture = (futureIndex + 1) % VIDEOS.length;
-            previewVideo.src = VIDEOS[previewFuture];
-            previewVideo.load();
+      if (currentVideo) {
+        gsap.to(currentVideo, {
+          opacity: 0,
+          scale: 1.1,
+          duration: 0.25,
+          ease: "power2.inOut",
+          onComplete: () => {
+            if (currentVideo) {
+              currentVideo.pause();
+              currentVideo.style.opacity = '0';
+            }
           }
+        });
+      }
 
-          setTimeout(() => animateContent(), 50);
-        }
-      });
+      if (nextVideo) {
+        gsap.to(nextVideo, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          onComplete: () => {
+            // Swap videos
+            if (currentVideo && nextVideo) {
+              const currentSrc = currentVideo.src;
+              const nextSrc = nextVideo.src;
+
+              currentVideo.src = nextSrc;
+              currentVideo.load();
+              currentVideo.style.opacity = '1';
+              currentVideo.style.transform = 'scale(1)';
+              currentVideo.play().catch(() => { });
+
+              nextVideo.style.opacity = '0';
+              nextVideo.style.transform = 'scale(1.05)';
+
+              setCurrentSlide(nextIdx);
+              isTransitioningRef.current = false;
+              setIsTransitioning(false);
+
+              // Preload next video
+              const futureIndex = (nextIdx + 1) % VIDEOS.length;
+              if (nextVideo) {
+                loadVideo(nextVideo, VIDEOS[futureIndex]);
+                nextVideo.style.opacity = '0';
+              }
+
+              if (previewVideo) {
+                const previewFuture = (futureIndex + 1) % VIDEOS.length;
+                loadVideo(previewVideo, VIDEOS[previewFuture]);
+                previewVideo.style.opacity = '0';
+              }
+
+              setTimeout(() => animateContent(), 50);
+            }
+          }
+        });
+      }
     };
 
     if (nextVideo.readyState >= 2) {
@@ -359,13 +461,13 @@ export default function Hero() {
         if (nextVideo.readyState < 2) {
           playNextVideo();
         }
-      }, 300);
+      }, 500);
     }
   };
 
   // Go to specific slide
   const goToSlide = (index) => {
-    if (index === currentSlide || isTransitioningRef.current) return;
+    if (index === currentSlide || isTransitioningRef.current || isLoadingRef.current) return;
     animateSlideTransition(index);
   };
 
@@ -427,29 +529,43 @@ export default function Hero() {
       className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-maroon-dark text-ivory"
     >
       {/* Video Container */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
+        {/* Loading Spinner */}
+        {isVideoLoading && !isVideoReady && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-2 border-gold-base/30 border-t-gold-base rounded-full animate-spin" />
+              <span className="text-gold-base/60 text-xs tracking-wider font-serif-heading animate-pulse">
+                Loading Experience...
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Gradient Background while video loads */}
+        <div className={`absolute inset-0 bg-gradient-to-br from-maroon-dark/90 via-maroon/80 to-black/90 transition-opacity duration-1000 ${isVideoReady ? 'opacity-0' : 'opacity-100'
+          }`} />
+
         <video
           ref={currentVideoRef}
-          autoPlay
           muted
           playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.45]"
+          preload="metadata"
+          className={`absolute inset-0 w-full h-full object-cover brightness-[0.45] transition-opacity duration-1000 ${isVideoReady ? 'opacity-100' : 'opacity-0'
+            }`}
           onEnded={() => {
-            if (!isTransitioningRef.current) {
+            if (!isTransitioningRef.current && isVideoReady) {
               const nextIdx = (currentSlide + 1) % VIDEOS.length;
               animateSlideTransition(nextIdx);
             }
           }}
-        >
-          <source src={VIDEOS[currentSlide]} type="video/mp4" />
-        </video>
+        />
 
         <video
           ref={nextVideoRef}
           muted
           playsInline
-          preload="auto"
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover brightness-[0.45]"
           style={{ opacity: 0 }}
         />
@@ -460,22 +576,22 @@ export default function Hero() {
       <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_80%)] pointer-events-none z-10" />
 
-      {/* Next Slide Preview - Visible on all screen sizes */}
+      {/* Next Slide Preview */}
       <div
         ref={previewRef}
         className="absolute bottom-4 sm:bottom-6 md:bottom-8 right-4 sm:right-6 md:right-8 z-30 cursor-pointer group"
         onClick={() => goToSlide(nextIndex)}
       >
         <div className="relative overflow-hidden rounded-lg shadow-2xl border border-gold-base/20 w-28 sm:w-32 md:w-36 lg:w-40 h-18 sm:h-20 md:h-22 lg:h-24">
+          <div className="absolute inset-0 bg-black/80" />
+
           <video
             ref={previewVideoRef}
             muted
             playsInline
-            preload="auto"
+            preload="none"
             className="w-full h-full object-cover brightness-[0.4] group-hover:brightness-[0.6] transition-all duration-500"
-          >
-            <source src={VIDEOS[(currentSlide + 1) % VIDEOS.length]} type="video/mp4" />
-          </video>
+          />
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
