@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Heart, Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -241,7 +241,7 @@ export default function InstaGallery() {
     setSliderOpen(false);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     isMountedRef.current = true;
     const section = sectionRef.current;
     const ring = ringRef.current;

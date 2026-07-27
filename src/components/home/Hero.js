@@ -79,13 +79,22 @@ const SLIDE_CONTENT = [
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const videoRefs = useRef([]);
+  const videoRefs = useRef(new Map());
   const contentRef = useRef(null);
   const timerRef = useRef(null);
 
   const currentContent = SLIDE_CONTENT[currentSlide];
   const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
   const nextContent = SLIDE_CONTENT[nextIndex];
+
+  // Safely get video element from Map
+  const setVideoRef = (index, el) => {
+    if (el) {
+      videoRefs.current.set(index, el);
+    } else {
+      videoRefs.current.delete(index);
+    }
+  };
 
   // GSAP Text Animation
   const animateContent = useCallback(() => {
@@ -100,39 +109,35 @@ export default function Hero() {
     );
   }, []);
 
-  // Play video seamlessly
+  // Safe Video Play / Pause logic
   const playVideoAtIndex = useCallback((index) => {
     videoRefs.current.forEach((vid, i) => {
       if (!vid) return;
 
       if (i === index) {
-        // Reset and play active video from 0s instantly
         vid.currentTime = 0;
         const playPromise = vid.play();
         if (playPromise !== undefined) {
-          playPromise.catch(() => {
-            // Auto-play policy safety catch
-          });
+          playPromise.catch(() => { });
         }
       } else {
-        // Pause inactive videos to save CPU & Network bandwidth
         vid.pause();
       }
     });
   }, []);
 
-  // Slide navigation
+  // Slide Navigation
   const goToSlide = useCallback((index) => {
     setCurrentSlide(index);
     playVideoAtIndex(index);
   }, [playVideoAtIndex]);
 
-  // Initial load
+  // Initial Load
   useEffect(() => {
     playVideoAtIndex(0);
   }, [playVideoAtIndex]);
 
-  // Auto-play timer
+  // Auto Play Timer
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
 
@@ -145,7 +150,7 @@ export default function Hero() {
     };
   }, [currentSlide, nextIndex, goToSlide]);
 
-  // Trigger GSAP on slide change
+  // Text Animation trigger
   useEffect(() => {
     animateContent();
   }, [currentSlide, animateContent]);
@@ -153,29 +158,24 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-maroon-dark text-ivory">
 
-      {/* Background Videos (Always pre-mounted for instant playback) */}
+      {/* Background Videos */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
         {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
 
           return (
             <div
-              key={index}
+              key={`video-container-${src}`}
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
             >
               <video
-                ref={(el) => (videoRefs.current[index] = el)}
+                ref={(el) => setVideoRef(index, el)}
                 src={src}
                 muted
                 loop
                 playsInline
                 preload={index === 0 || index === 1 ? "auto" : "metadata"}
-                onLoadedMetadata={(e) => {
-                  if (index === 0) {
-                    e.currentTarget.currentTime = 0;
-                  }
-                }}
                 className="w-full h-full object-cover brightness-[0.45] will-change-transform"
               />
             </div>

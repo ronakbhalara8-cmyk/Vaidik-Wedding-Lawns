@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Button from "../ui/Button";
@@ -39,7 +39,7 @@ export default function VenuesHorizontal() {
   const containerRef = useRef(null);
   const slidesRef = useRef([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 

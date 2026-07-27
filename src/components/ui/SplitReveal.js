@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import SplitType from "split-type";
 import { gsap } from "@/lib/gsap";
 
 export default function SplitReveal({
@@ -15,73 +14,56 @@ export default function SplitReveal({
   tag: Tag = "h2",
 }) {
   const textRef = useRef(null);
-  const isMountedRef = useRef(true);
-  const splitRef = useRef(null);
   const animRef = useRef(null);
 
-  useEffect(() => {
-    isMountedRef.current = true;
+  const text = typeof children === "string" || typeof children === "number" ? String(children) : "";
+  const parts = type === "chars" ? Array.from(text) : text.trim().split(/\s+/);
 
+  useEffect(() => {
     const el = textRef.current;
     if (!el) return;
 
-    try {
-      // Apply split-type library
-      const split = new SplitType(el, { types: type });
-      splitRef.current = split;
+    const targets = el.querySelectorAll("[data-split-reveal-part]");
+    if (!targets.length) return;
 
-      const targets =
-        type === "chars"
-          ? split.chars
-          : type === "words"
-            ? split.words
-            : split.lines;
+    gsap.set(targets, { opacity: 0, y: "40%" });
 
-      if (!targets || targets.length === 0) return;
+    const anim = gsap.to(targets, {
+      opacity: 1,
+      y: "0%",
+      stagger,
+      duration,
+      delay,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: el,
+        start: triggerHook,
+        toggleActions: "play none none none",
+      },
+    });
 
-      // Setup initial state: push slightly down and fade out
-      gsap.set(targets, { opacity: 0, y: "40%" });
-
-      const anim = gsap.to(targets, {
-        opacity: 1,
-        y: "0%",
-        stagger: stagger,
-        duration: duration,
-        delay: delay,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: el,
-          start: triggerHook,
-          toggleActions: "play none none none",
-        },
-      });
-
-      animRef.current = anim;
-    } catch (error) {
-      console.warn("SplitReveal animation error:", error);
-    }
+    animRef.current = anim;
 
     return () => {
-      isMountedRef.current = false;
-      try {
-        const anim = animRef.current;
-        if (anim && typeof anim.kill === "function") {
-          if (anim.scrollTrigger && typeof anim.scrollTrigger.kill === "function") {
-            anim.scrollTrigger.kill();
-          }
-          anim.kill();
-        }
-        animRef.current = null;
-        splitRef.current = null;
-      } catch (error) {
-        // Silently ignore cleanup errors
+      if (animRef.current?.scrollTrigger) {
+        animRef.current.scrollTrigger.kill();
       }
+      animRef.current?.kill();
+      animRef.current = null;
     };
-  }, [type, delay, duration, stagger, triggerHook]);
+  }, [type, delay, duration, stagger, triggerHook, text]);
 
   return (
     <Tag ref={textRef} className={`${className} select-text`}>
-      {children}
+      {parts.map((part, index) => (
+        <span
+          key={`${part}-${index}`}
+          data-split-reveal-part
+          className="inline-block"
+        >
+          {type === "chars" ? (part === " " ? "\u00A0" : part) : `${part}\u00A0`}
+        </span>
+      ))}
     </Tag>
   );
 }
