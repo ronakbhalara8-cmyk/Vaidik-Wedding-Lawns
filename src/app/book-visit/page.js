@@ -1,9 +1,23 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronRight, ChevronLeft, Calendar, Clock, Sparkles, Users, Phone, Mail, User, Crown, Flower2, PartyPopper, MapPin } from "lucide-react";
-import FadeIn from "@/components/ui/FadeIn";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import {
+  ChevronRight,
+  ChevronLeft,
+  Calendar,
+  Clock,
+  Sparkles,
+  Users,
+  Phone,
+  Mail,
+  User,
+  Crown,
+  Flower2,
+  PartyPopper,
+  MapPin,
+  CheckCircle2
+} from "lucide-react";
+import { gsap } from "@/lib/gsap";
 
 const venues = [
   {
@@ -26,14 +40,14 @@ const venues = [
     capacity: "200 - 800 Guests",
     icon: PartyPopper,
     description: "Elegant indoor space with crystal chandeliers"
-  },
+  }
 ];
 
 const timeSlots = [
-  { time: "10:00 AM - 12:00 PM", icon: "🌅" },
-  { time: "12:00 PM - 02:00 PM", icon: "☀️" },
-  { time: "02:00 PM - 04:00 PM", icon: "🌤️" },
-  { time: "04:00 PM - 06:00 PM", icon: "🌅" },
+  { time: "10:00 AM - 12:00 PM", icon: "🌅", period: "Morning" },
+  { time: "12:00 PM - 02:00 PM", icon: "☀️", period: "Afternoon" },
+  { time: "02:00 PM - 04:00 PM", icon: "🌤️", period: "Late Afternoon" },
+  { time: "04:00 PM - 06:00 PM", icon: "🌆", period: "Evening" }
 ];
 
 export default function BookVisitPage() {
@@ -45,522 +59,387 @@ export default function BookVisitPage() {
     name: "",
     email: "",
     phone: "",
-    guests: "",
+    guests: ""
   });
 
   const containerRef = useRef(null);
   const stepContentRef = useRef(null);
-  const progressRef = useRef(null);
   const headerRef = useRef(null);
 
+  // GSAP Step Transition Animation
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    if (!stepContentRef.current) return;
 
-    let ctx;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        stepContentRef.current,
+        { opacity: 0, y: 15, scale: 0.99 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "power2.out" }
+      );
+    }, stepContentRef);
 
-    try {
-      ctx = gsap.context(() => {
-        // Header animation
-        const header = headerRef.current;
-        if (header) {
-          gsap.fromTo(header,
-            {
-              opacity: 0,
-              y: -30,
-              scale: 0.95,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: header,
-                start: "top bottom",
-                end: "bottom top",
-                toggleActions: "play none none reverse",
-                scrub: 1,
-              },
-            }
-          );
-        }
-
-        // Animate step content entrance
-        const stepContent = stepContentRef.current;
-        if (stepContent) {
-          gsap.fromTo(stepContent,
-            {
-              opacity: 0,
-              y: 20,
-              scale: 0.98,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.6,
-              ease: "power3.out",
-            }
-          );
-        }
-
-        // Animate progress bar
-        const progressDots = progressRef.current?.querySelectorAll('.progress-dot') || [];
-        progressDots.forEach((dot, index) => {
-          if (index < step) {
-            gsap.to(dot, {
-              scale: 1.2,
-              backgroundColor: "#8B1A1A",
-              borderColor: "#C9A84C",
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          } else {
-            gsap.to(dot, {
-              scale: 1,
-              backgroundColor: "transparent",
-              borderColor: "rgba(139, 26, 26, 0.1)",
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          }
-        });
-
-        // Animate progress lines
-        const progressLines = progressRef.current?.querySelectorAll('.progress-line') || [];
-        progressLines.forEach((line, index) => {
-          if (index < step - 1) {
-            gsap.to(line, {
-              width: "100%",
-              backgroundColor: "#C9A84C",
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          } else {
-            gsap.to(line, {
-              width: "0%",
-              backgroundColor: "rgba(139, 26, 26, 0.1)",
-              duration: 0.3,
-              ease: "power2.out",
-            });
-          }
-        });
-      }, container);
-
-    } catch (error) {
-      console.warn("Animation error:", error);
-    }
-
-    return () => {
-      if (ctx && typeof ctx.revert === "function") {
-        ctx.revert();
-      }
-    };
+    return () => ctx.revert();
   }, [step]);
 
-  const selectVenue = (id) => {
-    setForm({ ...form, venue: id });
-    gsap.to(stepContentRef.current, {
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      onComplete: () => setStep(2)
-    });
+  const handleVenueSelect = (id) => {
+    setForm((prev) => ({ ...prev, venue: id }));
   };
 
   const nextStep = () => {
+    if (step === 1 && !form.venue) return;
     if (step === 2 && (!form.date || !form.time)) {
-      alert("Please select a date and preferred time slot.");
+      alert("કૃપા કરીને તારીખ અને સમયનો સ્લોટ પસંદ કરો.");
       return;
     }
-    gsap.to(stepContentRef.current, {
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      onComplete: () => setStep(step + 1)
-    });
+    setStep((prev) => Math.min(prev + 1, 3));
   };
 
   const prevStep = () => {
-    gsap.to(stepContentRef.current, {
-      opacity: 0,
-      y: 20,
-      duration: 0.3,
-      onComplete: () => setStep(step - 1)
-    });
+    setStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const venueName = venues.find((v) => v.id === form.venue)?.name || "our lawns";
-    alert(`✨ Congratulations! Your private walkthrough of ${venueName} has been scheduled for ${form.date} during the ${form.time} slot. A manager will confirm via phone shortly. 🌟`);
+    const venueName = venues.find((v) => v.id === form.venue)?.name || "The Venue";
+    alert(
+      `✨ Congratulations! Your private walkthrough of ${venueName} has been scheduled for ${form.date} during the ${form.time} slot.`
+    );
     setForm({ venue: "", date: "", time: "", name: "", email: "", phone: "", guests: "" });
     setStep(1);
   };
 
-  const selectedVenue = venues.find(v => v.id === form.venue);
+  const selectedVenue = venues.find((v) => v.id === form.venue);
   const VenueIcon = selectedVenue?.icon || MapPin;
 
-  const getStepInfo = () => {
-    switch (step) {
-      case 1:
-        return {
-          title: "Choose Your Venue",
-          subtitle: "Select the perfect setting for your royal celebration"
-        };
-      case 2:
-        return {
-          title: "Schedule Your Visit",
-          subtitle: "Pick a date and time for your exclusive tour"
-        };
-      case 3:
-        return {
-          title: "Confirm Your Details",
-          subtitle: "Fill in your information to complete the booking"
-        };
-      default:
-        return {
-          title: "Book a Private Walkthrough",
-          subtitle: "Experience the grandeur of Vaidik Wedding Lawns in person"
-        };
-    }
-  };
-
-  const stepInfo = getStepInfo();
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cream via-cream/95 to-gold-light/5 text-charcoal flex flex-col">
-      {/* Decorative Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 right-10 w-72 h-72 bg-gold-base/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 bg-maroon-base/5 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-gold-base/5 rounded-full blur-2xl" />
-        <div className="absolute top-40 left-20 text-6xl opacity-10" style={{ animation: 'float-slow 6s ease-in-out infinite' }}>✦</div>
-        <div className="absolute bottom-40 right-20 text-8xl opacity-10" style={{ animation: 'float-slower 8s ease-in-out infinite' }}>✦</div>
+    <main className="min-h-screen bg-[#FAF6F0] text-[#2C221E] flex flex-col justify-between relative overflow-hidden font-sans select-none pt-28 md:pt-36 pb-12">
+
+      {/* Royal Background Lighting Accent */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-[-10%] right-[-10%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-[#D4AF37]/15 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[350px] md:w-[600px] h-[350px] md:h-[600px] bg-[#6B1D2F]/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col pt-16 md:pt-20">
-        <div className="max-w-3xl mx-auto px-6 py-4 md:py-8 w-full flex-grow flex flex-col">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
 
-          {/* Header Section */}
-          <div ref={headerRef} className="text-center mb-6 md:mb-10">
-            <span className="inline-block font-serif-heading text-[10px] tracking-[0.35em] uppercase text-gold-base bg-gold-base/10 border border-gold-base/20 rounded-full px-5 py-2 mb-3">
-              ✦ Schedule Your Visit ✦
+        {/* Header Section */}
+        <header ref={headerRef} className="text-center mb-6 md:mb-10 w-full">
+          <span className="inline-flex items-center gap-2 text-[10px] sm:text-xs tracking-[0.3em] uppercase text-[#8C233A] bg-[#6B1D2F]/10 border border-[#6B1D2F]/20 font-bold rounded-full px-4 py-1.5 mb-3 shadow-xs">
+            ✦ Private Walkthrough ✦
+          </span>
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl uppercase tracking-wider text-[#6B1D2F] font-extrabold leading-tight">
+            Book A Private{" "}
+            <span className="bg-gradient-to-r from-[#B37B2C] via-[#D4AF37] to-[#AA771C] bg-clip-text text-transparent block sm:inline">
+              Walkthrough
             </span>
-            <h1 className="font-serif-heading text-3xl md:text-4xl lg:text-5xl uppercase tracking-wider text-maroon-dark font-bold leading-tight">
-              Book a Private
-              <span className="block text-gold-base mt-1">Walkthrough</span>
-            </h1>
-            <p className="text-sm text-charcoal/60 mt-3 max-w-md mx-auto font-light">
-              Experience the grandeur of Vaidik Wedding Lawns in person. Choose your venue, pick a date, and let us host you.
-            </p>
-          </div>
+          </h1>
+          <p className="text-xs sm:text-sm text-[#5C4D46] mt-2 sm:mt-3 max-w-lg mx-auto leading-relaxed font-normal">
+            Select your preferred venue, choose an ideal slot, and allow our team to curate a personalized tour for you.
+          </p>
+        </header>
 
-          {/* Progress Tracker */}
-          <div ref={progressRef} className="flex items-center justify-between gap-3 mb-8 max-w-md mx-auto w-full px-2">
-            {[1, 2, 3].map((s) => (
-              <div key={s} className="flex-1 flex items-center gap-2">
+        {/* Multi-Step Indicator Bar */}
+        <div className="w-full max-w-md mx-auto mb-8 px-4">
+          <div className="flex items-center justify-between relative">
+            {[1, 2, 3].map((s, idx) => (
+              <div key={s} className="flex items-center relative z-10">
                 <div
-                  className={`progress-dot w-9 h-9 rounded-full flex items-center justify-center font-serif-heading text-xs font-bold transition-all duration-500 border-2
-                    ${step >= s
-                      ? "bg-maroon-base text-gold-light border-gold-base shadow-lg shadow-gold-base/20"
-                      : "bg-white/80 text-maroon-dark/40 border-maroon-base/10"
+                  className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold transition-all duration-300 border-2 ${step >= s
+                    ? "bg-[#6B1D2F] text-[#F3E5AB] border-[#D4AF37] shadow-lg shadow-[#6B1D2F]/20 scale-105"
+                    : "bg-white/90 text-stone-400 border-stone-200"
                     }`}
                 >
-                  {step > s ? "✓" : s}
+                  {step > s ? <CheckCircle2 className="w-5 h-5 text-[#D4AF37]" /> : s}
                 </div>
-                {s < 3 && (
-                  <div className="progress-line flex-1 h-[2px] bg-maroon-base/10 transition-all duration-500 overflow-hidden">
-                    <div className={`h-full transition-all duration-500 ${step > s ? "w-full bg-gold-base" : "w-0"}`} />
+                {idx < 2 && (
+                  <div className="w-16 sm:w-28 h-[2px] bg-stone-200 absolute left-full top-1/2 -translate-y-1/2 -z-10 mx-1">
+                    <div
+                      className="h-full bg-gradient-to-r from-[#6B1D2F] to-[#D4AF37] transition-all duration-500"
+                      style={{ width: step > s ? "100%" : "0%" }}
+                    />
                   </div>
                 )}
               </div>
             ))}
           </div>
+          <div className="flex justify-between text-[11px] sm:text-xs text-[#5C4D46] font-semibold mt-2.5 px-1">
+            <span>Venue</span>
+            <span>Date & Time</span>
+            <span>Details</span>
+          </div>
+        </div>
 
-          {/* Main Card */}
-          <div
-            ref={containerRef}
-            className="bg-white/90 backdrop-blur-sm border border-maroon-base/10 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden flex-1"
-          >
-            {/* Decorative Corner Ornaments */}
-            <div className="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-gold-base/20 rounded-tl-3xl pointer-events-none" />
-            <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-gold-base/20 rounded-tr-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-gold-base/20 rounded-bl-3xl pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-gold-base/20 rounded-br-3xl pointer-events-none" />
+        {/* Main Content Card */}
+        <div
+          ref={containerRef}
+          className="w-full bg-white/95 backdrop-blur-md border border-[#D4AF37]/30 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-xl shadow-[#6B1D2F]/5 relative overflow-hidden"
+        >
+          {/* Card Top Gold Accent Line */}
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#6B1D2F] via-[#D4AF37] to-[#6B1D2F]" />
 
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(201,168,76,0.03)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+          {/* Active Step Content */}
+          <div ref={stepContentRef}>
 
-            {/* Step Title */}
-            <div className="text-center mb-6">
-              <h2 className="font-serif-heading text-xl md:text-2xl uppercase tracking-wider text-maroon-dark font-bold">
-                {stepInfo.title}
-              </h2>
-              <p className="text-sm text-charcoal/60 mt-1 font-light">
-                {stepInfo.subtitle}
-              </p>
-              {step === 2 && selectedVenue && (
-                <div className="inline-flex items-center gap-2 mt-2 px-4 py-1.5 bg-gold-base/10 rounded-full border border-gold-base/20">
-                  <VenueIcon className="w-3 h-3 text-gold-base" />
-                  <span className="text-[10px] tracking-wider uppercase text-charcoal/70 font-medium">
-                    {selectedVenue.name}
-                  </span>
+            {/* STEP 1: VENUE SELECTION */}
+            {step === 1 && (
+              <div className="space-y-4 sm:space-y-6">
+                <div className="text-center mb-4">
+                  <h2 className="font-serif text-lg sm:text-xl text-[#6B1D2F] font-bold uppercase tracking-wider">
+                    Select Venue
+                  </h2>
+                  <p className="text-xs text-[#7A6860]">Choose the ideal backdrop for your event</p>
                 </div>
-              )}
-            </div>
 
-            {/* Step Content */}
-            <div ref={stepContentRef} className="relative z-10">
-              {/* STEP 1: SELECT VENUE */}
-              {step === 1 && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    {venues.map((venue) => {
-                      const Icon = venue.icon;
-                      const isSelected = form.venue === venue.id;
-                      return (
-                        <button
-                          key={venue.id}
-                          onClick={() => selectVenue(venue.id)}
-                          className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-500 group relative overflow-hidden
-                            ${isSelected
-                              ? "bg-gradient-to-r from-maroon-base to-maroon-dark border-gold-base shadow-xl shadow-gold-base/20"
-                              : "bg-cream/30 hover:bg-cream/60 border-maroon-base/10 hover:border-gold-base/40"
+                <div className="grid grid-cols-1 gap-3.5">
+                  {venues.map((v) => {
+                    const Icon = v.icon;
+                    const isSelected = form.venue === v.id;
+                    return (
+                      <div
+                        key={v.id}
+                        onClick={() => handleVenueSelect(v.id)}
+                        className={`cursor-pointer p-4 sm:p-5 rounded-xl border-2 transition-all duration-300 flex items-start gap-4 ${isSelected
+                          ? "bg-[#6B1D2F] text-white border-[#D4AF37] shadow-xl shadow-[#6B1D2F]/20"
+                          : "bg-[#FAF7F2] hover:bg-white border-stone-200 hover:border-[#D4AF37]/60 text-stone-800"
+                          }`}
+                      >
+                        <div
+                          className={`p-3 rounded-lg ${isSelected ? "bg-[#D4AF37]/20 text-[#F3E5AB]" : "bg-[#6B1D2F]/10 text-[#6B1D2F]"
                             }`}
                         >
-                          {isSelected && (
-                            <div className="absolute inset-0 bg-gold-base/5 animate-pulse" />
-                          )}
-                          <div className="flex items-center gap-4 relative z-10">
-                            <div className={`p-3 rounded-xl transition-all duration-300
-                              ${isSelected
-                                ? "bg-gold-base/20 text-gold-light"
-                                : "bg-gold-base/5 text-maroon-dark group-hover:text-gold-base"
-                              }`}
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <h3
+                              className={`font-serif font-bold text-sm sm:text-base truncate uppercase tracking-wide ${isSelected ? "text-[#F3E5AB]" : "text-[#6B1D2F]"
+                                }`}
                             >
-                              <Icon className="w-5 h-5" />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className={`font-serif-heading text-sm md:text-base tracking-wider uppercase font-semibold
-                                ${isSelected ? "text-gold-light" : "text-maroon-dark group-hover:text-maroon-base"}`}
-                              >
-                                {venue.name}
-                              </h3>
-                              <span className={`text-xs block mt-0.5 font-light
-                                ${isSelected ? "text-gold-light/70" : "text-charcoal/50"}`}
-                              >
-                                {venue.description}
-                              </span>
-                              <span className={`text-[10px] block mt-1 font-light flex items-center gap-1
-                                ${isSelected ? "text-gold-light/60" : "text-charcoal/40"}`}
-                              >
-                                <Users className="w-3 h-3" /> Capacity: {venue.capacity}
-                              </span>
-                            </div>
-                            <ChevronRight className={`w-5 h-5 transition-all duration-300
-                              ${isSelected
-                                ? "text-gold-light translate-x-1"
-                                : "opacity-30 group-hover:opacity-100 group-hover:translate-x-1"
-                              }`}
-                            />
+                              {v.name}
+                            </h3>
+                            {isSelected && <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />}
                           </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="flex justify-end pt-2">
-                    <button
-                      onClick={nextStep}
-                      disabled={!form.venue}
-                      className={`flex items-center gap-2 px-6 py-3 rounded-full font-serif-heading text-[10px] tracking-[0.2em] uppercase transition-all duration-300
-                        ${form.venue
-                          ? "bg-maroon-dark text-gold-light hover:bg-gold-base hover:text-maroon-dark border-2 border-gold-base/30 shadow-lg shadow-gold-base/10"
-                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
-                        }`}
-                    >
-                      Continue <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 2: SELECT DATE & TIME */}
-              {step === 2 && (
-                <div className="space-y-5">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                        <Calendar className="w-4 h-4" /> Appointment Date
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="date"
-                          value={form.date}
-                          onChange={(e) => setForm({ ...form, date: e.target.value })}
-                          min={new Date().toISOString().split('T')[0]}
-                          required
-                          className="w-full bg-cream/50 border-2 border-maroon-base/10 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gold-base text-charcoal text-sm transition-all duration-300"
-                        />
-                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal/30 pointer-events-none" />
+                          <p
+                            className={`text-xs mt-1 leading-normal line-clamp-2 ${isSelected ? "text-stone-200" : "text-[#66554E]"
+                              }`}
+                          >
+                            {v.description}
+                          </p>
+                          <div
+                            className={`mt-2 inline-flex items-center gap-1.5 text-[11px] font-medium ${isSelected ? "text-[#D4AF37]" : "text-stone-500"
+                              }`}
+                          >
+                            <Users className="w-3.5 h-3.5" />
+                            <span>{v.capacity}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    );
+                  })}
+                </div>
 
-                    <div className="space-y-2">
-                      <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                        <Clock className="w-4 h-4" /> Time Slot
-                      </label>
-                      <div className="grid grid-cols-1 gap-2">
-                        {timeSlots.map((slot) => (
+                <div className="flex justify-end pt-3">
+                  <button
+                    onClick={nextStep}
+                    disabled={!form.venue}
+                    className={`w-full sm:w-auto px-8 py-3.5 rounded-full font-serif text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-all duration-300 ${form.venue
+                      ? "bg-gradient-to-r from-[#8C233A] to-[#6B1D2F] text-[#F3E5AB] hover:from-[#6B1D2F] hover:to-[#521322] border border-[#D4AF37]/40 shadow-md cursor-pointer"
+                      : "bg-stone-200 text-stone-400 cursor-not-allowed"
+                      }`}
+                  >
+                    Continue <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: DATE & TIME SELECTOR */}
+            {step === 2 && (
+              <div className="space-y-6">
+                <div className="text-center mb-2">
+                  <h2 className="font-serif text-lg sm:text-xl text-[#6B1D2F] font-bold uppercase tracking-wider">
+                    Select Date & Time Slot
+                  </h2>
+                  {selectedVenue && (
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#6B1D2F] bg-[#6B1D2F]/10 px-3 py-1 rounded-full mt-2 border border-[#6B1D2F]/20 font-semibold">
+                      <VenueIcon className="w-3.5 h-3.5" />
+                      {selectedVenue.name}
+                    </span>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Date Input */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#6B1D2F] flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-[#B37B2C]" /> Choose Date
+                    </label>
+                    <input
+                      type="date"
+                      value={form.date}
+                      onChange={(e) => setForm({ ...form, date: e.target.value })}
+                      min={new Date().toISOString().split("T")[0]}
+                      className="w-full bg-[#FAF7F2] border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#D4AF37] focus:ring-2 focus:ring-[#D4AF37]/20 text-stone-800 text-sm font-medium transition-all"
+                    />
+                  </div>
+
+                  {/* Time Slot Picker */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-[#6B1D2F] flex items-center gap-1.5">
+                      <Clock className="w-4 h-4 text-[#B37B2C]" /> Preferred Time
+                    </label>
+                    <div className="grid grid-cols-1 gap-2">
+                      {timeSlots.map((slot) => {
+                        const isSelected = form.time === slot.time;
+                        return (
                           <button
                             key={slot.time}
                             type="button"
                             onClick={() => setForm({ ...form, time: slot.time })}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all duration-300
-                              ${form.time === slot.time
-                                ? "bg-maroon-base text-gold-light border-gold-base shadow-lg"
-                                : "bg-cream/20 hover:bg-cream/40 border-maroon-base/10 hover:border-gold-base/40"
+                            className={`flex items-center justify-between px-4 py-2.5 rounded-xl border transition-all text-left ${isSelected
+                              ? "bg-[#6B1D2F] text-white border-[#D4AF37] shadow-md"
+                              : "bg-[#FAF7F2] hover:bg-stone-100 border-stone-200 text-stone-700"
                               }`}
                           >
-                            <span className="text-lg">{slot.icon}</span>
-                            <span className="text-xs tracking-wider font-light">{slot.time}</span>
+                            <span className="text-xs font-medium flex items-center gap-2">
+                              <span>{slot.icon}</span> {slot.time}
+                            </span>
+                            <span className={`text-[10px] ${isSelected ? "text-[#F3E5AB]" : "text-stone-400"}`}>
+                              {slot.period}
+                            </span>
                           </button>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex justify-between border-t border-maroon-base/5 pt-5">
-                    <button
-                      onClick={prevStep}
-                      className="flex items-center gap-1 font-serif-heading text-[10px] tracking-widest uppercase text-maroon-dark/60 hover:text-maroon-dark transition-colors duration-300"
-                    >
-                      <ChevronLeft className="w-4 h-4" /> Back
-                    </button>
-                    <button
-                      onClick={nextStep}
-                      className="flex items-center gap-2 px-6 py-3 bg-maroon-dark text-gold-light hover:bg-gold-base hover:text-maroon-dark border-2 border-gold-base/30 rounded-full uppercase font-serif-heading text-[10px] tracking-[0.2em] transition-all duration-300 shadow-lg shadow-gold-base/10"
-                    >
-                      Continue <ChevronRight className="w-4 h-4" />
-                    </button>
+                {/* Actions */}
+                <div className="flex items-center justify-between border-t border-stone-200/80 pt-5">
+                  <button
+                    onClick={prevStep}
+                    className="flex items-center gap-1 text-xs uppercase tracking-wider text-stone-500 hover:text-[#6B1D2F] font-semibold"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Back
+                  </button>
+                  <button
+                    onClick={nextStep}
+                    className="px-8 py-3.5 bg-[#6B1D2F] text-[#F3E5AB] hover:bg-[#521322] rounded-full font-serif text-xs uppercase tracking-widest font-bold flex items-center gap-2 border border-[#D4AF37]/40 shadow-md transition-all"
+                  >
+                    Continue <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: CONTACT FORM */}
+            {step === 3 && (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="text-center mb-2">
+                  <h2 className="font-serif text-lg sm:text-xl text-[#6B1D2F] font-bold uppercase tracking-wider">
+                    Personal Details
+                  </h2>
+                  <p className="text-xs text-[#7A6860]">Provide details so our manager can reach out</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 flex items-center gap-1.5">
+                      <User className="w-3.5 h-3.5 text-[#B37B2C]" /> Full Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Rahul Sharma"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full bg-[#FAF7F2] border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-[#B37B2C]" /> Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+91 98765 43210"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="w-full bg-[#FAF7F2] border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-[#B37B2C]" /> Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="rahul@example.com"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full bg-[#FAF7F2] border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-stone-700 flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5 text-[#B37B2C]" /> Expected Guests
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="e.g. 500"
+                      value={form.guests}
+                      onChange={(e) => setForm({ ...form, guests: e.target.value })}
+                      className="w-full bg-[#FAF7F2] border border-stone-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]"
+                    />
                   </div>
                 </div>
-              )}
 
-              {/* STEP 3: CONTACT INFORMATION */}
-              {step === 3 && (
-                <div className="space-y-5">
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                          <User className="w-4 h-4" /> Full Name
-                        </label>
-                        <input
-                          type="text"
-                          value={form.name}
-                          onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          placeholder="Mr. & Mrs. Sharma"
-                          required
-                          className="w-full bg-cream/50 border-2 border-maroon-base/10 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all duration-300"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                          <Phone className="w-4 h-4" /> Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          value={form.phone}
-                          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                          placeholder="+91 98765 43210"
-                          required
-                          className="w-full bg-cream/50 border-2 border-maroon-base/10 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all duration-300"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                          <Mail className="w-4 h-4" /> Email Address
-                        </label>
-                        <input
-                          type="email"
-                          value={form.email}
-                          onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          placeholder="contact@example.com"
-                          required
-                          className="w-full bg-cream/50 border-2 border-maroon-base/10 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all duration-300"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="font-serif-heading text-[10px] tracking-widest uppercase text-maroon-base font-semibold flex items-center gap-2">
-                          <Users className="w-4 h-4" /> Expected Guests
-                        </label>
-                        <input
-                          type="number"
-                          value={form.guests}
-                          onChange={(e) => setForm({ ...form, guests: e.target.value })}
-                          placeholder="e.g. 500"
-                          required
-                          className="w-full bg-cream/50 border-2 border-maroon-base/10 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all duration-300"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="bg-gradient-to-r from-cream to-gold-light/5 rounded-xl p-4 border border-gold-base/20">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-charcoal/50">Venue:</span>
-                        <span className="text-maroon-dark font-semibold">{selectedVenue?.name}</span>
-                      </div>
-                      <div className="flex items-center justify-between text-xs mt-1">
-                        <span className="text-charcoal/50">Date & Time:</span>
-                        <span className="text-maroon-dark font-semibold">{form.date} • {form.time}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between border-t border-maroon-base/5 pt-5">
-                      <button
-                        type="button"
-                        onClick={prevStep}
-                        className="flex items-center gap-1 font-serif-heading text-[10px] tracking-widest uppercase text-maroon-dark/60 hover:text-maroon-dark transition-colors duration-300"
-                      >
-                        <ChevronLeft className="w-4 h-4" /> Back
-                      </button>
-                      <button
-                        type="submit"
-                        className="flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-maroon-base to-maroon-dark text-gold-light hover:from-gold-base hover:to-gold-dark hover:text-maroon-dark border-2 border-gold-base/30 rounded-full uppercase font-serif-heading text-[10px] tracking-[0.2em] transition-all duration-500 shadow-xl shadow-gold-base/20 hover:shadow-gold-base/40 transform hover:scale-105"
-                      >
-                        Book Visit <Sparkles className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </form>
+                {/* Summary Card */}
+                <div className="bg-[#FAF7F2] border border-[#D4AF37]/40 rounded-xl p-3.5 text-xs text-[#6B1D2F] space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Selected Venue:</span>
+                    <span className="font-bold">{selectedVenue?.name}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-stone-500">Scheduled Date & Time:</span>
+                    <span className="font-bold">
+                      {form.date} • {form.time}
+                    </span>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* Footer Note */}
-          <div className="text-center text-[10px] text-charcoal/30 font-light tracking-wider mt-4">
-            ✦ A dedicated venue manager will reach out within 2 hours to confirm your booking ✦
+                {/* Buttons */}
+                <div className="flex items-center justify-between border-t border-stone-200/80 pt-4">
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    className="flex items-center gap-1 text-xs uppercase tracking-wider text-stone-500 hover:text-[#6B1D2F] font-semibold"
+                  >
+                    <ChevronLeft className="w-4 h-4" /> Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-8 py-3.5 bg-gradient-to-r from-[#D4AF37] via-[#AA771C] to-[#8C6212] text-white hover:from-[#B37B2C] hover:to-[#6B1D2F] rounded-full font-serif text-xs uppercase tracking-widest font-bold flex items-center gap-2 shadow-lg transition-all transform hover:scale-[1.02]"
+                  >
+                    Confirm Booking <Sparkles className="w-4 h-4 text-[#F3E5AB]" />
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
-      </div>
 
-      <style>{`
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(10deg); }
-        }
-        @keyframes float-slower {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(30px) rotate(-10deg); }
-        }
-      `}</style>
-    </div>
+        {/* Footer Note */}
+        <p className="text-center text-[11px] text-[#7A6860] tracking-wider mt-6 font-medium">
+          ✦ Our representative will contact you within 2 hours to confirm details ✦
+        </p>
+      </div>
+    </main>
   );
 }
