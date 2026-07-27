@@ -80,7 +80,7 @@ const SLIDE_CONTENT = [
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loadedVideos, setLoadedVideos] = useState([0]);
+  const [loadedVideos, setLoadedVideos] = useState([0, 1]); // પ્રથમ અને બીજો વીડિયો પહેલાથી જ પ્રી-લોડ લિસ્ટમાં
 
   const videoRefs = useRef([]);
   const contentRef = useRef(null);
@@ -105,31 +105,16 @@ export default function Hero() {
 
   // સ્લાઇડ અને વીડિયો કંટ્રોલ લોજિક
   const goToSlide = useCallback((index) => {
-    setLoadedVideos((prev) => (prev.includes(index) ? prev : [...prev, index]));
+    const nextIdx = (index + 1) % VIDEOS.length;
+    // કરન્ટ અને તેના પછી આવનાર સ્લાઈડ બંનેના વિડિયો લોડ લિસ્ટમાં ઉમેરો
+    setLoadedVideos((prev) => Array.from(new Set([...prev, index, nextIdx])));
     setCurrentSlide(index);
 
-    // કોઈપણ વીડિયો પર જતી વખતે તેને 0 સેકન્ડથી જ સ્ટાર્ટ કરવો
-    setTimeout(() => {
-      const activeVideo = videoRefs.current[index];
-      if (activeVideo) {
-        activeVideo.currentTime = 0;
-        const playPromise = activeVideo.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => { });
-        }
-      }
-    }, 50);
-  }, []);
-
-  // પ્રથમ વીડિયો પેજ લોડ થતાં જ ફરજિયાત સ્ટાર્ટિંગ (0 સેકન્ડ) થી પ્લે કરવાનો લોજિક
-  useEffect(() => {
-    const firstVid = videoRefs.current[0];
-    if (firstVid) {
-      firstVid.currentTime = 0;
-      const playPromise = firstVid.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => { });
-      }
+    // તરત જ પ્લે માટે ટ્રાય કરો
+    const activeVideo = videoRefs.current[index];
+    if (activeVideo) {
+      activeVideo.currentTime = 0;
+      activeVideo.play().catch(() => { });
     }
   }, []);
 
@@ -158,7 +143,8 @@ export default function Hero() {
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
         {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
-          const isLoaded = loadedVideos.includes(index);
+          const isNext = index === nextIndex;
+          const shouldRender = loadedVideos.includes(index);
 
           return (
             <div
@@ -166,7 +152,7 @@ export default function Hero() {
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
             >
-              {isLoaded && (
+              {shouldRender && (
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
                   src={src}
@@ -174,16 +160,14 @@ export default function Hero() {
                   muted
                   loop
                   playsInline
-                  preload={index === 0 ? "auto" : "metadata"}
-                  onLoadedData={() => {
-                    if (index === 0 && currentSlide === 0) {
-                      if (videoRefs.current[0]) {
-                        videoRefs.current[0].currentTime = 0;
-                        videoRefs.current[0].play().catch(() => { });
-                      }
+                  // માત્ર કરન્ટ કે આગળના વિડિયો માટે જ auto પ્રી-લોડ, બાકી metadata
+                  preload={isCurrent || isNext ? "auto" : "metadata"}
+                  onCanPlay={(e) => {
+                    if (isCurrent) {
+                      e.currentTarget.play().catch(() => { });
                     }
                   }}
-                  className="w-full h-full object-cover brightness-[0.45]"
+                  className="w-full h-full object-cover brightness-[0.45] will-change-transform"
                 />
               )}
             </div>
