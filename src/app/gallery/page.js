@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import SplitReveal from "@/components/ui/SplitReveal";
@@ -10,133 +10,183 @@ const galleryItems = [
   {
     video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
     category: "lawns",
-    alt: "Lawn evening setup"
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
     category: "lawns",
-    alt: "Lawn evening setup"
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
     category: "lawns",
-    alt: "Lawn evening setup"
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
     category: "lawns",
-    alt: "Lawn evening setup"
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/Dji_0767.mp4",
     category: "mandaps",
-    alt: "Traditional royal mandap"
+    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
     category: "mandaps",
-    alt: "Traditional royal mandap"
+    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
     category: "mandaps",
-    alt: "Traditional royal mandap"
+    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/slider-1.mp4",
     category: "mandaps",
-    alt: "Traditional royal mandap"
+    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/slider-2.mp4",
     category: "mandaps",
-    alt: "Traditional royal mandap"
+    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/banquet-hall.mp4",
     category: "banquet",
-    alt: "Elegant dining setups"
-  }
+    alt: "Elegant dining setups",
+  },
 ];
 
-// Video Component for Gallery
-const GalleryVideo = ({ src, poster, alt, className = "" }) => {
+// Lazy-Loaded Optimized Video Component for Grid
+const GalleryVideo = memo(({ src, poster, className = "" }) => {
   const videoRef = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect(); // Stop observing once loaded
+        }
+      },
+      { rootMargin: "200px" } // Preload 200px before scrolling into view
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.play().catch(error => {
-        console.log("Autoplay blocked:", error);
+    if (!video || !isInView) return;
+
+    // Play video smoothly when in viewport
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay handle for low power mode / strict browser policies
       });
     }
-  }, []);
+  }, [isInView]);
 
   return (
-    <video
-      ref={videoRef}
-      className={`w-full h-full object-cover ${className}`}
-      poster={poster || ""}
-      playsInline
-      muted
-      loop
-      autoPlay
-      preload="metadata"
-    >
-      <source src={src} type="video/mp4" />
-    </video>
-  );
-};
+    <div className="relative w-full h-full bg-black/10 overflow-hidden">
+      {/* Fallback image/poster until video is playing */}
+      {poster && !isLoaded && (
+        <Image
+          src={poster}
+          alt="Video thumbnail"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover z-10"
+        />
+      )}
 
-// Full Screen Slider Video Component - Fixed version
-const SliderVideo = ({ src, poster, alt, isActive }) => {
+      <video
+        ref={videoRef}
+        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded || !poster ? "opacity-100" : "opacity-0"
+          } ${className}`}
+        poster={poster || ""}
+        playsInline
+        muted
+        loop
+        preload="none"
+        onLoadedData={() => setIsLoaded(true)}
+      >
+        {/* Adds #t=0.001 to render first frame immediately as preview */}
+        {isInView && <source src={`${src}#t=0.001`} type="video/mp4" />}
+      </video>
+    </div>
+  );
+});
+
+GalleryVideo.displayName = "GalleryVideo";
+
+// Full Screen Slider Video Component
+const SliderVideo = ({ src, poster, isActive }) => {
   const videoRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     if (isActive) {
-      // When slide is active, play the video
       video.currentTime = 0;
-      video.play().catch(error => {
-        console.log("Autoplay blocked:", error);
-      });
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => console.log("Autoplay blocked:", error));
+      }
     } else {
-      // When slide is not active, pause and reset
       video.pause();
-      video.currentTime = 0;
     }
 
     return () => {
-      if (video) {
-        video.pause();
-      }
+      if (video) video.pause();
     };
   }, [isActive, src]);
 
   return (
-    <video
-      ref={videoRef}
-      className="max-h-[85vh] w-auto object-contain"
-      poster={poster || ""}
-      playsInline
-      muted
-      loop
-      preload="metadata"
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className="relative flex items-center justify-center max-h-[85vh] w-full h-full">
+      {/* Show poster/placeholder while full video buffers in slider */}
+      {poster && !isReady && (
+        <Image
+          src={poster}
+          alt="Slider video preview"
+          fill
+          className="object-contain"
+        />
+      )}
+
+      <video
+        ref={videoRef}
+        className="max-h-[85vh] w-auto object-contain"
+        poster={poster || ""}
+        playsInline
+        muted
+        loop
+        preload="auto"
+        onCanPlay={() => setIsReady(true)}
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+    </div>
   );
 };
 
-// Full Screen Slider Component - Fixed
+// Full Screen Slider Component
 const FullScreenSlider = ({ items, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Filter out items without image or video
-  const validItems = items.filter(item => item.image || item.video);
+  const validItems = items.filter((item) => item.image || item.video);
   const totalItems = validItems.length;
 
   const goToPrevious = () => {
@@ -153,13 +203,13 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") onClose();
-    if (e.key === "ArrowLeft") goToPrevious();
-    if (e.key === "ArrowRight") goToNext();
-  };
-
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") goToPrevious();
+      if (e.key === "ArrowRight") goToNext();
+    };
+
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
 
@@ -167,13 +217,13 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [handleKeyDown]);
+  }, [currentIndex, isTransitioning, totalItems]);
 
   if (totalItems === 0) return null;
 
   const currentItem = validItems[currentIndex];
-  const hasVideo = currentItem?.video ? true : false;
-  const hasImage = currentItem?.image ? true : false;
+  const hasVideo = Boolean(currentItem?.video);
+  const hasImage = Boolean(currentItem?.image);
 
   return (
     <div
@@ -225,7 +275,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
         <div className="relative w-full h-full flex items-center justify-center">
           {hasVideo ? (
             <SliderVideo
-              key={`video-${currentIndex}`} // Key changes when index changes
+              key={`video-${currentIndex}`}
               src={currentItem.video}
               poster={currentItem.image || ""}
               alt={currentItem.alt}
@@ -233,7 +283,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
             />
           ) : hasImage ? (
             <Image
-              key={`image-${currentIndex}`} // Key changes when index changes
+              key={`image-${currentIndex}`}
               src={currentItem.image}
               alt={currentItem.alt}
               fill
@@ -249,9 +299,9 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
 };
 
 // Gallery Item Component
-const GalleryItem = ({ item, index, onClick }) => {
-  const hasVideo = item.video ? true : false;
-  const hasImage = item.image ? true : false;
+const GalleryItem = memo(({ item, index, onClick }) => {
+  const hasVideo = Boolean(item.video);
+  const hasImage = Boolean(item.image);
 
   if (!hasImage && !hasVideo) {
     return (
@@ -284,14 +334,16 @@ const GalleryItem = ({ item, index, onClick }) => {
       ) : null}
 
       {/* Hover overlay */}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center z-20">
         <span className="text-white/0 group-hover:text-white/80 text-sm tracking-wider uppercase font-serif-heading transition-all duration-300">
           Click to view
         </span>
       </div>
     </div>
   );
-};
+});
+
+GalleryItem.displayName = "GalleryItem";
 
 export default function GalleryPage() {
   const [filter, setFilter] = useState("all");
@@ -300,7 +352,9 @@ export default function GalleryPage() {
   const gridRef = useRef(null);
 
   const filteredItems =
-    filter === "all" ? galleryItems : galleryItems.filter((item) => item.category === filter);
+    filter === "all"
+      ? galleryItems
+      : galleryItems.filter((item) => item.category === filter);
 
   const handleItemClick = (index) => {
     setSelectedIndex(index);
@@ -374,7 +428,7 @@ export default function GalleryPage() {
         >
           {filteredItems.map((item, index) => (
             <GalleryItem
-              key={index}
+              key={`${item.category}-${index}`}
               item={item}
               index={index}
               onClick={handleItemClick}
