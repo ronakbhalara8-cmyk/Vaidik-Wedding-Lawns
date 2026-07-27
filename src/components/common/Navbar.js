@@ -145,15 +145,15 @@ export default function Navbar() {
   }, [isOpen]);
 
   // Function to handle Home click with page refresh
-  const handleHomeClick = (e) => {
-    if (pathname === "/") {
-      // If already on home page, just refresh
-      window.location.reload();
-    } else {
-      // Navigate to home with full page refresh
-      window.location.href = "/";
-    }
-  };
+  // const handleHomeClick = (e) => {
+  //   if (pathname === "/") {
+  //     // If already on home page, just refresh
+  //     window.location.reload();
+  //   } else {
+  //     // Navigate to home with full page refresh
+  //     window.location.href = "/";
+  //   }
+  // };
 
   return (
     <>
@@ -187,26 +187,26 @@ export default function Navbar() {
               const active = pathname === link.href;
 
               // For Home link, use regular anchor tag for full page refresh
-              if (link.href === "/") {
-                return (
-                  <a
-                    key={link.label}
-                    href="/"
-                    onClick={handleHomeClick}
-                    className={`relative tracking-[0.2em] text-sm  ${active
-                      ? "text-gold-base"
-                      : "text-white  hover:text-gold-light"
-                      }`}
-                  >
-                    {link.label}
+              // if (link.href === "/") {
+              //   return (
+              //     <a
+              //       key={link.label}
+              //       href="/"
+              //       // onClick={handleHomeClick}
+              //       className={`relative tracking-[0.2em] text-sm  ${active
+              //         ? "text-gold-base"
+              //         : "text-white  hover:text-gold-light"
+              //         }`}
+              //     >
+              //       {link.label}
 
-                    <span
-                      className={`absolute left-0 bottom-[-6px] h-[1px] bg-gold-base transition-all duration-300 ${active ? "w-full" : "w-0 hover:w-full"
-                        }`}
-                    />
-                  </a>
-                );
-              }
+              //       <span
+              //         className={`absolute left-0 bottom-[-6px] h-[1px] bg-gold-base transition-all duration-300 ${active ? "w-full" : "w-0 hover:w-full"
+              //           }`}
+              //       />
+              //     </a>
+              //   );
+              // }
 
               return (
                 <Link
@@ -275,25 +275,25 @@ export default function Navbar() {
               const active = pathname === link.href;
 
               // For Home link in mobile menu
-              if (link.href === "/") {
-                return (
-                  <div
-                    key={link.label}
-                    ref={(el) => (linkRefs.current[index] = el)}
-                  >
-                    <a
-                      href="/"
-                      onClick={handleHomeClick}
-                      className={`block text-lg uppercase tracking-[0.15em] font-serif-heading ${active
-                        ? "text-gold-base"
-                        : "text-ivory/75 hover:text-gold-light"
-                        }`}
-                    >
-                      {link.label}
-                    </a>
-                  </div>
-                );
-              }
+              // if (link.href === "/") {
+              //   return (
+              //     <div
+              //       key={link.label}
+              //       ref={(el) => (linkRefs.current[index] = el)}
+              //     >
+              //       <a
+              //         href="/"
+              //         // onClick={handleHomeClick}
+              //         className={`block text-lg uppercase tracking-[0.15em] font-serif-heading ${active
+              //           ? "text-gold-base"
+              //           : "text-ivory/75 hover:text-gold-light"
+              //           }`}
+              //       >
+              //         {link.label}
+              //       </a>
+              //     </div>
+              //   );
+              // }
 
               return (
                 <div
