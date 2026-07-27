@@ -59,69 +59,41 @@ const galleryItems = [
   },
 ];
 
-// Lazy-Loaded Optimized Video Component for Grid
+// Instant Play Gallery Video Component
 const GalleryVideo = memo(({ src, poster, className = "" }) => {
   const videoRef = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect(); // Stop observing once loaded
-        }
-      },
-      { rootMargin: "200px" } // Preload 200px before scrolling into view
-    );
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !isInView) return;
+    if (!video) return;
 
-    // Play video smoothly when in viewport
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay handle for low power mode / strict browser policies
-      });
-    }
-  }, [isInView]);
+    // Fast force play on render
+    const handleCanPlay = () => {
+      video.play().catch(() => { });
+    };
+
+    video.addEventListener("canplaythrough", handleCanPlay);
+    video.play().catch(() => { });
+
+    return () => {
+      video.removeEventListener("canplaythrough", handleCanPlay);
+    };
+  }, [src]);
 
   return (
-    <div className="relative w-full h-full bg-black/10 overflow-hidden">
-      {/* Fallback image/poster until video is playing */}
-      {poster && !isLoaded && (
-        <Image
-          src={poster}
-          alt="Video thumbnail"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover z-10"
-        />
-      )}
-
+    <div className="relative w-full h-full bg-black/20 overflow-hidden">
       <video
         ref={videoRef}
-        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoaded || !poster ? "opacity-100" : "opacity-0"
-          } ${className}`}
+        className={`w-full h-full object-cover ${className}`}
         poster={poster || ""}
         playsInline
         muted
         loop
-        preload="none"
-        onLoadedData={() => setIsLoaded(true)}
+        autoPlay
+        preload="metadata"
       >
-        {/* Adds #t=0.001 to render first frame immediately as preview */}
-        {isInView && <source src={`${src}#t=0.001`} type="video/mp4" />}
+        {/* Adding #t=0.1 forces instant preview render */}
+        <source src={`${src}#t=0.1`} type="video/mp4" />
       </video>
     </div>
   );
@@ -129,10 +101,9 @@ const GalleryVideo = memo(({ src, poster, className = "" }) => {
 
 GalleryVideo.displayName = "GalleryVideo";
 
-// Full Screen Slider Video Component
+// Full Screen Slider Video
 const SliderVideo = ({ src, poster, isActive }) => {
   const videoRef = useRef(null);
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -140,44 +111,25 @@ const SliderVideo = ({ src, poster, isActive }) => {
 
     if (isActive) {
       video.currentTime = 0;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => console.log("Autoplay blocked:", error));
-      }
+      video.play().catch(() => { });
     } else {
       video.pause();
     }
-
-    return () => {
-      if (video) video.pause();
-    };
   }, [isActive, src]);
 
   return (
-    <div className="relative flex items-center justify-center max-h-[85vh] w-full h-full">
-      {/* Show poster/placeholder while full video buffers in slider */}
-      {poster && !isReady && (
-        <Image
-          src={poster}
-          alt="Slider video preview"
-          fill
-          className="object-contain"
-        />
-      )}
-
-      <video
-        ref={videoRef}
-        className="max-h-[85vh] w-auto object-contain"
-        poster={poster || ""}
-        playsInline
-        muted
-        loop
-        preload="auto"
-        onCanPlay={() => setIsReady(true)}
-      >
-        <source src={src} type="video/mp4" />
-      </video>
-    </div>
+    <video
+      ref={videoRef}
+      className="max-h-[85vh] w-auto object-contain"
+      poster={poster || ""}
+      playsInline
+      muted
+      loop
+      autoPlay
+      preload="auto"
+    >
+      <source src={`${src}#t=0.1`} type="video/mp4" />
+    </video>
   );
 };
 
@@ -193,14 +145,14 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
-    setTimeout(() => setIsTransitioning(false), 300);
+    setTimeout(() => setIsTransitioning(false), 200);
   };
 
   const goToNext = () => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === totalItems - 1 ? 0 : prev + 1));
-    setTimeout(() => setIsTransitioning(false), 300);
+    setTimeout(() => setIsTransitioning(false), 200);
   };
 
   useEffect(() => {
@@ -222,8 +174,6 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
   if (totalItems === 0) return null;
 
   const currentItem = validItems[currentIndex];
-  const hasVideo = Boolean(currentItem?.video);
-  const hasImage = Boolean(currentItem?.image);
 
   return (
     <div
@@ -232,7 +182,6 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Close Button */}
       <button
         onClick={onClose}
         className="absolute top-4 right-4 z-10 text-white hover:text-gold-base transition-colors duration-300"
@@ -243,7 +192,6 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
         </svg>
       </button>
 
-      {/* Previous Button */}
       <button
         onClick={goToPrevious}
         className="absolute left-4 z-10 text-white hover:text-gold-base transition-colors duration-300 p-2"
@@ -254,7 +202,6 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
         </svg>
       </button>
 
-      {/* Next Button */}
       <button
         onClick={goToNext}
         className="absolute right-4 z-10 text-white hover:text-gold-base transition-colors duration-300 p-2"
@@ -265,15 +212,13 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
         </svg>
       </button>
 
-      {/* Counter */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 font-serif-heading text-sm tracking-wider">
         {currentIndex + 1} / {totalItems}
       </div>
 
-      {/* Main Content */}
       <div className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center p-4 md:p-8">
         <div className="relative w-full h-full flex items-center justify-center">
-          {hasVideo ? (
+          {currentItem?.video ? (
             <SliderVideo
               key={`video-${currentIndex}`}
               src={currentItem.video}
@@ -281,7 +226,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
               alt={currentItem.alt}
               isActive={true}
             />
-          ) : hasImage ? (
+          ) : currentItem?.image ? (
             <Image
               key={`image-${currentIndex}`}
               src={currentItem.image}
@@ -298,32 +243,20 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
   );
 };
 
-// Gallery Item Component
+// Gallery Item
 const GalleryItem = memo(({ item, index, onClick }) => {
-  const hasVideo = Boolean(item.video);
-  const hasImage = Boolean(item.image);
-
-  if (!hasImage && !hasVideo) {
-    return (
-      <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gold-base/15 group shadow-lg cursor-pointer bg-maroon-dark/10 flex items-center justify-center">
-        <span className="text-maroon-dark/40 text-sm">No media</span>
-      </div>
-    );
-  }
-
   return (
     <div
       className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gold-base/15 group shadow-lg cursor-pointer"
       onClick={() => onClick(index)}
     >
-      {hasVideo ? (
+      {item.video ? (
         <GalleryVideo
           src={item.video}
           poster={item.image || ""}
-          alt={item.alt}
           className="transition-transform duration-700 group-hover:scale-105"
         />
-      ) : hasImage ? (
+      ) : item.image ? (
         <Image
           src={item.image}
           alt={item.alt}
@@ -333,7 +266,6 @@ const GalleryItem = memo(({ item, index, onClick }) => {
         />
       ) : null}
 
-      {/* Hover overlay */}
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center z-20">
         <span className="text-white/0 group-hover:text-white/80 text-sm tracking-wider uppercase font-serif-heading transition-all duration-300">
           Click to view
@@ -361,10 +293,6 @@ export default function GalleryPage() {
     setSliderOpen(true);
   };
 
-  const handleSliderClose = () => {
-    setSliderOpen(false);
-  };
-
   useEffect(() => {
     const items = gridRef.current?.children;
     if (!items) return;
@@ -378,7 +306,6 @@ export default function GalleryPage() {
 
   return (
     <div className="min-h-screen bg-cream text-charcoal">
-      {/* Header */}
       <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.4] pointer-events-none"
@@ -402,18 +329,15 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Main Gallery Area */}
       <section className="py-14 md:py-28 max-w-7xl mx-auto px-6 md:px-12">
-        {/* Categories Tabs */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
           {["all", "lawns", "mandaps", "banquet"].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`font-serif-heading text-[10px] tracking-[0.25em] uppercase px-6 py-3.5 rounded-full border transition-all duration-300
-                ${filter === cat
-                  ? "bg-maroon-base text-gold-light border-gold-base shadow-md"
-                  : "bg-white text-maroon-dark border-maroon-base/10 hover:border-gold-base/50"
+              className={`font-serif-heading text-[10px] tracking-[0.25em] uppercase px-6 py-3.5 rounded-full border transition-all duration-300 ${filter === cat
+                ? "bg-maroon-base text-gold-light border-gold-base shadow-md"
+                : "bg-white text-maroon-dark border-maroon-base/10 hover:border-gold-base/50"
                 }`}
             >
               {cat}
@@ -421,11 +345,7 @@ export default function GalleryPage() {
           ))}
         </div>
 
-        {/* Gallery Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item, index) => (
             <GalleryItem
               key={`${item.category}-${index}`}
@@ -437,12 +357,11 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* Full Screen Slider */}
       {sliderOpen && (
         <FullScreenSlider
           items={filteredItems}
           initialIndex={selectedIndex}
-          onClose={handleSliderClose}
+          onClose={() => setSliderOpen(false)}
         />
       )}
     </div>
