@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
-import SplitReveal from "../ui/SplitReveal";
 
-// 1. Posters અને Videos નું સેટઅપ
-const SLIDES = [
+// વિડિયો લિસ્ટ
+const VIDEOS = [
+  "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
+  "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
+  "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+  "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
+  "/videos/DJI_20260110213956_0016_D_stabilized.mp4",
+  "/videos/video_20260110_225342.mp4",
+];
+
+// સ્લાઇડ કન્ટેન્ટ
+const SLIDE_CONTENT = [
   {
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-    poster: "/videos/posters/slide1.webp", // તમારા પબ્લિક ફોલ્ડરમાં પોસ્ટર રાખવા
     subtitle: "The Quintessential Luxury Lawn",
     title: "Where Royal Dreams Meet Timeless Celebrations",
     description: "Celebrate your grand union amidst lush manicured lawns, majestic mandaps, and curated hospitality crafted for royals.",
@@ -20,8 +27,6 @@ const SLIDES = [
     nextPreview: "Celebrate Love"
   },
   {
-    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-    poster: "/videos/posters/slide2.webp",
     subtitle: "Celebrate Love Under Open Skies",
     title: "Where Every Sunset Tells a Love Story",
     description: "Our scenic outdoor spaces offer the perfect backdrop for unforgettable weddings and romantic ceremonies.",
@@ -32,8 +37,6 @@ const SLIDES = [
     nextPreview: "Nature's Grandeur"
   },
   {
-    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
-    poster: "/videos/posters/slide3.webp",
     subtitle: "A Canvas of Natural Beauty",
     title: "Nature's Grandeur Meets Elegant Celebrations",
     description: "Immerse yourself in the serenity of our lush landscapes, where every corner is designed to create magical moments.",
@@ -44,8 +47,6 @@ const SLIDES = [
     nextPreview: "Unforgettable"
   },
   {
-    video: "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
-    poster: "/videos/posters/slide4.webp",
     subtitle: "Where Every Detail Matters",
     title: "Crafting Unforgettable Experiences",
     description: "From exquisite floral arrangements to personalized decor, we transform your vision into reality with meticulous attention.",
@@ -56,8 +57,6 @@ const SLIDES = [
     nextPreview: "Your Dream"
   },
   {
-    video: "/videos/DJI_20260110213956_0016_D_stabilized.mp4",
-    poster: "/videos/posters/slide5.webp",
     subtitle: "Your Dream Wedding Awaits",
     title: "A Celebration of Love, Light & Laughter",
     description: "Join us in creating the wedding of your dreams. Our dedicated team ensures every moment is picture-perfect.",
@@ -68,8 +67,6 @@ const SLIDES = [
     nextPreview: "Timeless Elegance"
   },
   {
-    video: "/videos/video_20260110_225342.mp4",
-    poster: "/videos/posters/slide6.webp",
     subtitle: "Timeless Elegance, Modern Luxury",
     title: "Where Traditions Meet Contemporary Grandeur",
     description: "Experience the perfect blend of classic charm and modern amenities. Our venues are designed to host celebrations.",
@@ -83,43 +80,63 @@ const SLIDES = [
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loadedVideos, setLoadedVideos] = useState([0]); // ફક્ત ૧લો વીડિયો શરૂઆતમાં ડાઉનલોડ થશે
+  const [loadedVideos, setLoadedVideos] = useState([0]);
 
-  const videoRef = useRef(null);
+  const videoRefs = useRef([]);
   const contentRef = useRef(null);
   const timerRef = useRef(null);
 
-  const currentContent = SLIDES[currentSlide];
-  const nextIndex = (currentSlide + 1) % SLIDES.length;
-  const nextContent = SLIDES[nextIndex];
+  const currentContent = SLIDE_CONTENT[currentSlide];
+  const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
+  const nextContent = SLIDE_CONTENT[nextIndex];
 
-  // સ્લાઇડ એનિમેશન
+  // સ્મૂથ કન્ટેન્ટ એનિમેશન
   const animateContent = useCallback(() => {
     if (!contentRef.current) return;
-    const elements = contentRef.current.querySelectorAll(".slide-anim");
+    const elements = contentRef.current.querySelectorAll(".slide-anim-item");
+
+    gsap.killTweensOf(elements);
     gsap.fromTo(
       elements,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+      { opacity: 0, y: 25 },
+      { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: "power2.out" }
     );
   }, []);
 
-  // Slide આગળ વધારવા માટેનું મેથડ
-  const goToSlide = useCallback(
-    (index) => {
-      // આગામી વીડિયોને loadedVideos લિસ્ટમાં ઉમેરો જેથી React એને render કરે
-      if (!loadedVideos.includes(index)) {
-        setLoadedVideos((prev) => [...prev, index]);
+  // સ્લાઇડ અને વીડિયો કંટ્રોલ લોજિક
+  const goToSlide = useCallback((index) => {
+    setLoadedVideos((prev) => (prev.includes(index) ? prev : [...prev, index]));
+    setCurrentSlide(index);
+
+    // કોઈપણ વીડિયો પર જતી વખતે તેને 0 સેકન્ડથી જ સ્ટાર્ટ કરવો
+    setTimeout(() => {
+      const activeVideo = videoRefs.current[index];
+      if (activeVideo) {
+        activeVideo.currentTime = 0;
+        const playPromise = activeVideo.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => { });
+        }
       }
+    }, 50);
+  }, []);
 
-      setCurrentSlide(index);
-      setTimeout(() => animateContent(), 50);
-    },
-    [loadedVideos, animateContent]
-  );
-
-  // Auto Play Slider (8 Seconds)
+  // પ્રથમ વીડિયો પેજ લોડ થતાં જ ફરજિયાત સ્ટાર્ટિંગ (0 સેકન્ડ) થી પ્લે કરવાનો લોજિક
   useEffect(() => {
+    const firstVid = videoRefs.current[0];
+    if (firstVid) {
+      firstVid.currentTime = 0;
+      const playPromise = firstVid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => { });
+      }
+    }
+  }, []);
+
+  // Auto-play slider timer
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
     timerRef.current = setTimeout(() => {
       goToSlide(nextIndex);
     }, 8000);
@@ -129,18 +146,19 @@ export default function Hero() {
     };
   }, [currentSlide, nextIndex, goToSlide]);
 
-  // પ્રથમ વાર ટેક્સ્ટ એનિમેશન ચલાવવું
+  // જ્યારે પણ સ્લાઇડ ચેન્જ થાય ત્યારે ટેક્સ્ટ એનિમેશન રન કરવું
   useEffect(() => {
     animateContent();
-  }, [animateContent]);
+  }, [currentSlide, animateContent]);
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-maroon-dark text-ivory">
-      {/* Background Videos List */}
+
+      {/* Background Videos (Seamless Cross-Fade) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
-        {SLIDES.map((slide, index) => {
+        {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
-          const isPreloaded = loadedVideos.includes(index);
+          const isLoaded = loadedVideos.includes(index);
 
           return (
             <div
@@ -148,26 +166,24 @@ export default function Hero() {
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
             >
-              {/* વીડિયો ડાઉનલોડ ન થયો હોય ત્યાં સુધી લાઈટવેઈટ Poster સપોર્ટ */}
-              <img
-                src={slide.poster}
-                alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover brightness-[0.45]"
-                loading={index === 0 ? "eager" : "lazy"}
-              />
-
-              {/* ફક્ત જરૂર હોય ત્યારે જ Video Element DOM માં રેન્ડર થશે */}
-              {isPreloaded && (
+              {isLoaded && (
                 <video
-                  ref={isCurrent ? videoRef : null}
-                  src={slide.video}
-                  poster={slide.poster}
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src={src}
                   autoPlay={isCurrent}
                   muted
                   loop
                   playsInline
-                  preload={isCurrent ? "auto" : "none"}
-                  className="absolute inset-0 w-full h-full object-cover brightness-[0.45]"
+                  preload={index === 0 ? "auto" : "metadata"}
+                  onLoadedData={() => {
+                    if (index === 0 && currentSlide === 0) {
+                      if (videoRefs.current[0]) {
+                        videoRefs.current[0].currentTime = 0;
+                        videoRefs.current[0].play().catch(() => { });
+                      }
+                    }
+                  }}
+                  className="w-full h-full object-cover brightness-[0.45]"
                 />
               )}
             </div>
@@ -176,55 +192,77 @@ export default function Hero() {
       </div>
 
       {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80 pointer-events-none z-10" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_80%)] pointer-events-none z-10" />
 
       {/* Next Slide Preview Button */}
       <div
-        className="absolute bottom-6 right-6 z-30 cursor-pointer group"
+        className="absolute bottom-6 sm:bottom-8 right-6 sm:right-8 z-30 cursor-pointer group"
         onClick={() => goToSlide(nextIndex)}
       >
-        <div className="relative overflow-hidden rounded-lg border border-gold-base/20 w-32 h-20 bg-black/60 backdrop-blur-md p-2">
-          <p className="text-[9px] uppercase tracking-widest text-gold-base/70">Next</p>
-          <h4 className="text-xs font-serif-heading text-ivory truncate group-hover:text-gold-base transition-colors">
+        <div className="relative overflow-hidden rounded-lg border border-gold-base/20 w-32 sm:w-36 h-18 sm:h-20 bg-black/70 backdrop-blur-md p-2.5 shadow-2xl transition-all duration-300 group-hover:border-gold-base/50">
+          <p className="text-[7px] sm:text-[8px] uppercase tracking-[0.2em] text-gold-base/70 font-serif-heading">
+            Next
+          </p>
+          <h4 className="text-[10px] sm:text-[11px] font-serif-heading text-ivory leading-tight mt-0.5 truncate group-hover:text-gold-base transition-colors">
             {nextContent.nextPreview}
           </h4>
-          <span className="text-[10px] text-gold-base/50 mt-2 block">
-            {nextIndex + 1} / {SLIDES.length}
+          <span className="text-[8px] text-gold-base/40 font-sans mt-2 block">
+            {nextIndex + 1} of {VIDEOS.length}
           </span>
         </div>
       </div>
 
-      {/* Content Area */}
+      {/* Main Content Area */}
       <div
         ref={contentRef}
-        className="max-w-4xl mx-auto px-4 text-center relative z-20 flex flex-col items-center justify-center"
+        className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-20 flex flex-col items-center justify-center w-full"
       >
-        <div className="slide-anim mb-3">
-          <span className="font-serif-heading text-xs md:text-sm tracking-[0.3em] text-gold-base uppercase border-b border-gold-base/30 pb-1">
+        {/* Subtitle */}
+        <div className="slide-anim-item opacity-0 mb-2 sm:mb-3">
+          <span className="font-serif-heading text-[10px] sm:text-xs md:text-sm tracking-[0.3em] text-gold-base uppercase inline-block border-b border-gold-base/30 pb-1">
             {currentContent.subtitle}
           </span>
         </div>
 
-        <SplitReveal
-          type="chars"
-          tag="h1"
-          className="slide-anim font-serif-heading text-3xl sm:text-5xl lg:text-6xl text-ivory uppercase leading-tight mb-4 font-bold"
-        >
+        {/* Title */}
+        <h1 className="slide-anim-item opacity-0 font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory uppercase leading-[1.15] mb-3 sm:mb-4 font-bold tracking-wide">
           {currentContent.title}
-        </SplitReveal>
+        </h1>
 
-        <p className="slide-anim font-sans text-sm md:text-base text-gold-light/80 max-w-xl mb-8 font-light">
-          {currentContent.description}
-        </p>
+        {/* Description */}
+        <div className="slide-anim-item opacity-0 max-w-xl lg:max-w-2xl mb-6 sm:mb-8">
+          <p className="font-sans text-xs sm:text-sm md:text-base text-gold-light/80 leading-relaxed font-light">
+            {currentContent.description}
+          </p>
+        </div>
 
-        <div className="slide-anim flex gap-4">
-          <Button href={currentContent.buttonLink} variant="secondary">
+        {/* Action Buttons */}
+        <div className="slide-anim-item opacity-0 flex flex-col sm:flex-row gap-3 items-center justify-center w-full sm:w-auto">
+          <Button
+            href={currentContent.buttonLink}
+            variant="secondary"
+            className="px-6 py-3 text-[10px] sm:text-[11px] tracking-[0.2em] w-full sm:w-auto text-center"
+          >
             {currentContent.buttonText}
           </Button>
-          <Button href={currentContent.secondButtonLink} variant="outline">
+          <Button
+            href={currentContent.secondButtonLink}
+            variant="outline"
+            className="px-6 py-3 text-[10px] sm:text-[11px] tracking-[0.2em] w-full sm:w-auto text-center"
+          >
             {currentContent.secondButtonText}
           </Button>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute -bottom-16 sm:-bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none">
+          <span className="font-serif-heading text-[8px] tracking-[0.25em] uppercase text-gold-base/60 animate-pulse">
+            Scroll To Experience
+          </span>
+          <div className="w-[1px] h-6 bg-gold-base/30 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1/2 bg-gold-base animate-scroll-indicator" />
+          </div>
         </div>
       </div>
     </section>
