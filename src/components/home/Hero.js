@@ -4,17 +4,15 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
 
-// વિડિયો લિસ્ટ
 const VIDEOS = [
-  "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-  "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-  "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
   "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
   "/videos/DJI_20260110213956_0016_D_stabilized.mp4",
   "/videos/video_20260110_225342.mp4",
+  "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
+  "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
+  "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
 ];
 
-// સ્લાઇડ કન્ટેન્ટ
 const SLIDE_CONTENT = [
   {
     subtitle: "The Quintessential Luxury Lawn",
@@ -80,7 +78,6 @@ const SLIDE_CONTENT = [
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loadedVideos, setLoadedVideos] = useState([0, 1]); // પ્રથમ અને બીજો વીડિયો પહેલાથી જ પ્રી-લોડ લિસ્ટમાં
 
   const videoRefs = useRef([]);
   const contentRef = useRef(null);
@@ -90,7 +87,7 @@ export default function Hero() {
   const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
   const nextContent = SLIDE_CONTENT[nextIndex];
 
-  // સ્મૂથ કન્ટેન્ટ એનિમેશન
+  // GSAP Text Animation
   const animateContent = useCallback(() => {
     if (!contentRef.current) return;
     const elements = contentRef.current.querySelectorAll(".slide-anim-item");
@@ -103,22 +100,39 @@ export default function Hero() {
     );
   }, []);
 
-  // સ્લાઇડ અને વીડિયો કંટ્રોલ લોજિક
-  const goToSlide = useCallback((index) => {
-    const nextIdx = (index + 1) % VIDEOS.length;
-    // કરન્ટ અને તેના પછી આવનાર સ્લાઈડ બંનેના વિડિયો લોડ લિસ્ટમાં ઉમેરો
-    setLoadedVideos((prev) => Array.from(new Set([...prev, index, nextIdx])));
-    setCurrentSlide(index);
+  // Play video seamlessly
+  const playVideoAtIndex = useCallback((index) => {
+    videoRefs.current.forEach((vid, i) => {
+      if (!vid) return;
 
-    // તરત જ પ્લે માટે ટ્રાય કરો
-    const activeVideo = videoRefs.current[index];
-    if (activeVideo) {
-      activeVideo.currentTime = 0;
-      activeVideo.play().catch(() => { });
-    }
+      if (i === index) {
+        // Reset and play active video from 0s instantly
+        vid.currentTime = 0;
+        const playPromise = vid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Auto-play policy safety catch
+          });
+        }
+      } else {
+        // Pause inactive videos to save CPU & Network bandwidth
+        vid.pause();
+      }
+    });
   }, []);
 
-  // Auto-play slider timer
+  // Slide navigation
+  const goToSlide = useCallback((index) => {
+    setCurrentSlide(index);
+    playVideoAtIndex(index);
+  }, [playVideoAtIndex]);
+
+  // Initial load
+  useEffect(() => {
+    playVideoAtIndex(0);
+  }, [playVideoAtIndex]);
+
+  // Auto-play timer
   useEffect(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
 
@@ -131,7 +145,7 @@ export default function Hero() {
     };
   }, [currentSlide, nextIndex, goToSlide]);
 
-  // જ્યારે પણ સ્લાઇડ ચેન્જ થાય ત્યારે ટેક્સ્ટ એનિમેશન રન કરવું
+  // Trigger GSAP on slide change
   useEffect(() => {
     animateContent();
   }, [currentSlide, animateContent]);
@@ -139,12 +153,10 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-maroon-dark text-ivory">
 
-      {/* Background Videos (Seamless Cross-Fade) */}
+      {/* Background Videos (Always pre-mounted for instant playback) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
         {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
-          const isNext = index === nextIndex;
-          const shouldRender = loadedVideos.includes(index);
 
           return (
             <div
@@ -152,24 +164,20 @@ export default function Hero() {
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
             >
-              {shouldRender && (
-                <video
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  src={src}
-                  autoPlay={isCurrent}
-                  muted
-                  loop
-                  playsInline
-                  // માત્ર કરન્ટ કે આગળના વિડિયો માટે જ auto પ્રી-લોડ, બાકી metadata
-                  preload={isCurrent || isNext ? "auto" : "metadata"}
-                  onCanPlay={(e) => {
-                    if (isCurrent) {
-                      e.currentTarget.play().catch(() => { });
-                    }
-                  }}
-                  className="w-full h-full object-cover brightness-[0.45] will-change-transform"
-                />
-              )}
+              <video
+                ref={(el) => (videoRefs.current[index] = el)}
+                src={src}
+                muted
+                loop
+                playsInline
+                preload={index === 0 || index === 1 ? "auto" : "metadata"}
+                onLoadedMetadata={(e) => {
+                  if (index === 0) {
+                    e.currentTarget.currentTime = 0;
+                  }
+                }}
+                className="w-full h-full object-cover brightness-[0.45] will-change-transform"
+              />
             </div>
           );
         })}
