@@ -5,6 +5,7 @@ import Button from "../ui/Button";
 import SplitReveal from "../ui/SplitReveal";
 import FadeIn from "../ui/FadeIn";
 import ParallaxImage from "../ui/ParallaxImage";
+import LazyVideo from "../ui/LazyVideo";
 
 export default function About() {
   return (
@@ -55,12 +56,13 @@ export default function About() {
           <div className="relative flex items-center justify-center">
             {/* Main large video container */}
             <div className="w-[85%] aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">
-              <video
+              <LazyVideo
                 src="/videos/Video_20260514_170024.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="metadata"
                 className="w-full h-full object-cover"
               />
             </div>

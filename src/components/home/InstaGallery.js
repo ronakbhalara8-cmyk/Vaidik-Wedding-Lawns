@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Heart, Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import LazyVideo from "../ui/LazyVideo";
 
 const galleryItems = [
   {
@@ -80,8 +81,9 @@ const VideoCard = ({ src, poster, alt, className = "" }) => {
   }, []);
 
   return (
-    <video
+    <LazyVideo
       ref={videoRef}
+      src={src}
       className={`w-full h-full object-cover ${className}`}
       poster={poster || ""}
       playsInline
@@ -89,9 +91,7 @@ const VideoCard = ({ src, poster, alt, className = "" }) => {
       loop
       autoPlay
       preload="metadata"
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    />
   );
 };
 
@@ -191,9 +191,10 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
       <div className="relative w-full h-full max-w-6xl max-h-[85vh] flex items-center justify-center p-4 md:p-8">
         <div className="relative w-full h-full flex items-center justify-center">
           {hasVideo ? (
-            <video
+            <LazyVideo
               ref={videoRef}
               key={`video-${currentIndex}`}
+              src={currentItem.video}
               className="max-h-[85vh] w-auto object-contain rounded-lg"
               poster={currentItem.image || ""}
               playsInline
@@ -201,9 +202,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
               loop
               controls
               preload="metadata"
-            >
-              <source src={currentItem.video} type="video/mp4" />
-            </video>
+            />
           ) : hasImage ? (
             <Image
               key={`image-${currentIndex}`}

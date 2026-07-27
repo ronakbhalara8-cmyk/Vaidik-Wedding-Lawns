@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
+import LazyVideo from "@/components/ui/LazyVideo";
 
 const galleryItems = [
   {
@@ -82,8 +83,9 @@ const GalleryVideo = memo(({ src, poster, className = "" }) => {
 
   return (
     <div className="relative w-full h-full bg-black/20 overflow-hidden">
-      <video
+      <LazyVideo
         ref={videoRef}
+        src={`${src}#t=0.1`}
         className={`w-full h-full object-cover ${className}`}
         poster={poster || ""}
         playsInline
@@ -91,10 +93,7 @@ const GalleryVideo = memo(({ src, poster, className = "" }) => {
         loop
         autoPlay
         preload="metadata"
-      >
-        {/* Adding #t=0.1 forces instant preview render */}
-        <source src={`${src}#t=0.1`} type="video/mp4" />
-      </video>
+      />
     </div>
   );
 });
@@ -118,8 +117,9 @@ const SliderVideo = ({ src, poster, isActive }) => {
   }, [isActive, src]);
 
   return (
-    <video
+    <LazyVideo
       ref={videoRef}
+      src={`${src}#t=0.1`}
       className="max-h-[85vh] w-auto object-contain"
       poster={poster || ""}
       playsInline
@@ -127,9 +127,7 @@ const SliderVideo = ({ src, poster, isActive }) => {
       loop
       autoPlay
       preload="auto"
-    >
-      <source src={`${src}#t=0.1`} type="video/mp4" />
-    </video>
+    />
   );
 };
 

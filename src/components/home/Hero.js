@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
+import LazyVideo from "../ui/LazyVideo";
 
 const VIDEOS = [
   "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
@@ -169,13 +170,16 @@ export default function Hero() {
               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isCurrent ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
             >
-              <video
+              <LazyVideo
                 ref={(el) => setVideoRef(index, el)}
                 src={src}
                 muted
                 loop
+                autoPlay
                 playsInline
-                preload={index === 0 || index === 1 ? "auto" : "metadata"}
+                active={isCurrent}
+                loadWhenVisible={false}
+                preload="metadata"
                 className="w-full h-full object-cover brightness-[0.45] will-change-transform"
               />
             </div>

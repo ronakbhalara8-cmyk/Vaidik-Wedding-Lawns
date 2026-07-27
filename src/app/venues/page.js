@@ -6,6 +6,7 @@ import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import ParallaxImage from "@/components/ui/ParallaxImage";
 import { useRef, useEffect } from "react";
+import LazyVideo from "@/components/ui/LazyVideo";
 
 const items = [
   {
@@ -73,8 +74,9 @@ const VideoPlayer = ({ src, poster, title }) => {
 
   return (
     <div className="relative w-full h-full">
-      <video
+      <LazyVideo
         ref={videoRef}
+        src={src}
         className="w-full h-full object-cover"
         poster={poster}
         playsInline
@@ -82,10 +84,7 @@ const VideoPlayer = ({ src, poster, title }) => {
         loop
         autoPlay
         preload="metadata"
-      >
-        <source src={src} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      />
 
       {/* No button overlay - keeping it clean */}
     </div>

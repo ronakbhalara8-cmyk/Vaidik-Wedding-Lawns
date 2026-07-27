@@ -1,9 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Button from "../ui/Button";
+import LazyVideo from "../ui/LazyVideo";
 
 const venues = [
   {
@@ -38,6 +39,7 @@ const venues = [
 export default function VenuesHorizontal() {
   const containerRef = useRef(null);
   const slidesRef = useRef([]);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -60,6 +62,8 @@ export default function VenuesHorizontal() {
 
       slides.forEach((slide, i) => {
         if (!slide || i === 0) return;
+
+        tl.call(() => setActiveSlide(i), null, `slide-${i}`);
 
         const prevSlide = slides[i - 1];
         if (!prevSlide) return;
@@ -134,13 +138,16 @@ export default function VenuesHorizontal() {
             >
               {/* Video Background - Removed static blur-md and opacity-60 so incoming videos are crisp */}
               <div className="slide-media absolute inset-0 w-full h-full transition-all duration-300">
-                <video
+                <LazyVideo
                   src={venue.video}
                   poster={venue.image}
                   autoPlay
                   loop
                   muted
                   playsInline
+                  active={idx === activeSlide}
+                  loadWhenVisible={false}
+                  preload="metadata"
                   className="w-full h-full object-cover"
                 />
                 {/* Soft Gradient Overlay */}
