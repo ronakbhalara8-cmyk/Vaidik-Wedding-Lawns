@@ -16,12 +16,12 @@ const VIDEOS = [
 const SLIDE_CONTENT = [
   {
     subtitle: "The Quintessential Luxury Lawn",
-    title: "Where Royal Dreams Meet Timeless Celebrations",
+    title: "Vaidik Lawns - Where Dream Weddings Come True",
     description: "Celebrate your grand union amidst lush manicured lawns, majestic mandaps, and curated hospitality crafted for royals.",
-    buttonText: "Schedule Private Tour",
+    buttonText: "Book a Venue Visit",
     buttonLink: "/book-visit",
-    secondButtonText: "Explore Our Lawns",
-    secondButtonLink: "/venues",
+    secondButtonText: "Request a Quote",
+    secondButtonLink: "/contact",
     nextPreview: "Celebrate Love"
   },
   {

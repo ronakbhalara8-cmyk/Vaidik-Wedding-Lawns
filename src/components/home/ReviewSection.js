@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 import SplitReveal from "../ui/SplitReveal";
 import FadeIn from "../ui/FadeIn";
 
-const testimonials = [
+const reviews = [
   {
     quote:
       "Our wedding at this venue was beyond perfect. The team handled every detail with care, leaving me with a sense of genuine professionalism.",
@@ -91,7 +91,7 @@ export default function ReviewSection() {
 
   // Continuous marquee animation using requestAnimationFrame
   useEffect(() => {
-    const totalItems = testimonials.length;
+    const totalItems = reviews.length;
 
     const animate = (timestamp) => {
       if (!lastTimeRef.current) {
@@ -164,7 +164,7 @@ export default function ReviewSection() {
   };
 
   // Create enough duplicates for seamless scrolling
-  const extendedTestimonials = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
+  const extendedTestimonials = [...reviews, ...reviews, ...reviews, ...reviews];
 
   return (
     <section className="relative py-16 md:py-24 lg:py-32 bg-cream border-t border-pink-light/30 overflow-hidden">
@@ -189,7 +189,7 @@ export default function ReviewSection() {
           </div>
         </div>
 
-        {/* Testimonials Slider - Smooth Continuous Marquee */}
+        {/* Reviews Slider - Smooth Continuous Marquee */}
         <div
           className="relative mt-8 md:mt-12 overflow-hidden"
           onMouseEnter={handleMouseEnter}

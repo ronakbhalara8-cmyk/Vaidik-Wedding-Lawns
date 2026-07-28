@@ -20,7 +20,7 @@ export default function About() {
           <div className="flex flex-col gap-6">
             <FadeIn direction="right" duration={0.8}>
               <span className="font-serif-heading text-xs tracking-[0.3em] uppercase text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block">
-                Our Heritage & Vision
+                About Us
               </span>
             </FadeIn>
 
@@ -29,24 +29,42 @@ export default function About() {
               tag="h2"
               className="font-serif-heading text-3xl sm:text-5xl tracking-wide text-maroon-dark uppercase leading-tight font-bold"
             >
-              Crafting Royal Celebrations for Generations
+              Where Elegance Meets the Open Sky
             </SplitReveal>
 
-            <FadeIn direction="up" duration={1.0} delay={0.3} distance={20} className="flex flex-col gap-5 text-base text-charcoal/80 font-light leading-relaxed">
+            <FadeIn direction="up" duration={1.0} delay={0.3} distance={20} className="flex flex-col gap-4 text-base text-charcoal/80 font-light leading-relaxed">
               <p>
-                At <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span>, we believe that weddings are not just events, but sacred unions that deserve a setting of unmatched grandeur. Established as Mumbai's premier open-air luxury venue, we offer a canvas where heritage meets modern sophistication.
+                Established in <span className="font-semibold text-maroon-base">2021</span>, <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span> is Surat's finest open-air luxury venue, offering the perfect setting for weddings, engagements, corporate events, and special celebrations.
               </p>
-              <p className="font-sans text-md text-maroon-light border-l-2 border-gold-base pl-4 my-2">
-                "Where lush green tapestries meet the majestic glow of starry skies, orchestrating an ambient symphony that stays etched in hearts forever."
+
+              {/* Key Highlights Grid */}
+              <div className="grid grid-cols-2 gap-3 my-2">
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gold-base/20 shadow-sm text-center">
+                  <span className="block font-serif-heading text-2xl text-maroon-base font-bold">2021</span>
+                  <span className="text-xs text-charcoal/70 uppercase tracking-wider">Established</span>
+                </div>
+                <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gold-base/20 shadow-sm text-center">
+                  <span className="block font-serif-heading text-2xl text-maroon-base font-bold">2000+</span>
+                  <span className="text-xs text-charcoal/70 uppercase tracking-wider">Guest Capacity</span>
+                </div>
+              </div>
+
+              <p className="text-sm">
+                <span className="font-semibold text-maroon-base">📍</span> Near Kanad fatak, 300 feet, Sayan Hazira Ring Road, opp. Variyav Check Post, Surat
               </p>
-              <p>
-                Spanning across acres of manicured lawns and featuring state-of-the-art climate-controlled changing suites, grand floral mandaps, and collaborations with Michelin-style caterers, Vaidik offers a completely tailored end-to-end royal wedding journey.
-              </p>
+
+              <div className="flex flex-wrap gap-2 mt-1">
+                <span className="bg-maroon-light/10 text-maroon-base px-3 py-1 rounded-full text-[10px] tracking-wider border border-maroon-base/10">🌿 Expansive Lawn</span>
+                <span className="bg-maroon-light/10 text-maroon-base px-3 py-1 rounded-full text-[10px] tracking-wider border border-maroon-base/10">🚗 Ample Parking</span>
+                <span className="bg-maroon-light/10 text-maroon-base px-3 py-1 rounded-full text-[10px] tracking-wider border border-maroon-base/10">✨ Premium Decor</span>
+                <span className="bg-maroon-light/10 text-maroon-base px-3 py-1 rounded-full text-[10px] tracking-wider border border-maroon-base/10">📍 Easy Access</span>
+                <span className="bg-maroon-light/10 text-maroon-base px-3 py-1 rounded-full text-[10px] tracking-wider border border-maroon-base/10">🎉 All Events</span>
+              </div>
             </FadeIn>
 
-            <FadeIn direction="up" duration={0.8} delay={0.5} distance={20} className="mt-4">
+            <FadeIn direction="up" duration={0.8} delay={0.5} distance={20} className="mt-2">
               <Button href="/about" variant="outline" className="px-10 py-3 text-[11px] tracking-[0.25em]">
-                Read Our Story
+                Explore More
               </Button>
             </FadeIn>
           </div>

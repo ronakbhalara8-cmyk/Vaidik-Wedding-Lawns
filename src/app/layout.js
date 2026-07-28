@@ -6,6 +6,8 @@ import Preloader from "@/components/common/Preloader";
 import RouteChangeHandler from "@/components/common/RouteChangeHandler";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
+import Image from "next/image";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 
 const heading = Marcellus({
   variable: "--font-heading",
@@ -40,6 +42,8 @@ export const metadata = {
   },
 };
 
+
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -56,6 +60,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <WhatsAppButton phoneNumber="9913303351" />
         </SmoothScroll>
       </body>
     </html>

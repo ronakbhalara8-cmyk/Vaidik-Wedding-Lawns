@@ -3,9 +3,10 @@ import About from "@/components/home/About";
 import VenuesHorizontal from "@/components/home/VenuesHorizontal";
 import Services from "@/components/home/Services";
 import Packages from "@/components/home/Packages";
-import Testimonials from "@/components/home/Testimonials";
 import InstaGallery from "@/components/home/InstaGallery";
 import BookingCTA from "@/components/home/BookingCTA";
+import ReviewSection from "@/components/home/ReviewSection";
+// import TestimonialsSection from "@/components/common/Testimonials";
 
 export default function Home() {
   return (
@@ -15,8 +16,9 @@ export default function Home() {
       <VenuesHorizontal />
       <Services />
       <Packages />
-      <Testimonials />
+      <ReviewSection />
       <InstaGallery />
+      {/* <TestimonialsSection /> */}
       <BookingCTA />
     </>
   );

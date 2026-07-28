@@ -233,13 +233,13 @@ export default function VenuesPage() {
       </section>
 
       {/* Venues Listing */}
-      <section className="container py-20 md:py-28 flex flex-col gap-24">
+      <section className="container py-20 md:py-28 flex flex-col sm:gap-24 gap-10">
         {items.map((venue, idx) => {
           const isEven = idx % 2 === 0;
           return (
             <div
               key={idx}
-              className={`flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 border-b border-maroon-base/5 pb-20 last:border-0 last:pb-0
+              className={`flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 border-b border-maroon-base/5 sm:pb-20 pb-10 last:border-0 last:pb-0
                 ${isEven ? "" : "lg:flex-row-reverse"}`}
             >
               {/* Visual Panel */}
@@ -285,11 +285,20 @@ export default function VenuesPage() {
                 </ul>
 
                 {/* CTA actions */}
-                <div className="flex gap-4 mt-4">
-                  <Button href="/book-visit" variant="secondary" className="px-6 py-3.5 text-[9px] tracking-[0.2em]">
-                    <Calendar className="w-3.5 h-3.5 mr-1" /> Book Private Visit
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 w-full">
+                  <Button
+                    href="/book-visit"
+                    variant="secondary"
+                    className="flex-1 w-full px-4 sm:px-6 py-3 sm:py-3.5 text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.15em] sm:tracking-[0.2em] whitespace-nowrap"
+                  >
+                    <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 sm:mr-1" />
+                    Book Private Visit
                   </Button>
-                  <Button href="/contact" variant="outline" className="px-6 py-3.5 text-[9px] tracking-[0.2em]">
+                  <Button
+                    href="/contact"
+                    variant="outline"
+                    className="flex-1 px-4 w-full sm:px-6 py-3 sm:py-3.5 text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.15em] sm:tracking-[0.2em] whitespace-nowrap"
+                  >
                     Inquire Availability
                   </Button>
                 </div>
