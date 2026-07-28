@@ -12,7 +12,7 @@ const venues = [
     bestFor: "Board meetings, strategy sessions, corporate",
     features: "Interactive displays, soundproofing music",
     style: "Sleek, corporate-focused, minimalist",
-    video: "/videos/slider-1.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218039/slider-1_bpuqx2.mp4",
     image: "/images/about.png",
   },
   {
@@ -21,7 +21,7 @@ const venues = [
     bestFor: "Weddings, parties, and brunch parties",
     features: "Manicured lawns, floral archways, lush greenery",
     style: "Romantic, nature-inspired",
-    video: "/videos/slider-2.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218032/slider-2_nspfct.mp4",
     image: "/images/venue-2.jpg",
   },
   {
@@ -30,7 +30,7 @@ const venues = [
     bestFor: "Private weddings, pre-wedding functions",
     features: "Garden view, cozy layout, custom floral, parties",
     style: "Intimate, nature-tucked, boho vibes",
-    video: "/videos/slider-3.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218037/slider-3_sybagb.mp4",
     image: "/images/venue-3.jpg",
   },
 ];

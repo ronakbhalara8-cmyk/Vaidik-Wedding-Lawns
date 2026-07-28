@@ -14,7 +14,7 @@ const items = [
     capacity: "800 - 2,500 Guests",
     size: "45,000 Sq. Ft.",
     image: "",
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4", // Add your video path here
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218070/DJI_20260110194459_0097_D_stabilized_tyeigl.mp4", // Add your video path here
     description: "Our crown jewel. A sprawling manicured green carpet illuminated by high-mast and architectural lighting arrays. Designed to frame grand receptions, starry dinners, and cinematic stages.",
     features: [
       "Accommodates massive multi-tier mandap structures",
@@ -30,7 +30,7 @@ const items = [
     capacity: "300 - 1,000 Guests",
     size: "25,000 Sq. Ft.",
     image: "",
-    video: "/videos/046A9880.mp4", // Add your video path here
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218013/046A9880_kdiibj.mp4", // Add your video path here
     description: "Designed specifically to cultivate an intimate, spiritual energy for traditional Indian pheras. Framed by delicate floral arches, standard temple-style setup capability, and premium acoustics.",
     features: [
       "Sacred hawan fire-safe structural points",
@@ -45,7 +45,7 @@ const items = [
     capacity: "200 - 800 Guests",
     size: "18,000 Sq. Ft.",
     image: "", // Add your image path here
-    video: "/videos/banquet-hall.mp4", // Add your video path here
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218016/banquet-hall_fwsyw0.mp4", // Add your video path here
     description: "A state-of-the-art temperature-controlled indoor hall with soaring 22-foot double-height ceilings, majestic crystal chandeliers, and glass walls overlooking the lawns.",
     features: [
       "Centrally air-conditioned climate systems",

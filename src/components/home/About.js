@@ -54,14 +54,15 @@ export default function About() {
           {/* Visual Composition Block (Video + Image) */}
           <div className="relative flex items-center justify-center">
             {/* Main large video container */}
-            <div className="w-[85%] aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">
+            {/* Main large video container */}
+            <div className="w-[85%] aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative bg-maroon-dark">
               <video
-                src="/videos/Video_20260514_170024.mp4"
+                src="https://res.cloudinary.com/dmk5tpght/video/upload/Video_20260514_170024_ocferh.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pointer-events-none"
               />
             </div>
 

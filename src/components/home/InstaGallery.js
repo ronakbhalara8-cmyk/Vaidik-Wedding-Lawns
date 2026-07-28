@@ -8,61 +8,61 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 const galleryItems = [
   {
     image: null,
-    video: "/videos/slider-1.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218039/slider-1_bpuqx2.mp4",
     alt: "Lawn Evening Lighting Setup",
     title: "Royal Lawn"
   },
   {
     image: null,
-    video: "/videos/046A9853.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218012/046A9853_a2sm4q.mp4",
     alt: "Royal Canopy Mandap Decoration",
     title: "Vedic Mandap"
   },
   {
     image: null,
-    video: "/videos/046A9856.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218008/046A9856_ynzogd.mp4",
     alt: "Grand Chandelier Banquet Hall",
     title: "Grand Banquet"
   },
   {
     image: null,
-    video: "/videos/046A9880.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218013/046A9880_kdiibj.mp4",
     alt: "Outdoor Reception Lawn Area",
     title: "Starry Night"
   },
   {
     image: null,
-    video: "/videos/046A9887.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218006/046A9887_jlx390.mp4",
     alt: "Fresh Floral Mandap Details",
     title: "Floral Canopy"
   },
   {
     image: null,
-    video: "/videos/046A9892.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218012/046A9892_svithw.mp4",
     alt: "Elegant Table Banquet Setting",
     title: "Luxury Dining"
   },
   {
     image: null,
-    video: "/videos/slider-2.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218032/slider-2_nspfct.mp4",
     alt: "Lush Palm Gardens",
     title: "Manicured Palms"
   },
   {
     image: null,
-    video: "/videos/slider-3.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218037/slider-3_sybagb.mp4",
     alt: "Golden Mandap Lighting",
     title: "Golden Mandap"
   },
   {
     image: null,
-    video: "/videos/Video_20260514_170024.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218098/Video_20260514_170024_ocferh.mp4",
     alt: "Crystal Chandelier View",
     title: "Crystal Hall"
   },
   {
     image: null,
-    video: "/videos/Video 20260106 130800.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218046/Video_20260106_130800_jopmls.mp4",
     alt: "Sunset Ceremony Setup",
     title: "Sunset Lawn"
   },

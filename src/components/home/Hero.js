@@ -5,12 +5,12 @@ import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
 
 const VIDEOS = [
-  "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
-  "/videos/DJI_20260110213956_0016_D_stabilized.mp4",
-  "/videos/video_20260110_225342.mp4",
-  "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-  "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-  "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218031/DJI_20260110213956_0015_D_stabilized_ebgahm.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218041/DJI_20260110213956_0016_D_stabilized_hrlrsk.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218081/video_20260110_225342_zyszqy.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218070/DJI_20260110194459_0097_D_stabilized_tyeigl.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218083/DJI_20260110194732_0099_D_stabilized_jfepe9.mp4",
+  "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218075/DJI_20260110201254_0112_D_stabilized_vynuw5.mp4",
 ];
 
 const SLIDE_CONTENT = [

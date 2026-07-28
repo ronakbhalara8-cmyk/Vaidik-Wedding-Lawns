@@ -8,52 +8,52 @@ import FadeIn from "@/components/ui/FadeIn";
 
 const galleryItems = [
   {
-    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218075/DJI_20260110201254_0112_D_stabilized_vynuw5.mp4",
     category: "lawns",
     alt: "Lawn evening setup",
   },
   {
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218070/DJI_20260110194459_0097_D_stabilized_tyeigl.mp4",
     category: "lawns",
     alt: "Lawn evening setup",
   },
   {
-    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218083/DJI_20260110194732_0099_D_stabilized_jfepe9.mp4",
     category: "lawns",
     alt: "Lawn evening setup",
   },
   {
-    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218074/Dji_0767_usnaie.mp4",
     category: "lawns",
     alt: "Lawn evening setup",
   },
   {
-    video: "/videos/Dji_0767.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218006/046A9887_jlx390.mp4",
     category: "mandaps",
     alt: "Traditional royal mandap",
   },
   {
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218070/DJI_20260110194459_0097_D_stabilized_tyeigl.mp4",
     category: "mandaps",
     alt: "Traditional royal mandap",
   },
   {
-    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218083/DJI_20260110194732_0099_D_stabilized_jfepe9.mp4",
     category: "mandaps",
     alt: "Traditional royal mandap",
   },
   {
-    video: "/videos/slider-1.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218039/slider-1_bpuqx2.mp4",
     category: "mandaps",
     alt: "Traditional royal mandap",
   },
   {
-    video: "/videos/slider-2.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218032/slider-2_nspfct.mp4",
     category: "mandaps",
     alt: "Traditional royal mandap",
   },
   {
-    video: "/videos/banquet-hall.mp4",
+    video: "https://res.cloudinary.com/dmk5tpght/video/upload/v1785218016/banquet-hall_fwsyw0.mp4",
     category: "banquet",
     alt: "Elegant dining setups",
   },
