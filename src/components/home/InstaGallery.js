@@ -2,103 +2,114 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Heart, Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Heart, Camera, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const galleryItems = [
   {
-    image: null,
     video: "/videos/slider-1.mp4",
     alt: "Lawn Evening Lighting Setup",
     title: "Royal Lawn"
   },
   {
-    image: null,
     video: "/videos/046A9853.mp4",
     alt: "Royal Canopy Mandap Decoration",
     title: "Vedic Mandap"
   },
   {
-    image: null,
     video: "/videos/046A9856.mp4",
     alt: "Grand Chandelier Banquet Hall",
     title: "Grand Banquet"
   },
   {
-    image: null,
     video: "/videos/046A9880.mp4",
     alt: "Outdoor Reception Lawn Area",
     title: "Starry Night"
   },
   {
-    image: null,
     video: "/videos/046A9887.mp4",
     alt: "Fresh Floral Mandap Details",
     title: "Floral Canopy"
   },
   {
-    image: null,
     video: "/videos/046A9892.mp4",
     alt: "Elegant Table Banquet Setting",
     title: "Luxury Dining"
   },
   {
-    image: null,
     video: "/videos/slider-2.mp4",
     alt: "Lush Palm Gardens",
     title: "Manicured Palms"
   },
   {
-    image: null,
     video: "/videos/slider-3.mp4",
     alt: "Golden Mandap Lighting",
     title: "Golden Mandap"
   },
   {
-    image: null,
     video: "/videos/Video_20260514_170024.mp4",
     alt: "Crystal Chandelier View",
     title: "Crystal Hall"
   },
   {
-    image: null,
     video: "/videos/Video 20260106 130800.mp4",
     alt: "Sunset Ceremony Setup",
     title: "Sunset Lawn"
   },
 ];
 
-// Video Card Component for Circle - No play button
-const VideoCard = ({ src, poster, alt, className = "" }) => {
+// Video Card Component for Circle - Shows video thumbnail with play button (no autoplay)
+const VideoCard = ({ src, alt, className = "" }) => {
   const videoRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.play().catch(() => { });
+      // Load video metadata to get thumbnail
+      video.load();
+
+      // Once metadata is loaded, pause at first frame
+      const handleLoadedMetadata = () => {
+        video.currentTime = 0.1; // Small delay to get a frame
+        setIsLoaded(true);
+      };
+
+      video.addEventListener('loadedmetadata', handleLoadedMetadata);
+
+      return () => {
+        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      };
     }
   }, []);
 
   return (
-    <video
-      ref={videoRef}
-      className={`w-full h-full object-cover ${className}`}
-      poster={poster || ""}
-      playsInline
-      muted
-      loop
-      autoPlay
-      preload="metadata"
-    >
-      <source src={src} type="video/mp4" />
-    </video>
+    <div className="relative w-full h-full bg-maroon-dark">
+      <video
+        ref={videoRef}
+        className={`w-full h-full object-cover ${className}`}
+        playsInline
+        muted
+        preload="metadata"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+
+      {/* Play Button Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gold-base/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+          <Play className="w-5 h-5 sm:w-6 sm:h-6 text-maroon-dark ml-0.5" />
+        </div>
+      </div>
+    </div>
   );
 };
 
-// Full Screen Slider Component
+// Full Screen Slider Component - Video plays when clicked
 const FullScreenSlider = ({ items, initialIndex, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef(null);
 
   const totalItems = items.length;
@@ -107,6 +118,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
+    setIsVideoPlaying(false);
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
@@ -114,6 +126,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === totalItems - 1 ? 0 : prev + 1));
+    setIsVideoPlaying(false);
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
@@ -133,18 +146,31 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
     };
   }, [handleKeyDown]);
 
-  // Handle video playback when slide changes
+  // Handle video when slide changes
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
       video.currentTime = 0;
-      video.play().catch(() => { });
+      video.pause();
+      setIsVideoPlaying(false);
     }
   }, [currentIndex]);
 
+  const handleVideoClick = () => {
+    const video = videoRef.current;
+    if (video) {
+      if (isVideoPlaying) {
+        video.pause();
+        setIsVideoPlaying(false);
+      } else {
+        video.play().catch(() => { });
+        setIsVideoPlaying(true);
+      }
+    }
+  };
+
   const currentItem = items[currentIndex];
   const hasVideo = currentItem?.video ? true : false;
-  const hasImage = currentItem?.image ? true : false;
 
   if (!currentItem) return null;
 
@@ -190,31 +216,33 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
       {/* Main Content */}
       <div className="relative w-full h-full max-w-6xl max-h-[85vh] flex items-center justify-center p-4 md:p-8">
         <div className="relative w-full h-full flex items-center justify-center">
-          {hasVideo ? (
-            <video
-              ref={videoRef}
-              key={`video-${currentIndex}`}
-              className="max-h-[85vh] w-auto object-contain rounded-lg"
-              poster={currentItem.image || ""}
-              playsInline
-              muted
-              loop
-              controls
-              preload="metadata"
+          {hasVideo && (
+            <div
+              className="relative max-h-[85vh] w-auto rounded-lg overflow-hidden cursor-pointer group"
+              onClick={handleVideoClick}
             >
-              <source src={currentItem.video} type="video/mp4" />
-            </video>
-          ) : hasImage ? (
-            <Image
-              key={`image-${currentIndex}`}
-              src={currentItem.image}
-              alt={currentItem.alt}
-              fill
-              sizes="100vw"
-              className="object-contain"
-              priority
-            />
-          ) : null}
+              <video
+                ref={videoRef}
+                key={`video-${currentIndex}`}
+                className="max-h-[85vh] w-auto object-contain"
+                playsInline
+                muted={false}
+                preload="metadata"
+                controls={isVideoPlaying}
+              >
+                <source src={currentItem.video} type="video/mp4" />
+              </video>
+
+              {/* Play/Pause overlay button */}
+              {!isVideoPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/30 transition-colors">
+                  <div className="w-20 h-20 rounded-full bg-gold-base/90 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                    <Play className="w-10 h-10 text-maroon-dark ml-1" />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -405,10 +433,9 @@ export default function InstaGallery() {
                 className="absolute w-28 h-36 sm:w-36 sm:h-48 rounded-2xl overflow-hidden border border-gold-base/30 shadow-2xl shadow-black/80 bg-maroon-dark group cursor-pointer"
               >
                 {hasVideo ? (
-                  // Video Card - No play button
+                  // Video Card - Shows video thumbnail with play button
                   <VideoCard
                     src={item.video}
-                    poster={item.image || ""}
                     alt={item.alt}
                   />
                 ) : (
@@ -421,16 +448,6 @@ export default function InstaGallery() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 )}
-
-                {/* Hover overlay - Same for both images and videos */}
-                <div className="absolute inset-0 bg-maroon-dark/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-2 text-center">
-                  <div>
-                    <Heart className="w-5 h-5 text-gold-base mx-auto mb-1 fill-gold-base/30" />
-                    <span className="font-serif-heading text-[9px] tracking-[0.15em] uppercase text-gold-light block font-semibold">
-                      {item.title}
-                    </span>
-                  </div>
-                </div>
               </div>
             );
           })}

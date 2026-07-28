@@ -59,29 +59,26 @@ const galleryItems = [
   },
 ];
 
-// Instant Play Gallery Video Component
-const GalleryVideo = memo(({ src, poster, className = "" }) => {
+// Gallery Video Component - NO AUTOPLAY, plays on click
+const GalleryVideo = memo(({ src, poster, className = "", isPlaying, onTogglePlay }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Fast force play on render
-    const handleCanPlay = () => {
+    if (isPlaying) {
       video.play().catch(() => { });
-    };
-
-    video.addEventListener("canplaythrough", handleCanPlay);
-    video.play().catch(() => { });
-
-    return () => {
-      video.removeEventListener("canplaythrough", handleCanPlay);
-    };
-  }, [src]);
+    } else {
+      video.pause();
+    }
+  }, [isPlaying]);
 
   return (
-    <div className="relative w-full h-full bg-black/20 overflow-hidden">
+    <div
+      className="relative w-full h-full bg-black/20 overflow-hidden cursor-pointer"
+      onClick={onTogglePlay}
+    >
       <video
         ref={videoRef}
         className={`w-full h-full object-cover ${className}`}
@@ -89,19 +86,28 @@ const GalleryVideo = memo(({ src, poster, className = "" }) => {
         playsInline
         muted
         loop
-        autoPlay
         preload="metadata"
       >
-        {/* Adding #t=0.1 forces instant preview render */}
-        <source src={`${src}#t=0.1`} type="video/mp4" />
+        <source src={src} type="video/mp4" />
       </video>
+
+      {/* Play/Pause Overlay */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-opacity duration-300">
+          {/* <div className="w-16 h-16 rounded-full bg-gold-base/80 flex items-center justify-center"> */}
+          <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          {/* </div> */}
+        </div>
+      )}
     </div>
   );
 });
 
 GalleryVideo.displayName = "GalleryVideo";
 
-// Full Screen Slider Video
+// Slider Video - PLAYS ONLY WHEN ACTIVE
 const SliderVideo = ({ src, poster, isActive }) => {
   const videoRef = useRef(null);
 
@@ -125,10 +131,9 @@ const SliderVideo = ({ src, poster, isActive }) => {
       playsInline
       muted
       loop
-      autoPlay
       preload="auto"
     >
-      <source src={`${src}#t=0.1`} type="video/mp4" />
+      <source src={src} type="video/mp4" />
     </video>
   );
 };
@@ -245,6 +250,13 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
 
 // Gallery Item
 const GalleryItem = memo(({ item, index, onClick }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleTogglePlay = (e) => {
+    e.stopPropagation();
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <div
       className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-gold-base/15 group shadow-lg cursor-pointer"
@@ -255,6 +267,8 @@ const GalleryItem = memo(({ item, index, onClick }) => {
           src={item.video}
           poster={item.image || ""}
           className="transition-transform duration-700 group-hover:scale-105"
+          isPlaying={isPlaying}
+          onTogglePlay={handleTogglePlay}
         />
       ) : item.image ? (
         <Image
@@ -266,11 +280,14 @@ const GalleryItem = memo(({ item, index, onClick }) => {
         />
       ) : null}
 
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center z-20">
-        <span className="text-white/0 group-hover:text-white/80 text-sm tracking-wider uppercase font-serif-heading transition-all duration-300">
-          Click to view
-        </span>
-      </div>
+      {/* Hover overlay - only show for non-video or if video not playing */}
+      {!item.video || !isPlaying ? (
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center z-20">
+          <span className="text-white/0 group-hover:text-white/80 text-sm tracking-wider uppercase font-serif-heading transition-all duration-300">
+            {/* {item.video ? "Click to play" : "Click to view"} */}
+          </span>
+        </div>
+      ) : null}
     </div>
   );
 });
