@@ -37,7 +37,7 @@ export default function Services() {
       {/* Background radial soft light */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold-base/3 rounded-full blur-[130px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="container relative z-10">
 
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-20 flex flex-col items-center">

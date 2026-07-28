@@ -25,7 +25,7 @@ export default function BookingCTA() {
       <div
         className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle,#DC873E_1px,transparent_1px)] [background-size:26px_26px]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="container relative z-10">
 
         <div
           className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[42px] border border-gold-base/20 shadow-[0_20px_60px_rgba(0,0,0,.18)]">

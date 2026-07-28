@@ -120,7 +120,7 @@ export default function VenuesPage() {
       </section>
 
       {/* Venues Listing */}
-      <section className="py-20 md:py-28 max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-24">
+      <section className="container py-20 md:py-28 flex flex-col gap-24">
         {items.map((venue, idx) => {
           const isEven = idx % 2 === 0;
           return (
@@ -130,21 +130,20 @@ export default function VenuesPage() {
                 ${isEven ? "" : "lg:flex-row-reverse"}`}
             >
               {/* Visual Panel */}
-              <div className="w-full lg:w-1/2 aspect-[4/3] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">
-                {venue.video ? (
-                  <VideoPlayer
-                    src={venue.video}
-                    poster={venue.image}
-                    title={venue.title}
-                  />
-                ) : (
-                  <ParallaxImage
-                    src={venue.image}
-                    alt={venue.title}
-                    className="w-full h-full"
-                    yOffset={8}
-                  />
-                )}
+              <div className="w-full lg:w-1/2 aspect-[4/3] lg:aspect-auto lg:h-auto lg:self-stretch rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl relative">                {venue.video ? (
+                <VideoPlayer
+                  src={venue.video}
+                  poster={venue.image}
+                  title={venue.title}
+                />
+              ) : (
+                <ParallaxImage
+                  src={venue.image}
+                  alt={venue.title}
+                  className="w-full h-full"
+                  yOffset={8}
+                />
+              )}
                 <span className="absolute top-6 left-6 bg-maroon-dark/85 text-gold-base border border-gold-base/30 px-4 py-1.5 rounded-full font-serif-heading text-[9px] tracking-[0.25em] uppercase z-10">
                   {venue.tag}
                 </span>

@@ -59,7 +59,7 @@ export default function Packages() {
       <div className="absolute left-0 bottom-1/3 w-[400px] h-[400px] bg-gold-base/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.02)_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="container relative z-10">
 
         {/* Section Title */}
         <div className="text-center max-w-2xl mx-auto mb-20 flex flex-col items-center">

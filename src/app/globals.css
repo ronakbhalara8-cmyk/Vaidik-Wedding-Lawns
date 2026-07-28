@@ -96,6 +96,49 @@
 
 @layer utilities {
 
+  /* Shared page container: use `container` for the site's standard content width and gutters. */
+  .container {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      max-width: 40rem;
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 48rem;
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 64rem;
+      padding-inline: 3rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 80rem;
+      padding-inline: 4rem;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 80rem;
+      padding-inline: 5rem;
+    }
+  }
+
   /* Luxury gradients */
   .bg-grad-royal {
     background: linear-gradient(135deg, #813241 0%, #C09585 100%);

@@ -43,7 +43,7 @@ export default function PackagesPage() {
       </section>
 
       {/* Main Info */}
-      <section className="py-20 md:py-28 max-w-7xl mx-auto px-6 md:px-12">
+      <section className="container py-20 md:py-28">
         <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col items-center">
           <SplitReveal type="words" tag="h2" className="font-serif-heading text-2xl sm:text-4xl text-maroon-dark uppercase leading-tight font-bold mb-4">
             Curated Services Crafted For Grand Unions

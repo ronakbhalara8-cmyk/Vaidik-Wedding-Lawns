@@ -53,7 +53,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Section */}
-      <section className="py-20 md:py-14 max-w-7xl mx-auto px-6 md:px-12">
+      <section className="container py-20 md:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
           {/* Info Details */}

@@ -51,7 +51,7 @@ export default function AboutPage() {
       </section>
 
       {/* Main Vision Story Section */}
-      <section className="py-20 md:py-28 max-w-7xl mx-auto px-6 md:px-12">
+      <section className="container py-20 md:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Parallax Image Grid */}
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl">
@@ -93,7 +93,7 @@ export default function AboutPage() {
       {/* Values Section */}
       <section className="py-20 bg-maroon-dark text-ivory relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.02)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        <div className="container relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col items-center">
             <FadeIn direction="down" duration={0.8}>
               <span className="font-serif-heading text-xs tracking-[0.3em] text-gold-base uppercase mb-4 block">

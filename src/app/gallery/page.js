@@ -329,7 +329,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <section className="py-14 md:py-28 max-w-7xl mx-auto px-6 md:px-12">
+      <section className="container py-14 md:py-28">
         <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
           {["all", "lawns", "mandaps", "banquet"].map((cat) => (
             <button

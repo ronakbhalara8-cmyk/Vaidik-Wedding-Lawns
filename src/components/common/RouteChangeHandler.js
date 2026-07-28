@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ScrollTrigger } from "@/lib/gsap";
 
 export default function RouteChangeHandler() {
     const pathname = usePathname();
@@ -31,29 +30,20 @@ export default function RouteChangeHandler() {
             }
         }
 
-        // Delayed refresh to ensure new page DOM, fonts, and images settle
-        const t1 = setTimeout(() => {
+        // Let the new route commit before recalculating Lenis. Calling a
+        // global ScrollTrigger.refresh() twice on every click forces costly
+        // layout work and made navbar navigation feel unresponsive.
+        const frame = requestAnimationFrame(() => {
             try {
                 if (window.__lenis__) window.__lenis__.resize();
-                ScrollTrigger.refresh();
-            } catch (e) {
-                // Silent
-            }
-        }, 100);
-
-        const t2 = setTimeout(() => {
-            try {
-                if (window.__lenis__) window.__lenis__.resize();
-                ScrollTrigger.refresh();
             } catch (e) {
                 // Silent
             }
             window._suppressAnimationErrors = false;
-        }, 400);
+        });
 
         return () => {
-            clearTimeout(t1);
-            clearTimeout(t2);
+            cancelAnimationFrame(frame);
         };
     }, [pathname]);
 

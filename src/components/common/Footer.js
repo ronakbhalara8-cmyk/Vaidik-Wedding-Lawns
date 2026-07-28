@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Heart, Share2, Clock, ArrowRight } from "lucide-react";
 import Button from "../ui/Button";
-import SplitReveal from "../ui/SplitReveal";
 
 export default function Footer() {
   const handleSubmit = (e) => {
@@ -12,14 +11,11 @@ export default function Footer() {
     alert("Thank you for subscribing to our luxury newsletter.");
   };
 
-  // Function to handle Home click with page refresh
   const handleHomeClick = (e) => {
     const currentPath = window.location.pathname;
     if (currentPath === "/") {
-      // If already on home page, just refresh
       window.location.reload();
     } else {
-      // Navigate to home with full page refresh
       window.location.href = "/";
     }
   };
@@ -29,11 +25,10 @@ export default function Footer() {
       {/* Subtle luxury pattern background effect */}
       <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.03)_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="container relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-4">
           {/* Brand Info */}
           <div className="flex flex-col gap-6">
-            {/* Logo - Now using regular anchor tag for full page refresh */}
             <a href="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
               <div className="relative w-24 h-24 overflow-hidden rounded-full border border-gold-base/30">
                 <Image
@@ -144,18 +139,24 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="py-5">
-          <SplitReveal
-            type="chars"
-            tag="h1"
-            className="font-serif-heading text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl tracking-widest uppercase font-bold text-shadow-premium text-gold-light"
-          >
-            Vaidik Wedding Lawns
-          </SplitReveal>
+        {/* PERFECT FULL-WIDTH STRETCHED TEXT (SVG) */}
+        <div className="pt-4 pb-2 sm:pt-6 sm:pb-3 md:pt-8 md:pb-4 lg:pt-10 lg:pb-5 w-full select-none overflow-hidden">
+          <svg viewBox="0 0 1000 90" className="w-full h-auto block">
+            <text
+              x="0"
+              y="70"
+              textLength="1000"
+              lengthAdjust="spacingAndGlyphs"
+              className="font-serif-heading font-bold uppercase fill-[#ffffff] text-shadow-premium"
+              style={{ fontSize: "72px" }}
+            >
+              VAIDIK WEDDING LAWNS
+            </text>
+          </svg>
         </div>
 
         {/* Footer Bottom copyright & terms */}
-        <p className="text-xs text-end">© {new Date().getFullYear()} Vaidik Wedding Lawns. All rights reserved.</p>
+        <p className="text-xs text-end text-ivory/50">© {new Date().getFullYear()} Vaidik Wedding Lawns. All rights reserved.</p>
       </div>
     </footer>
   );

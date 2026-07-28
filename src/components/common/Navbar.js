@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Calendar } from "lucide-react";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
@@ -22,12 +22,22 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const mobileMenuRef = useRef(null);
   const backdropRef = useRef(null);
   const linkRefs = useRef([]);
 
   // Check if current route is book-visit
   const isBookVisitPage = pathname === "/book-visit";
+
+  // Mobile links are outside the viewport while the drawer is closed, so
+  // Next.js cannot automatically prefetch them. Warm each primary route once
+  // the navbar has hydrated to make the first tap responsive as well.
+  useEffect(() => {
+    [...navLinks.map(({ href }) => href), "/book-visit"].forEach((href) => {
+      if (href !== pathname) router.prefetch(href);
+    });
+  }, [pathname, router]);
 
   // Scroll effect - always scrolled true on book-visit page
   useEffect(() => {
@@ -49,10 +59,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isBookVisitPage]);
 
-  // Close drawer on route change
-  useEffect(() => {
+  const closeMenuForNavigation = () => {
     setIsOpen(false);
-  }, [pathname]);
+  };
 
   // Handle body scroll lock
   useEffect(() => {
@@ -164,7 +173,7 @@ export default function Navbar() {
           : "bg-transparent py-4"
           }`}
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12 flex items-center justify-between">
+        <div className="container flex items-center justify-between">
           {/* LOGO */}
           <Link
             href="/"
@@ -212,6 +221,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
+                  prefetch
                   className={`relative tracking-[0.2em] text-sm  ${active
                     ? "text-gold-base"
                     : "text-white  hover:text-gold-light"
@@ -266,7 +276,8 @@ export default function Navbar() {
       {/* MOBILE DRAWER */}
       <aside
         ref={mobileMenuRef}
-        className="fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 py-9 flex flex-col shadow-2xl"
+        aria-hidden={!isOpen}
+        className={`fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 py-9 flex flex-col shadow-2xl ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Navigation - takes available space and scrolls if needed */}
         <div className="flex flex-col justify-between gap-6 mt-16">
@@ -302,6 +313,8 @@ export default function Navbar() {
                 >
                   <Link
                     href={link.href}
+                    prefetch
+                    onNavigate={closeMenuForNavigation}
                     className={`block text-lg uppercase tracking-[0.15em] font-serif-heading ${active
                       ? "text-gold-base"
                       : "text-ivory/75 hover:text-gold-light"
@@ -317,6 +330,7 @@ export default function Navbar() {
           <div className="flex-shrink-0 space-y-4 pt-4 border-t border-gold-base/10">
             <Button
               href="/book-visit"
+              onNavigate={closeMenuForNavigation}
               variant="secondary"
               className="w-full justify-center"
             >
