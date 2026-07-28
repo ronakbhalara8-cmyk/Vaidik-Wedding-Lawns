@@ -1,215 +1,213 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
+import { useLayoutEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import Button from "../ui/Button";
 
 const venues = [
   {
     title: "The Strategist Hall",
+    subtitle: "Corporate & Elite Gatherings",
     capacity: "Up to 90 guests",
-    bestFor: "Board meetings, strategy sessions, corporate",
-    features: "Interactive displays, soundproofing music",
+    bestFor: "Board meetings, strategy sessions",
+    features: "Interactive displays, soundproofing, ambient lighting",
     style: "Sleek, corporate-focused, minimalist",
     video: "/videos/slider-1.mp4",
     image: "/images/about.png",
+    pillBg: "from-[#8d2c3f] to-[#813241]",
   },
   {
     title: "The Garden Courtyard",
+    subtitle: "Open-Air Floral Elegance",
     capacity: "Up to 200 guests",
-    bestFor: "Weddings, parties, and brunch parties",
+    bestFor: "Weddings, parties, and brunch events",
     features: "Manicured lawns, floral archways, lush greenery",
     style: "Romantic, nature-inspired",
     video: "/videos/slider-2.mp4",
     image: "/images/venue-2.jpg",
+    pillBg: "from-[#2A2724] to-[#813241]",
   },
   {
     title: "The Forever Pavilion",
+    subtitle: "Grand Wedding Destination",
     capacity: "Up to 800 guests",
-    bestFor: "Private weddings, pre-wedding functions",
-    features: "Garden view, cozy layout, custom floral, parties",
-    style: "Intimate, nature-tucked, boho vibes",
+    bestFor: "Private weddings, grand functions",
+    features: "Garden view, cozy layout, custom floral setups",
+    style: "Intimate, nature-tucked, royal vibes",
     video: "/videos/slider-3.mp4",
     image: "/images/venue-3.jpg",
+    pillBg: "from-[#813241] to-[#2A2724]",
   },
 ];
 
 export default function VenuesHorizontal() {
   const containerRef = useRef(null);
-  const slidesRef = useRef([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const ctx = gsap.context(() => {
-      const slides = slidesRef.current.filter(Boolean);
-      const totalSlides = slides.length;
+      const totalSlides = venues.length;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top top",
-          end: () => `+=${totalSlides * 100}%`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      slides.forEach((slide, i) => {
-        if (!slide || i === 0) return;
-
-        const prevSlide = slides[i - 1];
-        if (!prevSlide) return;
-
-        const prevMedia = prevSlide.querySelector(".slide-media");
-        const prevCard = prevSlide.querySelector(".info-card");
-
-        const currentMedia = slide.querySelector(".slide-media");
-        const currentCard = slide.querySelector(".info-card");
-
-        // Set initial state for incoming current slide
-        gsap.set(currentMedia, { filter: "blur(0px)", opacity: 1, scale: 1 });
-
-        tl.to(
-          prevMedia,
-          {
-            filter: "blur(12px)",
-            scale: 0.9,
-            opacity: 0.4,
-            duration: 1,
-            ease: "power1.inOut",
-          },
-          `slide-${i}`
-        )
-          .to(
-            prevCard,
-            {
-              opacity: 0,
-              y: -20,
-              duration: 0.5,
-            },
-            `slide-${i}`
-          )
-          .fromTo(
-            slide,
-            { xPercent: 100 },
-            { xPercent: 0, duration: 1, ease: "power1.inOut" },
-            `slide-${i}`
-          )
-          .fromTo(
-            currentCard,
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-            },
-            "-=0.3"
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: () => `+=${totalSlides * 100}%`,
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        scrub: 0.8,
+        onUpdate: (self) => {
+          const index = Math.min(
+            Math.floor(self.progress * totalSlides),
+            totalSlides - 1
           );
+          setActiveIndex(index);
+        },
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    ScrollTrigger.refresh();
+
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   return (
     <section
       ref={containerRef}
-      className="w-full h-screen h-[100dvh] bg-[var(--color-maroon-dark)] overflow-hidden relative flex items-center justify-center"
+      className="relative w-full h-[100dvh] bg-[#FDF2EF] text-[#2A2724] flex flex-col justify-between items-center py-4 sm:py-8 overflow-hidden"
+      style={{ isolation: "isolate" }}
     >
-      <div className="relative w-full h-full p-3 sm:p-6 md:p-14 pt-20 sm:pt-24 md:pt-28 flex items-center justify-center">
-        {/* Outer Section Frame */}
-        <div className="relative w-full h-full max-w-7xl rounded-2xl md:rounded-3xl shadow-2xl border border-[var(--color-gold-base)]/20 bg-black overflow-hidden">
-          {venues.map((venue, idx) => (
-            <div
-              key={idx}
-              ref={(el) => {
-                slidesRef.current[idx] = el;
-              }}
-              className="absolute inset-0 w-full h-full flex items-end justify-end"
-              style={{ zIndex: idx + 1 }}
-            >
-              {/* Video Background - Removed static blur-md and opacity-60 so incoming videos are crisp */}
-              <div className="slide-media absolute inset-0 w-full h-full transition-all duration-300">
-                <video
-                  src={venue.video}
-                  poster={venue.image}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-                {/* Soft Gradient Overlay */}
-                {/* <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" /> */}
-              </div>
+      <div className="w-full container flex flex-col h-full justify-between z-10">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-12 text-center md:text-left shrink-0">
+          <div className="inline-flex items-center gap-2 px-3 py-0.5 sm:py-1 rounded-full bg-[#8d2c3f]/10 border border-[#8d2c3f]/20 mb-1 sm:mb-2 backdrop-blur-md">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#DC873E] animate-pulse" />
+            <span className="text-[9px] sm:text-xs font-semibold tracking-[0.2em] text-[#8d2c3f] uppercase">
+              Exclusive Venues
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-4xl md:text-5xl font-serif-heading font-bold text-[#8d2c3f] tracking-wide">
+            Our Venue Collections
+          </h2>
+        </div>
 
-              {/* White Overlay Content Card */}
+        {/* Dynamic Responsive Accordion Container */}
+        <div className="relative w-full flex-1 flex flex-col md:flex-row gap-2 sm:gap-4 md:gap-5 overflow-hidden my-auto h-[calc(100vh-140px)] md:h-auto max-h-[85vh] md:max-h-[700px]">
+          {venues.map((venue, idx) => {
+            const isActive = activeIndex === idx;
+
+            return (
               <div
-                className={`info-card relative z-10 m-3 sm:m-6 md:m-8 w-full max-w-xs sm:max-w-md lg:max-w-lg bg-white/95 backdrop-blur-lg rounded-2xl p-4 sm:p-6 lg:p-7 text-[var(--color-dark-brown)] shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[var(--color-gold-light)]/60 transform transition-all ${idx === 0
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-6"
+                key={idx}
+                className={`relative rounded-xl sm:rounded-2xl md:rounded-[32px] overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] flex-shrink-0 select-none ${isActive
+                  ? "flex-1 shadow-[0_15px_30px_rgba(141,44,63,0.2)] border border-[#DC873E]/40 min-h-0"
+                  : "h-11 sm:h-14 md:h-full md:w-20 lg:w-24 opacity-90 hover:opacity-100 border border-[#8d2c3f]/20"
                   }`}
               >
-                {/* Accent Tag */}
-                <span className="inline-block px-2.5 py-0.5 sm:px-3 sm:py-1 mb-2 sm:mb-3 text-[10px] sm:text-xs font-bold tracking-widest text-[var(--color-maroon-dark)] uppercase bg-[var(--color-ivory)] rounded-full border border-[var(--color-gold-light)]">
-                  Exclusive Venue
-                </span>
+                {/* 1. EXPANDED ACTIVE CARD */}
+                {isActive ? (
+                  <div className="relative w-full h-full bg-[#2A2724] flex flex-col justify-between p-3.5 sm:p-6 md:p-10 text-[#FDF2EF]">
+                    {/* Video Layer */}
+                    <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+                      <video
+                        src={venue.video}
+                        poster={venue.image}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover opacity-35 scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#2A2724] via-[#2A2724]/75 to-[#8d2c3f]/40" />
+                    </div>
 
-                {/* Title */}
-                <div className="border-b border-[var(--color-gold-base)]/30 pb-2 sm:pb-3 mb-3 sm:mb-4">
-                  <h3 className="font-serif-heading text-lg sm:text-2xl lg:text-3xl font-bold tracking-wide text-[var(--color-maroon-dark)] leading-snug">
-                    {venue.title}
-                  </h3>
-                </div>
+                    {/* Top Badge */}
+                    <div className="relative z-10 flex items-center justify-between gap-2 shrink-0">
+                      <span className="px-2.5 py-0.5 sm:px-3.5 sm:py-1 text-[9px] sm:text-xs font-bold tracking-widest uppercase bg-[#2A2724]/80 backdrop-blur-md rounded-full border border-[#DC873E]/40 text-[#DC873E]">
+                        {venue.subtitle}
+                      </span>
+                      <span className="font-mono text-[10px] sm:text-sm font-semibold tracking-widest text-[#DC873E]">
+                        0{idx + 1} / 0{venues.length}
+                      </span>
+                    </div>
 
-                {/* Venue Details */}
-                <div className="space-y-2 text-xs sm:text-sm text-[var(--color-charcoal)] font-sans">
-                  <div className="flex items-start justify-start gap-2 sm:gap-2.5">
-                    <span className="font-bold text-[var(--color-maroon-base)] min-w-[65px] sm:min-w-[75px] shrink-0">
-                      Capacity:
-                    </span>
-                    <span className="font-medium text-slate-700">
-                      {venue.capacity}
-                    </span>
+                    {/* Venue Information Container */}
+                    <div className="relative z-10 space-y-2 sm:space-y-4 mt-auto pt-2 max-h-full">
+                      <h3 className="font-serif-heading text-lg sm:text-3xl lg:text-5xl font-bold text-[#FDF2EF] tracking-wide leading-tight drop-shadow-md">
+                        {venue.title}
+                      </h3>
+
+                      {/* Info Box */}
+                      <div className="bg-[#2A2724]/85 backdrop-blur-xl p-3 sm:p-5 rounded-lg sm:rounded-2xl border border-[#DC873E]/30 shadow-2xl max-w-2xl">
+                        <div className="grid grid-cols-2 gap-2 sm:gap-4 text-[11px] sm:text-sm text-[#FDF2EF]">
+                          <div className="flex flex-col">
+                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
+                              Capacity
+                            </span>
+                            <span className="text-[#FDF2EF] font-medium mt-0.5 truncate">
+                              {venue.capacity}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
+                              Style
+                            </span>
+                            <span className="text-[#FDF2EF] font-medium mt-0.5 truncate">
+                              {venue.style}
+                            </span>
+                          </div>
+                          <div className="flex flex-col col-span-2 border-t border-white/10 pt-1.5 sm:pt-2">
+                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
+                              Best For
+                            </span>
+                            <span className="text-[#FDF2EF] font-medium mt-0.5 line-clamp-1 sm:line-clamp-none">
+                              {venue.bestFor}
+                            </span>
+                          </div>
+                          <div className="flex flex-col col-span-2 border-t border-white/10 pt-1.5 sm:pt-2">
+                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
+                              Key Features
+                            </span>
+                            <span className="text-[#FDF2EF] font-medium mt-0.5 line-clamp-2 sm:line-clamp-none">
+                              {venue.features}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                ) : (
+                  /* 2. COLLAPSED PILL TAB (Mobile optimized) */
+                  <div
+                    className={`relative w-full h-full bg-gradient-to-b ${venue.pillBg} flex items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl md:rounded-[32px] cursor-pointer`}
+                  >
+                    {/* Desktop View */}
+                    <div className="hidden md:flex flex-col items-center justify-between h-full py-6">
+                      <span className="font-mono text-xs font-bold text-[#DC873E]">
+                        0{idx + 1}
+                      </span>
+                      <div className="rotate-[-90deg] whitespace-nowrap text-[#FDF2EF] font-serif-heading font-semibold tracking-widest text-xs lg:text-sm uppercase drop-shadow-md">
+                        {venue.title}
+                      </div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#DC873E]" />
+                    </div>
 
-                  <div className="flex items-start justify-start gap-2 sm:gap-2.5">
-                    <span className="font-bold text-[var(--color-maroon-base)] min-w-[65px] sm:min-w-[75px] shrink-0">
-                      Best for:
-                    </span>
-                    <span className="font-medium text-slate-700">
-                      {venue.bestFor}
-                    </span>
+                    {/* Mobile View Strip */}
+                    <div className="md:hidden flex items-center justify-between w-full px-3 text-[#FDF2EF] font-serif-heading text-[11px] sm:text-xs uppercase tracking-wider font-semibold">
+                      <span className="truncate pr-2">{venue.title}</span>
+                      <span className="text-[10px] sm:text-xs text-[#DC873E] font-mono font-bold">
+                        0{idx + 1}
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="flex items-start justify-start gap-2 sm:gap-2.5">
-                    <span className="font-bold text-[var(--color-maroon-base)] min-w-[65px] sm:min-w-[75px] shrink-0">
-                      Features:
-                    </span>
-                    <span className="font-medium text-slate-700">
-                      {venue.features}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start justify-start gap-2 sm:gap-2.5">
-                    <span className="font-bold text-[var(--color-maroon-base)] min-w-[65px] sm:min-w-[75px] shrink-0">
-                      Style:
-                    </span>
-                    <span className="font-medium text-slate-700">
-                      {venue.style}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Decorative Bottom Bar */}
-                <div className="w-full h-1 bg-gradient-to-r from-[var(--color-maroon-dark)] via-[var(--color-orange-warm)] to-[var(--color-gold-light)] rounded-full mt-4 sm:mt-5 opacity-80" />
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
