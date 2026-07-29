@@ -68,7 +68,7 @@ export default function WhyChooseUs() {
                 trigger: contentRef.current,
                 // Start pinning when the top of the content reaches 120px from the top of the viewport (leaves space for header)
                 start: "top 120px",
-                end: () => `+=${window.innerHeight * 1.5}`, // Adjusted scroll distance for better UX
+                end: () => `+=${window.innerHeight * 5}`, // Adjusted scroll distance for better UX
                 pin: true,
                 pinSpacing: true,
                 scrub: 1,
