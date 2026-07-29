@@ -11,6 +11,10 @@ import {
   Car,
   Trees,
   CheckCircle2,
+  Globe,         // NEW: NRI / International
+  Building2,     // NEW: Corporate
+  Film,          // NEW: Film & Fashion
+  Crown,         // NEW: Premium Branding
 } from "lucide-react";
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
@@ -83,6 +87,12 @@ const values = [
       "We act as your extended family—coordinating logistics, decor, and timelines so you can enjoy your special day stress-free.",
   },
 ];
+
+// ============================================================
+// 🆕 NEW: Tagline from Image
+// ============================================================
+const brandTagline =
+  "First Choice for Weddings, Corporate Events & Laxmi Celebrations";
 
 export default function AboutPage() {
   return (
@@ -197,6 +207,11 @@ export default function AboutPage() {
               </p>
               <p>
                 Whether it is a royal Wedding, Sangeet Sandhya, Ring Ceremony, or Corporate Celebration—our venue blends traditional hospitality with modern amenities to give your guests an unforgettable experience.
+              </p>
+
+              {/* 🆕 NEW: Brand Tagline from Image */}
+              <p className="text-maroon-dark font-medium text-sm sm:text-base border-l-4 border-gold-base pl-4 italic">
+                "{brandTagline}"
               </p>
             </FadeIn>
 
@@ -327,7 +342,7 @@ export default function AboutPage() {
           </p>
           <div className="mt-6">
             <a
-              href="https://www.google.com/maps/place/Vaidik+Lawns/@21.2554393,72.7932418,17z/data=!3m1!4b1!4m6!3m5!1s0x3be04bb4c96faac1:0x23787582c7f01b85!8m2!3d21.2554343!4d72.7958167!16s%2Fg%2F11xcf2p1k3?entry=ttu&g_ep=EgoyMDI2MDcyNi4wIKXMDSoASAFQAw%3D%3D"
+              href="https://www.google.com/maps/place/Vaidik+Lawns/@21.2554393,72.7932418,17z/data=!3m1!4b1!4m6!5m3!1s0x3be04bb4c96faac1:0x23787582c7f01b85!8m2!3d21.2554343!4d72.7958167!16s%2Fg%2F11xcf2p1k3?entry=ttu"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 bg-maroon-dark hover:bg-maroon-base text-gold-light text-xs sm:text-sm tracking-widest uppercase font-semibold px-6 py-3 rounded-full transition-all duration-300 shadow-lg"

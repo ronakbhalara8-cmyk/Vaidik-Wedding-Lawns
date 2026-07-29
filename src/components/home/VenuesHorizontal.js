@@ -7,18 +7,18 @@ const venues = [
   {
     title: "The Strategist Hall",
     subtitle: "Corporate & Elite Gatherings",
-    capacity: "Up to 90 guests",
+    capacity: "Up to 2000 guests",
     bestFor: "Board meetings, strategy sessions",
     features: "Interactive displays, soundproofing, ambient lighting",
     style: "Sleek, corporate-focused, minimalist",
-    video: "/videos/slider-1.mp4",
+    video: "/videos/banquet-hall.mp4",
     image: "/images/about.png",
     pillBg: "from-[#8d2c3f] to-[#813241]",
   },
   {
     title: "The Garden Courtyard",
     subtitle: "Open-Air Floral Elegance",
-    capacity: "Up to 200 guests",
+    capacity: "Up to 2000+ guests",
     bestFor: "Weddings, parties, and brunch events",
     features: "Manicured lawns, floral archways, lush greenery",
     style: "Romantic, nature-inspired",
@@ -29,7 +29,7 @@ const venues = [
   {
     title: "The Forever Pavilion",
     subtitle: "Grand Wedding Destination",
-    capacity: "Up to 800 guests",
+    capacity: "Up to 2000+ guests",
     bestFor: "Private weddings, grand functions",
     features: "Garden view, cozy layout, custom floral setups",
     style: "Intimate, nature-tucked, royal vibes",
@@ -122,7 +122,7 @@ export default function VenuesHorizontal() {
                         playsInline
                         className="w-full h-full object-cover opacity-35 scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#2A2724] via-[#2A2724]/75 to-[#8d2c3f]/40" />
+                      {/* <div className="absolute inset-0 bg-gradient-to-t from-[#2A2724] via-[#2A2724]/75 to-[#8d2c3f]/40" /> */}
                     </div>
 
                     {/* Top Badge */}

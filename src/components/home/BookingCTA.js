@@ -92,7 +92,7 @@ export default function BookingCTA() {
 
               <div className="mt-8 w-full sm:mt-10 lg:mt-14">
 
-                <Button href="/book-visit" variant="secondary"
+                <Button href="/contact" variant="secondary"
                   className="w-full sm:w-auto sm:min-w-[260px] lg:min-w-[320px]">
                   Schedule Private Walkthrough
                 </Button>

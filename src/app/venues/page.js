@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Calendar, Users, Map, Compass, Play } from "lucide-react";
+import { Check, Calendar, Users, Map, Compass, Play, Globe, Building2, Film, Crown, CheckCircle2 } from "lucide-react";
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
@@ -53,6 +53,50 @@ const items = [
     ],
   },
 ];
+
+// ============================================================
+// 🆕 NEW: Target Audience Data (from Image)
+// ============================================================
+const targetAudience = [
+  {
+    icon: Crown,
+    title: "Premium Gujarati Families",
+    desc: "Surat's elite families seeking world-class wedding experiences.",
+  },
+  {
+    icon: Globe,
+    title: "NRI & International Clients",
+    desc: "Gujarati families from USA, Canada, UK, Australia & UAE.",
+  },
+  {
+    icon: Building2,
+    title: "Corporate Companies",
+    desc: "Hosting galas, conferences, team-building, and brand events.",
+  },
+  {
+    icon: Film,
+    title: "Film, Fashion & Lifestyle",
+    desc: "Fashion shows, film shoots, product launches & lifestyle events.",
+  },
+];
+
+// ============================================================
+// 🆕 NEW: Revenue Sources (from Image)
+// ============================================================
+const revenueSources = [
+  "Wedding Bookings",
+  "Receptions",
+  "Engagements / Ring Ceremonies",
+  "Corporate Events",
+  "Sangeet & Mehendi",
+  "Anniversary & Birthday Parties",
+];
+
+// ============================================================
+// 🆕 NEW: Tagline from Image
+// ============================================================
+const brandTagline =
+  "First Choice for Weddings, Corporate Events & Laxmi Celebrations";
 
 // Video Component with Lazy Loading
 const VideoPlayer = ({ src, title }) => {
@@ -287,7 +331,7 @@ export default function VenuesPage() {
                 {/* CTA actions */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 w-full">
                   <Button
-                    href="/book-visit"
+                    href="/contact"
                     variant="secondary"
                     className="flex-1 w-full px-4 sm:px-6 py-3 sm:py-3.5 text-[8px] sm:text-[9px] md:text-[10px] tracking-[0.15em] sm:tracking-[0.2em] whitespace-nowrap"
                   >
@@ -307,6 +351,107 @@ export default function VenuesPage() {
           );
         })}
       </section>
-    </div>
+
+      {/* ============================================================
+          🆕 NEW SECTION: TARGET AUDIENCE (from Image)
+          ============================================================ */}
+
+      <div className="container">
+        <div className="text-center max-w-2xl mx-auto mb-12 flex flex-col items-center">
+          <FadeIn direction="down" duration={0.4}>
+            <span className="font-serif-heading text-xs tracking-[0.3em] text-gold-base uppercase mb-2 block font-semibold">
+              Who We Serve
+            </span>
+          </FadeIn>
+          <SplitReveal
+            type="words"
+            tag="h2"
+            className="font-serif-heading text-3xl md:text-4xl uppercase tracking-wide font-bold text-maroon-dark"
+          >
+            Our Valued Clientele
+          </SplitReveal>
+          <p className="text-sm text-charcoal/70 mt-2 font-light max-w-md">
+            From local royalty to global celebrations — we welcome everyone.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {targetAudience.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <FadeIn
+                key={idx}
+                direction="up"
+                duration={0.2}
+                delay={idx * 0.1}
+              >
+                <div className="bg-white border border-gold-base/20 rounded-2xl p-6 text-center hover:border-gold-base/60 hover:shadow-lg transition-all duration-300 group">
+                  <div className="w-14 h-14 rounded-full bg-maroon-dark/5 text-maroon-dark group-hover:bg-maroon-dark group-hover:text-gold-light flex items-center justify-center transition-colors duration-300 mx-auto mb-4 border border-maroon-dark/10">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-serif-heading text-base font-bold text-maroon-dark mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-charcoal/60 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </FadeIn>
+            );
+          })}
+        </div>
+
+        {/* NRI Highlight Badge */}
+        <div className="mt-8 text-center">
+          <span className="inline-flex items-center gap-2 bg-maroon-dark/5 border border-gold-base/20 rounded-full px-6 py-2 text-xs text-maroon-dark font-medium">
+            <Globe className="w-4 h-4 text-gold-base" />
+            Welcoming NRI families from USA, Canada, UK, Australia & UAE
+          </span>
+        </div>
+      </div>
+
+      {/* ============================================================
+          🆕 NEW SECTION: REVENUE SOURCES (from Image)
+          ============================================================ */}
+      <section className="sm:py-24 py-16 bg-cream">
+        <div className="container max-w-4xl">
+          <div className="text-center max-w-2xl mx-auto mb-10 flex flex-col items-center">
+            <FadeIn direction="down" duration={0.4}>
+              <span className="font-serif-heading text-xs tracking-[0.3em] text-gold-base uppercase mb-2 block font-semibold">
+                Our Services
+              </span>
+            </FadeIn>
+            <SplitReveal
+              type="words"
+              tag="h2"
+              className="font-serif-heading text-3xl md:text-4xl uppercase tracking-wide font-bold text-maroon-dark"
+            >
+              Event Solutions
+            </SplitReveal>
+            <p className="text-sm text-charcoal/70 mt-2 font-light">
+              Comprehensive event solutions under one roof.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {revenueSources.map((item, idx) => (
+              <FadeIn
+                key={idx}
+                direction="up"
+                duration={0.2}
+                delay={idx * 0.08}
+              >
+                <div className="bg-white border border-gold-base/20 rounded-xl p-4 text-center hover:border-gold-base/50 hover:shadow-md transition-all duration-300">
+                  <CheckCircle2 className="w-5 h-5 text-gold-base mx-auto mb-2" />
+                  <span className="text-xs sm:text-sm font-medium text-maroon-dark">
+                    {item}
+                  </span>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div >
   );
 }

@@ -11,7 +11,7 @@ const packages = [
     subtitle: "Intimate & Elegant Ceremonies",
     price: "Custom Quote",
     features: [
-      "Lawn & Banquet access for up to 300 guests",
+      "Lawn & Banquet access for up to 2000 guests",
       "Traditional floral mandap setup",
       "Curated multi-course vegetarian buffet dinner",
       "1 Luxury air-conditioned dressing suite",
@@ -25,7 +25,7 @@ const packages = [
     subtitle: "Grand & Regal Royal Celebrations",
     price: "Custom Quote",
     features: [
-      "Expanded Lawn capacity for up to 800 guests",
+      "Expanded Lawn capacity for up to 2000+ guests",
       "Premium thematic floral decor & entrance canopy",
       "Gourmet multi-cuisine live buffet counters",
       "2 Luxury air-conditioned dressing suites",
@@ -39,7 +39,7 @@ const packages = [
     subtitle: "Opulent & Bespoke Imperial Experience",
     price: "Custom Quote",
     features: [
-      "Full venue access for up to 1,200 guests",
+      "Full venue access for up to 2000+ guests",
       "Bespoke luxury theme decor & floral canopy styling",
       "Elite Michelin-inspired live culinary stations",
       "4 Luxury dressing suites & VIP lounge access",
@@ -172,7 +172,7 @@ export default function PackagesPage() {
 
                 <div className="mt-auto pt-2">
                   <Button
-                    href="/book-visit"
+                    href="/contact"
                     variant={pkg.highlighted ? "secondary" : "outline"}
                     className="w-full text-center py-2.5 text-xs uppercase tracking-wider font-semibold"
                   >
@@ -234,7 +234,7 @@ export default function PackagesPage() {
             </p>
           </div>
           <div className="shrink-0 relative z-10 w-full md:w-auto">
-            <Button href="/book-visit" variant="secondary" className="flex items-center justify-center w-full md:w-auto text-xs py-3 px-6">
+            <Button href="/contact" variant="secondary" className="flex items-center justify-center w-full md:w-auto text-xs py-3 px-6">
               <Calendar className="w-4 h-4 mr-2" /> Inquire Custom Package
             </Button>
           </div>

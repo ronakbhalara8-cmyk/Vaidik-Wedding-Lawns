@@ -16,12 +16,12 @@ export default function Home() {
       <About />
       <VenuesHorizontal />
       <Services />
-      <WhyChooseUs />
       <Packages />
-      <ReviewSection />
+      <WhyChooseUs />
+      {/* <ReviewSection /> */}
       <InstaGallery />
       <TestimonialsSection />
-      <BookingCTA />
+      {/* <BookingCTA /> */}
     </>
   );
 }

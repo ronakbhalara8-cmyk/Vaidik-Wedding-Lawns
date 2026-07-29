@@ -19,7 +19,7 @@ const SLIDE_CONTENT = [
     title: "Vaidik Lawns - Where Dream Weddings Come True",
     description: "Celebrate your grand union amidst lush manicured lawns, majestic mandaps, and curated hospitality crafted for royals.",
     buttonText: "Book a Venue Visit",
-    buttonLink: "/book-visit",
+    buttonLink: "/contact",
     secondButtonText: "Request a Quote",
     secondButtonLink: "/contact",
     nextPreview: "Celebrate Love"
@@ -51,7 +51,7 @@ const SLIDE_CONTENT = [
     buttonText: "View Packages",
     buttonLink: "/packages",
     secondButtonText: "Book Now",
-    secondButtonLink: "/book-visit",
+    secondButtonLink: "/contact",
     nextPreview: "Your Dream"
   },
   {

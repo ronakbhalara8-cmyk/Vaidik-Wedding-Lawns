@@ -6,67 +6,67 @@ import { Star, Quote, Award, Calendar, Sparkles, ThumbsUp } from "lucide-react";
 const testimonials = [
     {
         id: 1,
-        quote: "Our wedding at this venue was beyond perfect. The team handled every detail with care, leaving me with a sense of genuine professionalism.",
-        author: "David Leesen",
+        quote: "It is very huge party plot. Also huge car parking over there. And also provide all facilities",
+        author: "Parth Manjarawala",
         role: "MANAGER",
         rating: 5,
-        avatar: "DL",
-        date: "March 2021",
+        avatar: "PM",
+        date: "March 2026",
         category: "Wedding",
         verified: true,
     },
     {
         id: 2,
-        quote: "This venue has become our go-to for client meetings and team off-sites. The atmosphere is professional and welcoming.",
-        author: "David Thompson",
+        quote: "From traditional ceremonies to modern weddings, this place is perfect for every occasion. Highly satisfied.",
+        author: "Anil Jetani",
         role: "CEO, GREENTREE CONSULTING",
         rating: 5,
-        avatar: "DT",
-        date: "February 2022",
+        avatar: "AJ",
+        date: "October 2025",
         category: "Corporate",
         verified: true,
     },
     {
         id: 3,
-        quote: "An exceptional venue that exceeded all our expectations. The staff was incredibly professional and attentive.",
-        author: "Sarah Johnson",
+        quote: "The most beautiful place to make your wedding memorable is Vedic Lawns",
+        author: "Hansrajsinh Rathod",
         role: "EVENT COORDINATOR",
         rating: 5,
-        avatar: "SJ",
-        date: "January 2023",
+        avatar: "HR",
+        date: "November 2025",
         category: "Event",
         verified: false,
     },
     {
         id: 4,
-        quote: "The perfect venue for our Wedding retreat. Beautiful spaces and outstanding service throughout.",
-        author: "Michael Chen",
+        quote: "A perfect blend of tradition and luxury. Mayra function was celebrated beautifully at Vaidik Lawns.",
+        author: "Mahek Madaliya",
         role: "DIRECTOR OF OPERATIONS",
         rating: 5,
-        avatar: "MC",
-        date: "December 2024",
+        avatar: "MM",
+        date: "March 2025",
         category: "Wedding",
         verified: true,
     },
     {
         id: 5,
-        quote: "Absolutely stunning venue! The attention to detail and customer service was second to none.",
+        quote: "It's new beginning of farm and it's have large spaace in Main vairav checkpost.",
         author: "Emma Williams",
         role: "EVENT PLANNER",
         rating: 5,
         avatar: "EW",
-        date: "November 2025",
+        date: "May 2026",
         category: "Event",
         verified: true,
     },
     {
         id: 6,
-        quote: "We've hosted multiple events here and every time the experience gets better. Highly recommended!",
-        author: "James Anderson",
+        quote: "If you want elegance and comfort, Vaidik Lawns is the right choice. Beautiful venue with great facilities.",
+        author: "THE MEDIA HUB",
         role: "CEO, ANDERSON GROUP",
         rating: 5,
-        avatar: "JA",
-        date: "March 2026",
+        avatar: "TM",
+        date: "October 2025",
         category: "Corporate",
         verified: false,
     }
@@ -188,7 +188,7 @@ export default function TestimonialsSection() {
     }
 
     return (
-        <section className="relative py-12 sm:py-16 md:py-20 lg:py-18 bg-cream border-t border-pink-light/30 overflow-hidden">
+        <section className="relative py-12 sm:py-16 md:py-20 lg:py-20 bg-cream border-t border-pink-light/30 overflow-hidden">
             <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
                 <div className="text-center mb-10 sm:mb-12 md:mb-16">
@@ -203,14 +203,12 @@ export default function TestimonialsSection() {
                         Real Stories from Real People
                     </h2>
 
-                    {/* <div className="w-12 h-0.5 bg-gold-base mt-4 mx-auto"></div> */}
-
                     <p className="font-sans text-sm sm:text-base md:text-lg text-charcoal/70 max-w-2xl mx-auto font-light">
                         Discover why thousands of clients trust us with their special moments
                     </p>
                 </div>
 
-                {/* Marquee Slider */}
+                {/* Marquee Slider - Shows 3 cards on big displays */}
                 <div
                     className="relative mt-8 md:mt-12 overflow-hidden"
                     onMouseEnter={() => setIsHovered(true)}
@@ -222,7 +220,7 @@ export default function TestimonialsSection() {
 
                     <div
                         ref={sliderRef}
-                        className="flex gap-6 will-change-transform"
+                        className="flex gap-4 sm:gap-6 will-change-transform"
                         style={{
                             transition: 'none',
                             width: 'fit-content'
@@ -232,7 +230,7 @@ export default function TestimonialsSection() {
                         {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
                             <div
                                 key={`${testimonial.id}-${index}`}
-                                className="flex-shrink-0 w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px]"
+                                className="flex-shrink-0 w-[280px] sm:w-[300px] md:w-[320px] lg:w-[340px] xl:w-[380px]"
                             >
                                 <div className="group relative bg-white rounded-2xl p-5 sm:p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gold-light/20 hover:border-gold-base/50 flex flex-col items-start text-left h-full min-h-[300px] sm:min-h-[320px]">
                                     {/* Verified Badge */}

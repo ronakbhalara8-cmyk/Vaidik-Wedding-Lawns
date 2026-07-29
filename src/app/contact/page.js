@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Calendar, Clock, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, Clock, Send, Loader2 } from "lucide-react";
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
@@ -16,14 +16,47 @@ export default function ContactPage() {
     message: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Clear status when user starts typing again
+    if (submitStatus) setSubmitStatus(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Thank you ${form.name}. Our senior wedding planner has received your request and will contact you shortly.`);
-    setForm({ name: "", email: "", phone: "", date: "", guests: "", message: "" });
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setForm({ name: "", email: "", phone: "", date: "", guests: "", message: "" });
+        // Auto-clear success message after 10 seconds
+        setTimeout(() => setSubmitStatus(null), 10000);
+      } else {
+        setSubmitStatus("error");
+        setTimeout(() => setSubmitStatus(null), 10000);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus(null), 10000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -116,6 +149,20 @@ export default function ContactPage() {
               Send Event Inquiry
             </h3>
 
+            {/* Success Message */}
+            {submitStatus === "success" && (
+              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm">
+                <strong>✓ Success!</strong> Your inquiry has been sent. Our senior wedding planner will contact you shortly.
+              </div>
+            )}
+
+            {/* Error Message */}
+            {submitStatus === "error" && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                <strong>⚠ Error!</strong> Failed to send your inquiry. Please try again or call us directly.
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 text-sm text-charcoal/80 font-light">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
@@ -127,7 +174,8 @@ export default function ContactPage() {
                     value={form.name}
                     onChange={handleChange}
                     required
-                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all"
+                    disabled={isSubmitting}
+                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -139,7 +187,8 @@ export default function ContactPage() {
                     value={form.phone}
                     onChange={handleChange}
                     required
-                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all"
+                    disabled={isSubmitting}
+                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -154,7 +203,8 @@ export default function ContactPage() {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all"
+                    disabled={isSubmitting}
+                    className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -167,7 +217,8 @@ export default function ContactPage() {
                       value={form.date}
                       onChange={handleChange}
                       required
-                      className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal text-xs placeholder-charcoal/30 transition-all"
+                      disabled={isSubmitting}
+                      className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal text-xs placeholder-charcoal/30 transition-all disabled:opacity-50"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -180,7 +231,8 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="e.g. 500"
                       required
-                      className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all"
+                      disabled={isSubmitting}
+                      className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all disabled:opacity-50"
                     />
                   </div>
                 </div>
@@ -196,20 +248,31 @@ export default function ContactPage() {
                   onChange={handleChange}
                   placeholder="Detail your decor themes, seating, mocktails or package interests..."
                   required
-                  className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all resize-none"
+                  disabled={isSubmitting}
+                  className="w-full bg-cream/40 border border-maroon-base/15 rounded-xl px-4 py-3 focus:outline-none focus:border-gold-base text-charcoal placeholder-charcoal/30 transition-all resize-none disabled:opacity-50"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-maroon-dark text-gold-light hover:bg-gold-base hover:text-maroon-dark border border-gold-base/30 rounded-full py-4 uppercase font-serif-heading text-xs tracking-[0.2em] transition-all duration-300 shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                disabled={isSubmitting}
+                className="w-full bg-maroon-dark text-gold-light hover:bg-gold-base hover:text-maroon-dark border border-gold-base/30 rounded-full py-4 uppercase font-serif-heading text-xs tracking-[0.2em] transition-all duration-300 shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4" /> Submit Inquiry
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Submit Inquiry
+                  </>
+                )}
               </button>
             </form>
           </div>
         </div>
-
 
         {/* Embedded Map Section */}
         <div className="mt-12 rounded-2xl overflow-hidden border border-gold-base/20 h-96 relative group">
@@ -223,7 +286,6 @@ export default function ContactPage() {
             referrerPolicy="no-referrer-when-downgrade"
             title="Vaidik Wedding Lawns Location Map"
           />
-          {/* Transparent color overlay to make it look matching */}
           <div className="absolute inset-0 bg-maroon-dark/10 pointer-events-none mix-blend-color group-hover:bg-transparent transition-all duration-500" />
         </div>
       </section>

@@ -15,7 +15,6 @@ const navLinks = [
   { label: "Packages", href: "/packages" },
   { label: "Services", href: "/services" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -27,14 +26,12 @@ export default function Navbar() {
   const backdropRef = useRef(null);
   const linkRefs = useRef([]);
 
-  // Check if current route is book-visit
-  const isBookVisitPage = pathname === "/book-visit";
 
   // Mobile links are outside the viewport while the drawer is closed, so
   // Next.js cannot automatically prefetch them. Warm each primary route once
   // the navbar has hydrated to make the first tap responsive as well.
   useEffect(() => {
-    [...navLinks.map(({ href }) => href), "/book-visit"].forEach((href) => {
+    [...navLinks.map(({ href }) => href), "/contact"].forEach((href) => {
       if (href !== pathname) router.prefetch(href);
     });
   }, [pathname, router]);
@@ -42,11 +39,6 @@ export default function Navbar() {
   // Scroll effect - always scrolled true on book-visit page
   useEffect(() => {
     const handleScroll = () => {
-      // If on book-visit page, always set isScrolled to true
-      if (isBookVisitPage) {
-        setIsScrolled(true);
-        return;
-      }
 
       // For other pages, check scroll position
       setIsScrolled(window.scrollY > 40);
@@ -57,7 +49,7 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isBookVisitPage]);
+  }, []);
 
   const closeMenuForNavigation = () => {
     setIsOpen(false);
@@ -168,7 +160,7 @@ export default function Navbar() {
     <>
       {/* HEADER */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isBookVisitPage
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
           ? "bg-maroon-dark/95 backdrop-blur-md border-b border-gold-base/20 shadow-xl py-3"
           : "bg-transparent py-4"
           }`}
@@ -241,7 +233,7 @@ export default function Navbar() {
           {/* DESKTOP BUTTON */}
           <div className="hidden lg:block">
             <Button
-              href="/book-visit"
+              href="/contact"
               variant="secondary"
               className="px-6 py-2.5"
             >
@@ -329,13 +321,13 @@ export default function Navbar() {
 
           <div className="flex-shrink-0 space-y-4 pt-4 border-t border-gold-base/10">
             <Button
-              href="/book-visit"
+              href="/contact"
               onNavigate={closeMenuForNavigation}
               variant="secondary"
               className="w-full justify-center"
             >
               <Calendar className="w-4 h-4" />
-              Book Venue Visit
+              Book Venue Request
             </Button>
 
             <p className="text-center text-[10px] text-gold-light/40 tracking-wider">

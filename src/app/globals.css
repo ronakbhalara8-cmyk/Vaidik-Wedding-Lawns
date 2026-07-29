@@ -127,14 +127,14 @@
 
   @media (min-width: 1280px) {
     .container {
-      max-width: 80rem;
+      max-width: 100rem;
       padding-inline: 4rem;
     }
   }
 
   @media (min-width: 1536px) {
     .container {
-      max-width: 80rem;
+      max-width: 100rem;
       padding-inline: 5rem;
     }
   }
