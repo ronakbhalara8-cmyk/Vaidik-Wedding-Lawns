@@ -167,11 +167,11 @@ export default function ReviewSection() {
   const extendedTestimonials = [...reviews, ...reviews, ...reviews, ...reviews];
 
   return (
-    <section className="relative py-16 md:py-24 lg:py-32 bg-cream border-t border-pink-light/30 overflow-hidden">
+    <section className="relative py-16 md:py-24 lg:pb-32 lg:pt-18 bg-cream border-t border-pink-light/30 overflow-hidden">
       <div className="container text-center relative z-10">
 
         {/* Section Title - Sticky Header with brand styling */}
-        <div className="sticky top-0 z-20 bg-cream/95 backdrop-blur-sm border-b border-pink-light/30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+        <div className="sticky top-0 z-20 bg-cream/95 backdrop-blur-sm px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           <div className="container">
             <FadeIn direction="down" duration={0.8}>
               <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-maroon-base bg-pink-light/20 border border-gold-light/30 rounded-full px-4 py-1.5 inline-block mb-4 font-medium">

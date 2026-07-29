@@ -83,8 +83,8 @@ export default function VenuesHorizontal() {
     >
       <div className="w-full container flex flex-col h-full justify-between z-10">
         {/* Header Section */}
-        <div className="mb-6 sm:mb-12 text-center md:text-left shrink-0">
-          <div className="inline-flex items-center gap-2 px-3 py-0.5 sm:py-1 rounded-full bg-[#8d2c3f]/10 border border-[#8d2c3f]/20 mb-1 sm:mb-2 backdrop-blur-md">
+        <div className="mb-6 sm:mb-12 text-center shrink-0">
+          <div className="inline-flex items-center gap-2 px-3 py-0.5 sm:py-1 rounded-full bg-[#8d2c3f]/10 border border-[#8d2c3f]/20 mb-5 backdrop-blur-md">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#DC873E] animate-pulse" />
             <span className="text-[9px] sm:text-xs font-semibold tracking-[0.2em] text-[#8d2c3f] uppercase">
               Exclusive Venues

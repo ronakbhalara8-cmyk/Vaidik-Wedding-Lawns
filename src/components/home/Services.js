@@ -33,7 +33,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="relative py-24 md:py-32 bg-cream text-charcoal overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-cream text-charcoal overflow-hidden">
       {/* Background radial soft light */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold-base/3 rounded-full blur-[130px] pointer-events-none" />
 

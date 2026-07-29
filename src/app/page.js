@@ -6,7 +6,8 @@ import Packages from "@/components/home/Packages";
 import InstaGallery from "@/components/home/InstaGallery";
 import BookingCTA from "@/components/home/BookingCTA";
 import ReviewSection from "@/components/home/ReviewSection";
-// import TestimonialsSection from "@/components/common/Testimonials";
+import TestimonialsSection from "@/components/home/Testimonials";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 
 export default function Home() {
   return (
@@ -15,10 +16,11 @@ export default function Home() {
       <About />
       <VenuesHorizontal />
       <Services />
+      <WhyChooseUs />
       <Packages />
       <ReviewSection />
       <InstaGallery />
-      {/* <TestimonialsSection /> */}
+      <TestimonialsSection />
       <BookingCTA />
     </>
   );

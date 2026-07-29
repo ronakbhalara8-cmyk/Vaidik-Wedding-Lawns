@@ -11,7 +11,7 @@ export default function Button({
   ...props
 }) {
   const base =
-    "group relative inline-flex items-center justify-center overflow-hidden rounded-full px-9 py-4 uppercase tracking-[0.22em] text-xs font-medium transition-all duration-500 cursor-pointer";
+    "group relative inline-flex items-center justify-center overflow-hidden rounded-full px-9 py-3.5 uppercase tracking-[0.22em] text-xs font-medium transition-all duration-500 cursor-pointer";
 
   let variantStyle = "";
 

@@ -6,24 +6,10 @@ import FadeIn from "../ui/FadeIn";
 
 export default function BookingCTA() {
   return (
-    <section className="relative overflow-hidden bg-cream py-16 sm:py-20 lg:py-28 xl:py-36">
+    <section className="relative overflow-hidden bg-cream py-16 sm:py-20 lg:py-18 xl:py-24">
 
       {/* Background */}
       <div className="absolute inset-0 bg-cream" />
-
-      {/* Glow */}
-      <div
-        className="absolute -left-24 top-0 h-64 w-64 rounded-full bg-gold-base/10 blur-3xl sm:h-96 sm:w-96 lg:h-[550px] lg:w-[550px] xl:h-[650px] xl:w-[650px]" />
-
-      <div
-        className="absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-maroon-base/10 blur-3xl sm:h-96 sm:w-96 lg:h-[550px] lg:w-[550px] xl:h-[650px] xl:w-[650px]" />
-
-      <div
-        className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/20 blur-3xl sm:h-[450px] sm:w-[450px] lg:h-[650px] lg:w-[650px]" />
-
-      {/* Texture */}
-      <div
-        className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle,#DC873E_1px,transparent_1px)] [background-size:26px_26px]" />
 
       <div className="container relative z-10">
 

@@ -8,53 +8,53 @@ import FadeIn from "@/components/ui/FadeIn";
 
 const galleryItems = [
   {
-    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
-    category: "lawns",
+    video: "/videos/046A9880.mp4",
+    category: "Wedding",
     alt: "Lawn evening setup",
   },
   {
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-    category: "lawns",
+    video: "/videos/046A9892.mp4",
+    category: "Reception",
     alt: "Lawn evening setup",
-  },
-  {
-    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-    category: "lawns",
-    alt: "Lawn evening setup",
-  },
-  {
-    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
-    category: "lawns",
-    alt: "Lawn evening setup",
-  },
-  {
-    video: "/videos/Dji_0767.mp4",
-    category: "mandaps",
-    alt: "Traditional royal mandap",
-  },
-  {
-    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-    category: "mandaps",
-    alt: "Traditional royal mandap",
-  },
-  {
-    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-    category: "mandaps",
-    alt: "Traditional royal mandap",
-  },
-  {
-    video: "/videos/slider-1.mp4",
-    category: "mandaps",
-    alt: "Traditional royal mandap",
   },
   {
     video: "/videos/slider-2.mp4",
-    category: "mandaps",
-    alt: "Traditional royal mandap",
+    category: "Haldi",
+    alt: "Lawn evening setup",
+  },
+  {
+    video: "/videos/Video_20260514_170024.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/banquet-hall.mp4",
-    category: "banquet",
+    category: "Reception",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/Video 20260106 130800.mp4",
+    category: "Mehendi",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
+    category: "Haldi",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/drone-view.mp4",
+    category: "DroneView",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
+    category: "NightView",
     alt: "Elegant dining setups",
   },
 ];
@@ -348,7 +348,7 @@ export default function GalleryPage() {
 
       <section className="container py-14 md:py-28">
         <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
-          {["all", "lawns", "mandaps", "banquet"].map((cat) => (
+          {["all", "Wedding", "Reception", "Mehendi", "Haldi", "NightView", "DroneView"].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
