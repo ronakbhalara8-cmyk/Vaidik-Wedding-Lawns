@@ -8,7 +8,6 @@ const testimonials = [
         id: 1,
         quote: "It is very huge party plot. Also huge car parking over there. And also provide all facilities",
         author: "Parth Manjarawala",
-        role: "MANAGER",
         rating: 5,
         avatar: "PM",
         date: "March 2026",
@@ -19,7 +18,6 @@ const testimonials = [
         id: 2,
         quote: "From traditional ceremonies to modern weddings, this place is perfect for every occasion. Highly satisfied.",
         author: "Anil Jetani",
-        role: "CEO, GREENTREE CONSULTING",
         rating: 5,
         avatar: "AJ",
         date: "October 2025",
@@ -30,7 +28,6 @@ const testimonials = [
         id: 3,
         quote: "The most beautiful place to make your wedding memorable is Vedic Lawns",
         author: "Hansrajsinh Rathod",
-        role: "EVENT COORDINATOR",
         rating: 5,
         avatar: "HR",
         date: "November 2025",
@@ -41,7 +38,6 @@ const testimonials = [
         id: 4,
         quote: "A perfect blend of tradition and luxury. Mayra function was celebrated beautifully at Vaidik Lawns.",
         author: "Mahek Madaliya",
-        role: "DIRECTOR OF OPERATIONS",
         rating: 5,
         avatar: "MM",
         date: "March 2025",
@@ -52,7 +48,6 @@ const testimonials = [
         id: 5,
         quote: "It's new beginning of farm and it's have large spaace in Main vairav checkpost.",
         author: "Emma Williams",
-        role: "EVENT PLANNER",
         rating: 5,
         avatar: "EW",
         date: "May 2026",
@@ -63,7 +58,6 @@ const testimonials = [
         id: 6,
         quote: "If you want elegance and comfort, Vaidik Lawns is the right choice. Beautiful venue with great facilities.",
         author: "THE MEDIA HUB",
-        role: "CEO, ANDERSON GROUP",
         rating: 5,
         avatar: "TM",
         date: "October 2025",
@@ -281,9 +275,6 @@ export default function TestimonialsSection() {
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-serif-heading text-sm sm:text-base font-semibold text-maroon-dark truncate group-hover:text-gold-base transition-colors duration-300">
                                                     {testimonial.author}
-                                                </p>
-                                                <p className="text-[8px] sm:text-[10px] text-maroon-light font-medium uppercase tracking-widest truncate">
-                                                    {testimonial.role}
                                                 </p>
                                                 <div className="flex items-center gap-2 mt-0.5">
                                                     <Calendar className="w-3 h-3 text-maroon-light/60" />
