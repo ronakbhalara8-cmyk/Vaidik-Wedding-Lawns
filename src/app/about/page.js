@@ -88,32 +88,26 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-cream text-charcoal">
       {/* ---------------- 1. PAGE HERO HEADER ---------------- */}
-      <section className="relative h-[45vh] min-h-[380px] pt-20 pb-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
+      <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.35] scale-105 transition-transform duration-1000 pointer-events-none"
           style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-maroon-dark/90 via-maroon-dark/40 to-maroon-dark pointer-events-none z-10" />
 
-        <div className="relative z-20 text-center max-w-4xl px-4 sm:px-6">
+        <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[11px] sm:text-xs tracking-[0.3em] text-gold-base uppercase mb-3 block font-semibold">
+            <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
               Surat's Premier Luxury Venue
             </span>
           </FadeIn>
-
-          {/* Heading with whitespace fix */}
-          <h1 className="font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wider uppercase font-bold text-shadow-premium text-gold-light leading-tight">
-            <SplitReveal type="words" tag="span" className="inline-block">
-              About Vaidik Lawns
-            </SplitReveal>
-          </h1>
-
-          <FadeIn direction="up" duration={0.8} delay={0.2}>
-            <p className="mt-4 text-xs sm:text-sm md:text-base font-light text-ivory/80 max-w-xl mx-auto tracking-wide leading-relaxed">
-              Where your dream celebrations transform into unforgettable royal experiences.
-            </p>
-          </FadeIn>
+          <SplitReveal
+            type="chars"
+            tag="h1"
+            className="font-serif-heading text-3xl sm:text-5xl tracking-widest uppercase font-bold text-shadow-premium text-gold-light"
+          >
+            About Vaidik Lawns
+          </SplitReveal>
         </div>
       </section>
 
