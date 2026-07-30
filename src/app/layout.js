@@ -24,8 +24,11 @@ const body = Poppins({
 
 const BASE_URL = "https://vaidik-wedding-lawns.vercel.app";
 
-// ✅ SHORTENED DESCRIPTION (under 160 chars)
-const SITE_DESCRIPTION = "Celebrate your royal wedding at Vaidik Wedding Lawns. Premium outdoor venue, elegant banquet space, and luxury event coordination in Jaipur."; // 148 characters
+// ✅ SHORTENED DESCRIPTION (under 125 characters for social previews)
+const SITE_DESCRIPTION = "Premium wedding venue in Jaipur with elegant lawns, banquet spaces & luxury coordination."; // 97 characters
+
+// ✅ Longer description for SEO (Google allows 150-160)
+const SEO_DESCRIPTION = "Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services in Jaipur."; // 154 characters
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
@@ -33,7 +36,7 @@ export const metadata = {
     default: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
     template: "%s | Vaidik Wedding Lawns"
   },
-  description: SITE_DESCRIPTION,
+  description: SEO_DESCRIPTION, // 154 chars for Google
   keywords: [
     // Primary Brand & Location
     "Vaidik Wedding Lawns",
@@ -257,16 +260,17 @@ export const metadata = {
   },
   openGraph: {
     title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
-    description: SITE_DESCRIPTION,
+    description: SITE_DESCRIPTION, // 97 chars for social previews
     type: "website",
     url: BASE_URL,
     siteName: "Vaidik Wedding Lawns",
     images: [
       {
+        // ✅ Correct aspect ratio: 1200x630 (1.91:1)
         url: `${BASE_URL}/images/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
+        alt: "Vaidik Wedding Lawns - Premium Wedding Venue in Jaipur | Book Your Dream Wedding",
         type: "image/png",
         secureUrl: `${BASE_URL}/images/og-image.png`,
       },
@@ -277,7 +281,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
-    description: SITE_DESCRIPTION,
+    description: SITE_DESCRIPTION, // 97 chars for social previews
     images: [`${BASE_URL}/images/og-image.png`],
     site: "@vaidikwedding",
     creator: "@vaidikwedding",
@@ -319,12 +323,15 @@ export default function RootLayout({ children }) {
         <meta property="og:url" content={BASE_URL} />
         <meta property="og:title" content="Vaidik Wedding Lawns | Where Dream Weddings Come True" />
         <meta property="og:description" content={SITE_DESCRIPTION} />
+
+        {/* ✅ Correct aspect ratio image: 1200x630 */}
         <meta property="og:image" content={`${BASE_URL}/images/og-image.png`} />
         <meta property="og:image:secure_url" content={`${BASE_URL}/images/og-image.png`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:alt" content="Vaidik Wedding Lawns - Luxury Wedding Venue" />
+        <meta property="og:image:alt" content="Vaidik Wedding Lawns - Premium Wedding Venue in Jaipur | Book Your Dream Wedding" />
+
         <meta property="og:site_name" content="Vaidik Wedding Lawns" />
         <meta property="og:locale" content="en_IN" />
 
