@@ -4,6 +4,7 @@ import { Check, Calendar, Sparkles } from "lucide-react";
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
+import Image from "next/image";
 
 const packages = [
   {
@@ -79,9 +80,15 @@ export default function PackagesPage() {
     <div className="min-h-screen bg-cream text-charcoal">
       {/* Header Banner */}
       <section className="relative h-[40vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.4] pointer-events-none"
-          style={{ backgroundImage: "url('/images/reception_hall.png')" }}
+        <Image
+          src="/images/image-2.webp"
+          alt="Background"
+          fill
+          priority
+          className="object-cover opacity-30 brightness-[0.4]"
+          sizes="100vw"
+          placeholder="blur"
+          blurDataURL="data:image/webp;base64,INSERT_BLUR_DATA"
         />
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
 

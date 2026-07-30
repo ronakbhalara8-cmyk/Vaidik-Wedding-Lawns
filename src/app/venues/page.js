@@ -6,6 +6,7 @@ import FadeIn from "@/components/ui/FadeIn";
 import Button from "@/components/ui/Button";
 import ParallaxImage from "@/components/ui/ParallaxImage";
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 
 const items = [
   {
@@ -193,9 +194,11 @@ const VideoPlayer = ({ src, title }) => {
       {/* Thumbnail Image */}
       {!isPlaying && thumbnail && (
         <div className="absolute inset-0 z-10">
-          <img
+          <Image
             src={thumbnail}
             alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity group-hover:bg-black/40">
@@ -254,10 +257,16 @@ export default function VenuesPage() {
     <div className="min-h-screen bg-cream text-charcoal">
       {/* Header */}
       <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-35 brightness-[0.4] pointer-events-none"
-          style={{ backgroundImage: "url('/images/wedding_mandap.png')" }}
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          <Image
+            src="/images/image-2.webp"
+            alt="Background"
+            fill
+            priority
+            className="object-cover opacity-30 brightness-[0.4]"
+            sizes="100vw"
+          />
+        </div>
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
 
         <div className="relative z-20 text-center max-w-2xl px-6">

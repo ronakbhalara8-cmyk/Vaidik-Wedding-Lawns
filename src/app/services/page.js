@@ -45,7 +45,7 @@ export default function ServicesPage() {
       <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.4] pointer-events-none"
-          style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
+          style={{ backgroundImage: "url('/images/image-2.webp')" }}
         />
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
 

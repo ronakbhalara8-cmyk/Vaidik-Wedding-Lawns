@@ -1,4 +1,4 @@
-import { Cardo, Inter, Libre_Baskerville, Manrope, Marcellus, Outfit, Poppins, Prata } from "next/font/google";
+import { Marcellus, Poppins } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/common/SmoothScroll";
 import ScrollProgress from "@/components/common/ScrollProgress";
@@ -6,7 +6,6 @@ import Preloader from "@/components/common/Preloader";
 import RouteChangeHandler from "@/components/common/RouteChangeHandler";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
-import Image from "next/image";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 
 const heading = Marcellus({
@@ -18,11 +17,12 @@ const heading = Marcellus({
 const body = Poppins({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 
 export const metadata = {
+  metadataBase: new URL("https://vaidikweddinglawns.com"),
   title: "Vaidik Wedding Lawns | Luxury Wedding Venue & Banquet Hall",
   description: "Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services.",
   keywords: ["Vaidik Wedding Lawns", "Luxury Wedding Venue", "Outdoor Wedding Lawn", "Indian Wedding Venue", "Banquet Hall", "Royal Wedding Mandap"],

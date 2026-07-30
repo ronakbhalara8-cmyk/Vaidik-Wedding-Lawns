@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import LazyVideo from "../ui/LazyVideo";
 
 const venues = [
   {
@@ -12,7 +13,7 @@ const venues = [
     features: "Interactive displays, soundproofing, ambient lighting",
     style: "Sleek, corporate-focused, minimalist",
     video: "/videos/banquet-hall.mp4",
-    image: "/images/about.png",
+    image: "/images/about.webp",
     pillBg: "from-[#8d2c3f] to-[#813241]",
   },
   {
@@ -23,7 +24,7 @@ const venues = [
     features: "Manicured lawns, floral archways, lush greenery",
     style: "Romantic, nature-inspired",
     video: "/videos/slider-2.mp4",
-    image: "/images/venue-2.jpg",
+    image: "",
     pillBg: "from-[#2A2724] to-[#813241]",
   },
   {
@@ -34,7 +35,7 @@ const venues = [
     features: "Garden view, cozy layout, custom floral setups",
     style: "Intimate, nature-tucked, royal vibes",
     video: "/videos/slider-3.mp4",
-    image: "/images/venue-3.jpg",
+    image: "",
     pillBg: "from-[#813241] to-[#2A2724]",
   },
 ];
@@ -113,13 +114,15 @@ export default function VenuesHorizontal() {
                   <div className="relative w-full h-full bg-[#2A2724] flex flex-col justify-between p-3.5 sm:p-6 md:p-10 text-[#FDF2EF]">
                     {/* Video Layer */}
                     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-                      <video
+                      <LazyVideo
                         src={venue.video}
                         poster={venue.image}
+                        shouldLoad={isActive}
                         autoPlay
                         loop
                         muted
                         playsInline
+                        rootMargin="900px"
                         className="w-full h-full object-cover opacity-35 scale-105"
                       />
                       {/* <div className="absolute inset-0 bg-gradient-to-t from-[#2A2724] via-[#2A2724]/75 to-[#8d2c3f]/40" /> */}

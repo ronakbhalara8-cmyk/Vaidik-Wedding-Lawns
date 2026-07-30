@@ -70,14 +70,22 @@ export default function Preloader() {
     };
   }, []);
 
-  if (isLoaded) return null;
+  // **FIX: Reserve space by keeping a placeholder**
+  if (isLoaded) {
+    return (
+      <div
+        className="fixed inset-0 bg-maroon-dark z-[99999] pointer-events-none opacity-0"
+        style={{ display: 'none' }} // Hide but keep space reserved
+      />
+    );
+  }
 
   return (
     <div
       ref={containerRef}
       className="fixed inset-0 bg-maroon-dark z-[99999] flex flex-col items-center justify-center text-center"
     >
-      <div className="flex flex-col gap-6 relative px-6 z-10">
+      <div className="flex flex-col gap-6 relative px-6 z-10 min-h-[200px]">
         <h1
           ref={titleRef}
           className="font-serif-heading text-4xl md:text-7xl tracking-[0.3em] text-gold-base uppercase font-bold"

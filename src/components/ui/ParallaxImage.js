@@ -13,6 +13,7 @@ export default function ParallaxImage({
   imageClassName = "",
   yOffset = 15, // Percent offset for animation
   priority = false,
+  preload = false,
   ...props
 }) {
   const containerRef = useRef(null);
@@ -81,7 +82,7 @@ export default function ParallaxImage({
           src={src}
           alt={alt}
           fill
-          priority={priority}
+          preload={preload || priority}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
           className={`object-cover transition-transform duration-700 hover:scale-105 ${imageClassName}`}
           placeholder="blur"

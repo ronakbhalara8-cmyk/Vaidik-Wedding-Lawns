@@ -270,7 +270,7 @@ export default function Navbar() {
       <aside
         ref={mobileMenuRef}
         aria-hidden={!isOpen}
-        className={`fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-30 px-8 py-9 flex flex-col shadow-2xl ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        className={`fixed top-0 right-0 h-screen w-full max-w-[360px] sm:max-w-[400px] bg-maroon-dark border-l border-gold-base/20 z-40 px-8 py-9 flex flex-col shadow-2xl ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
       >
         {/* Navigation - takes available space and scrolls if needed */}
         <div className="flex flex-col justify-between gap-6 mt-16">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef, memo, useCallback } from "react";
 import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import SplitReveal from "@/components/ui/SplitReveal";
@@ -146,19 +146,19 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
   const validItems = items.filter((item) => item.image || item.video);
   const totalItems = validItems.length;
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
     setTimeout(() => setIsTransitioning(false), 200);
-  };
+  }, [isTransitioning, totalItems]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === totalItems - 1 ? 0 : prev + 1));
     setTimeout(() => setIsTransitioning(false), 200);
-  };
+  }, [isTransitioning, totalItems]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -174,7 +174,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [currentIndex, isTransitioning, totalItems]);
+  }, [goToNext, goToPrevious, onClose]);
 
   if (totalItems === 0) return null;
 
@@ -324,10 +324,16 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-cream text-charcoal">
       <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.4] pointer-events-none"
-          style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          <Image
+            src="/images/image-2.webp"
+            alt="Background"
+            fill
+            priority
+            className="object-cover opacity-30 brightness-[0.4]"
+            sizes="100vw"
+          />
+        </div>
         <div className="absolute inset-0 bg-grad-overlay pointer-events-none z-10" />
 
         <div className="relative z-20 text-center max-w-2xl px-6">

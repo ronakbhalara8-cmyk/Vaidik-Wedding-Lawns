@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 import {
     Trees,
     ParkingCircle,
@@ -43,7 +44,7 @@ export default function WhyChooseUs() {
             title: "Prime Location",
             category: "Convenient Access",
             desc: "Strategically situated near key city routes, ensuring effortless navigation and comfortable travel for attendees.",
-            image: "/images/image-2.png",
+            image: "",
             isStreetView: true // Flag to identify Street View item
         },
         {
@@ -94,9 +95,11 @@ export default function WhyChooseUs() {
                                     ></iframe>
                                 ) : (
                                     // Regular image for other features
-                                    <img
+                                    <Image
                                         src={item.image}
                                         alt={item.title}
+                                        fill
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                 )}

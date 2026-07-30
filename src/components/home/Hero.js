@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
 
@@ -78,10 +79,12 @@ const SLIDE_CONTENT = [
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loadedVideos, setLoadedVideos] = useState(() => new Set([0, 1]));
 
   const videoRefs = useRef(new Map());
   const contentRef = useRef(null);
   const timerRef = useRef(null);
+  const hasRenderedInitialContentRef = useRef(false);
 
   const currentContent = SLIDE_CONTENT[currentSlide];
   const nextIndex = (currentSlide + 1) % SLIDE_CONTENT.length;
@@ -115,7 +118,9 @@ export default function Hero() {
       if (!vid) return;
 
       if (i === index) {
-        vid.currentTime = 0;
+        if (vid.readyState > 0) {
+          vid.currentTime = 0;
+        }
         const playPromise = vid.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => { });
@@ -128,14 +133,20 @@ export default function Hero() {
 
   // Slide Navigation
   const goToSlide = useCallback((index) => {
+    const preloadIndex = (index + 1) % VIDEOS.length;
+    setLoadedVideos((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+      next.add(preloadIndex);
+      return next;
+    });
     setCurrentSlide(index);
-    playVideoAtIndex(index);
-  }, [playVideoAtIndex]);
+  }, []);
 
   // Initial Load
   useEffect(() => {
-    playVideoAtIndex(0);
-  }, [playVideoAtIndex]);
+    playVideoAtIndex(currentSlide);
+  }, [currentSlide, playVideoAtIndex]);
 
   // Auto Play Timer
   useEffect(() => {
@@ -152,6 +163,11 @@ export default function Hero() {
 
   // Text Animation trigger
   useEffect(() => {
+    if (!hasRenderedInitialContentRef.current) {
+      hasRenderedInitialContentRef.current = true;
+      return;
+    }
+
     animateContent();
   }, [currentSlide, animateContent]);
 
@@ -160,8 +176,18 @@ export default function Hero() {
 
       {/* Background Videos */}
       <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-black">
+        <Image
+          src="/images/image-2.webp"
+          alt=""
+          fill
+          preload
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover brightness-[0.45]"
+        />
         {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
+          const shouldLoadVideo = loadedVideos.has(index);
 
           return (
             <div
@@ -171,12 +197,14 @@ export default function Hero() {
             >
               <video
                 ref={(el) => setVideoRef(index, el)}
-                src={src}
+                src={shouldLoadVideo ? src : undefined}
+                autoPlay={isCurrent && shouldLoadVideo}
                 muted
                 loop
                 playsInline
-                preload={index === 0 || index === 1 ? "auto" : "metadata"}
-                className="w-full h-full object-cover brightness-[0.45] will-change-transform"
+                poster="/images/image-2.webp"
+                preload={isCurrent && shouldLoadVideo ? "auto" : "none"}
+                className="w-full h-full object-cover brightness-[0.45]"
               />
             </div>
           );
@@ -211,26 +239,26 @@ export default function Hero() {
         className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-20 flex flex-col items-center justify-center w-full"
       >
         {/* Subtitle */}
-        <div className="slide-anim-item opacity-0 mb-2 sm:mb-3">
+        <div className="slide-anim-item mb-2 sm:mb-3">
           <span className="font-serif-heading text-[10px] sm:text-xs md:text-sm tracking-[0.3em] text-gold-base uppercase inline-block border-b border-gold-base/30 pb-1">
             {currentContent.subtitle}
           </span>
         </div>
 
         {/* Title */}
-        <h1 className="slide-anim-item opacity-0 font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory uppercase leading-[1.15] mb-3 sm:mb-4 font-bold tracking-wide">
+        <h1 className="slide-anim-item font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory uppercase leading-[1.15] mb-3 sm:mb-4 font-bold tracking-wide">
           {currentContent.title}
         </h1>
 
         {/* Description */}
-        <div className="slide-anim-item opacity-0 max-w-xl lg:max-w-2xl mb-6 sm:mb-8">
+        <div className="slide-anim-item max-w-xl lg:max-w-2xl mb-6 sm:mb-8">
           <p className="font-sans text-xs sm:text-sm md:text-base text-gold-light/80 leading-relaxed font-light">
             {currentContent.description}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="slide-anim-item opacity-0 flex flex-col sm:flex-row gap-3 items-center justify-center w-full sm:w-auto">
+        <div className="slide-anim-item flex flex-col sm:flex-row gap-3 items-center justify-center w-full sm:w-auto">
           <Button
             href={currentContent.buttonLink}
             variant="secondary"

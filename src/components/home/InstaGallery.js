@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Heart, Camera, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import LazyVideo from "../ui/LazyVideo";
 
 const galleryItems = [
   {
@@ -60,40 +61,15 @@ const galleryItems = [
 
 // Video Card Component for Circle - Shows video thumbnail with play button (no autoplay)
 const VideoCard = ({ src, alt, className = "" }) => {
-  const videoRef = useRef(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      // Load video metadata to get thumbnail
-      video.load();
-
-      // Once metadata is loaded, pause at first frame
-      const handleLoadedMetadata = () => {
-        video.currentTime = 0.1; // Small delay to get a frame
-        setIsLoaded(true);
-      };
-
-      video.addEventListener('loadedmetadata', handleLoadedMetadata);
-
-      return () => {
-        video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      };
-    }
-  }, []);
-
   return (
     <div className="relative w-full h-full bg-maroon-dark">
-      <video
-        ref={videoRef}
+      <LazyVideo
+        src={src}
         className={`w-full h-full object-cover ${className}`}
         playsInline
         muted
         preload="metadata"
-      >
-        <source src={src} type="video/mp4" />
-      </video>
+      />
 
       {/* Play Button Overlay */}
       <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
@@ -114,27 +90,27 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
 
   const totalItems = items.length;
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === 0 ? totalItems - 1 : prev - 1));
     setIsVideoPlaying(false);
     setTimeout(() => setIsTransitioning(false), 300);
-  };
+  }, [isTransitioning, totalItems]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (isTransitioning || totalItems === 0) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => (prev === totalItems - 1 ? 0 : prev + 1));
     setIsVideoPlaying(false);
     setTimeout(() => setIsTransitioning(false), 300);
-  };
+  }, [isTransitioning, totalItems]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
     if (e.key === "Escape") onClose();
     if (e.key === "ArrowLeft") goToPrevious();
     if (e.key === "ArrowRight") goToNext();
-  };
+  }, [goToNext, goToPrevious, onClose]);
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);

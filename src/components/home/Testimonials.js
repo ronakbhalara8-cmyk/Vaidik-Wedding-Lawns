@@ -79,7 +79,7 @@ export default function TestimonialsSection() {
 
     // Set mounted state
     useEffect(() => {
-        setIsMounted(true);
+        queueMicrotask(() => setIsMounted(true));
     }, []);
 
     // Continuous marquee animation using requestAnimationFrame
@@ -256,7 +256,7 @@ export default function TestimonialsSection() {
 
                                     {/* Quote */}
                                     <p className="font-sans text-sm sm:text-base text-charcoal leading-relaxed font-light italic line-clamp-4 flex-1">
-                                        "{testimonial.quote}"
+                                        &ldquo;{testimonial.quote}&rdquo;
                                     </p>
 
                                     {/* Author Info */}

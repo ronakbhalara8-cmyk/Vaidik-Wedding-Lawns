@@ -101,14 +101,14 @@ export default function AboutPage() {
       <section className="relative h-[42vh] min-h-[320px] pt-16 flex items-center justify-center bg-maroon-dark text-ivory overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30 brightness-[0.35] scale-105 transition-transform duration-1000 pointer-events-none"
-          style={{ backgroundImage: "url('/images/wedding_lawn.png')" }}
+          style={{ backgroundImage: "url('/images/image-2.webp')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-maroon-dark/90 via-maroon-dark/40 to-maroon-dark pointer-events-none z-10" />
 
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
             <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
-              Surat's Premier Luxury Venue
+              Surat&apos;s Premier Luxury Venue
             </span>
           </FadeIn>
           <SplitReveal
@@ -211,7 +211,7 @@ export default function AboutPage() {
 
               {/* 🆕 NEW: Brand Tagline from Image */}
               <p className="text-maroon-dark font-medium text-sm sm:text-base border-l-4 border-gold-base pl-4 italic">
-                "{brandTagline}"
+                &ldquo;{brandTagline}&rdquo;
               </p>
             </FadeIn>
 

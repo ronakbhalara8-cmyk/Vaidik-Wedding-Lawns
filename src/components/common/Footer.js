@@ -12,6 +12,7 @@ export default function Footer() {
   };
 
   const handleHomeClick = (e) => {
+    e.preventDefault();
     const currentPath = window.location.pathname;
     if (currentPath === "/") {
       window.location.reload();
@@ -29,7 +30,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-4">
           {/* Brand Info */}
           <div className="flex flex-col gap-6">
-            <a href="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
+            <Link href="/" onClick={handleHomeClick} className="flex items-center gap-3 group">
               <div className="relative w-24 h-24 overflow-hidden rounded-full border border-gold-base/30">
                 <Image
                   src="/images/logo.png"
@@ -38,26 +39,42 @@ export default function Footer() {
                   className="object-cover"
                 />
               </div>
-            </a>
+            </Link>
             <p className="text-sm text-ivory/60 leading-relaxed font-light">
               Crafting royal dreams into eternal realities. Experience the finest outdoor wedding lawn and luxury event services, tailored to perfection.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <a
-                href="https://facebook.com"
+                href="https://www.instagram.com/vaidiklawns/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full border border-gold-base/20 flex items-center justify-center hover:bg-gold-base hover:text-maroon-dark transition-all duration-300"
+                className=""
               >
-                <Share2 className="w-4 h-4" />
+                <Image src="/instagram.webp" alt="Instagram" width={28} height={28} />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.facebook.com/p/Vaidik-Lawns-61580352353011/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full border border-gold-base/20 flex items-center justify-center hover:bg-gold-base hover:text-maroon-dark transition-all duration-300"
+                className=""
               >
-                <Heart className="w-4 h-4" />
+                <Image src="/facebook.webp" alt="Facebook" width={28} height={28} />
+              </a>
+              <a
+                href="https://wa.me/+919913303351"
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                <Image src="/whatsapp.svg" alt="Facebook" width={28} height={28} />
+              </a>
+              <a
+                href="mailto:vaidiklawns@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                <Image src="/gmail.svg.webp" alt="Facebook" width={28} height={28} />
               </a>
             </div>
           </div>

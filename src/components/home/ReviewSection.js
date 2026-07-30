@@ -228,7 +228,7 @@ export default function ReviewSection() {
                   {/* Quote with brand styling */}
                   <div className="flex-1">
                     <p className="font-sans text-sm sm:text-base text-charcoal leading-relaxed font-light">
-                      "{testimonial.quote}"
+                      &ldquo;{testimonial.quote}&rdquo;
                     </p>
                   </div>
 
