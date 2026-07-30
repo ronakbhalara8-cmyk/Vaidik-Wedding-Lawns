@@ -28,7 +28,7 @@ const body = Poppins({
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://vaidiklawns.com";
 
 // ✅ Direct image URL from public folder
-const OG_IMAGE_URL = `${BASE_URL}/og-image.png`;
+const OG_IMAGE_URL = `${BASE_URL}/images/og-image.png`;
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
