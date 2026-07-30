@@ -1,4 +1,4 @@
-// layout.js - All OpenGraph issues fixed
+// layout.js - Fixed import issue
 
 import { Marcellus, Poppins } from "next/font/google";
 import "./globals.css";
@@ -10,8 +10,8 @@ import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 
-// ✅ Import image
-import ogImage from "./public/og-image.png";
+// ❌ Remove this - public images cannot be imported directly
+// import ogImage from "./public/og-image.png";
 
 const heading = Marcellus({
   variable: "--font-heading",
@@ -27,6 +27,9 @@ const body = Poppins({
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://vaidiklawns.com";
 
+// ✅ Direct image URL from public folder
+const OG_IMAGE_URL = `${BASE_URL}/og-image.png`;
+
 export const metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
@@ -37,6 +40,9 @@ export const metadata = {
   keywords: [
     "Vaidik Wedding Lawns",
     "Wedding Venue Jaipur",
+    "Luxury Wedding Venue",
+    "Outdoor Wedding Lawn",
+    "Indian Wedding Venue",
     // ... tame lakhya keywords 6e
   ],
   authors: [{ name: "Vaidik Wedding Lawns" }],
@@ -61,13 +67,13 @@ export const metadata = {
     siteName: "Vaidik Wedding Lawns",
     images: [
       {
-        // ✅ Correct aspect ratio 1.91:1 (1200x630)
-        url: `${BASE_URL}${ogImage.src}`,
+        // ✅ Use direct URL
+        url: OG_IMAGE_URL,
         width: 1200,
         height: 630,
         alt: "Vaidik Wedding Lawns - Luxury Wedding Venue Jaipur | Book Now",
         type: "image/png",
-        secureUrl: `${BASE_URL}${ogImage.src}`,
+        secureUrl: OG_IMAGE_URL,
       },
     ],
     locale: "en_IN",
@@ -77,7 +83,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Vaidik Wedding Lawns | Premium Wedding Venue in Jaipur",
     description: "Book Vaidik Wedding Lawns - Jaipur's premier luxury wedding venue. Perfect for royal weddings, receptions & events.",
-    images: [`${BASE_URL}${ogImage.src}`],
+    images: [OG_IMAGE_URL],
     site: "@vaidikwedding",
     creator: "@vaidikwedding",
   },
@@ -110,18 +116,18 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 
-        {/* ✅ Short & Clear Description (Under 125 characters) */}
+        {/* ✅ Short Description (Under 125 characters) */}
         <meta name="description" content="Book Vaidik Wedding Lawns - Jaipur's premier luxury wedding venue. Perfect for royal weddings, receptions & events." />
 
-        {/* ✅ OpenGraph - Short Description */}
+        {/* ✅ OpenGraph Tags */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={BASE_URL} />
         <meta property="og:title" content="Vaidik Wedding Lawns | Premium Wedding Venue in Jaipur" />
         <meta property="og:description" content="Book Vaidik Wedding Lawns - Jaipur's premier luxury wedding venue. Perfect for royal weddings, receptions & events." />
 
-        {/* ✅ Correct Image - 1200x630 (1.91:1) */}
-        <meta property="og:image" content={`${BASE_URL}${ogImage.src}`} />
-        <meta property="og:image:secure_url" content={`${BASE_URL}${ogImage.src}`} />
+        {/* ✅ Image - Using direct URL */}
+        <meta property="og:image" content={OG_IMAGE_URL} />
+        <meta property="og:image:secure_url" content={OG_IMAGE_URL} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/png" />
@@ -130,11 +136,11 @@ export default function RootLayout({ children }) {
         <meta property="og:site_name" content="Vaidik Wedding Lawns" />
         <meta property="og:locale" content="en_IN" />
 
-        {/* ✅ Twitter - Short Description */}
+        {/* ✅ Twitter Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vaidik Wedding Lawns | Premium Wedding Venue in Jaipur" />
         <meta name="twitter:description" content="Book Vaidik Wedding Lawns - Jaipur's premier luxury wedding venue. Perfect for royal weddings, receptions & events." />
-        <meta name="twitter:image" content={`${BASE_URL}${ogImage.src}`} />
+        <meta name="twitter:image" content={OG_IMAGE_URL} />
 
         <meta name="author" content="Vaidik Wedding Lawns" />
         <meta name="robots" content="index, follow" />
