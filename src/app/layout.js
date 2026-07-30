@@ -1,4 +1,4 @@
-// layout.js - Updated with WhatsApp-specific fixes
+// layout.js - Updated with all fixes
 
 import { Marcellus, Poppins } from "next/font/google";
 import "./globals.css";
@@ -22,8 +22,10 @@ const body = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-// ✅ Use absolute URLs for ALL images
-const BASE_URL = "https://vaidiklawns.com";
+const BASE_URL = "https://vaidik-wedding-lawns.vercel.app";
+
+// ✅ SHORTENED DESCRIPTION (under 160 chars)
+const SITE_DESCRIPTION = "Celebrate your royal wedding at Vaidik Wedding Lawns. Premium outdoor venue, elegant banquet space, and luxury event coordination in Jaipur."; // 148 characters
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
@@ -31,7 +33,7 @@ export const metadata = {
     default: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
     template: "%s | Vaidik Wedding Lawns"
   },
-  description: "Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services.",
+  description: SITE_DESCRIPTION,
   keywords: [
     // Primary Brand & Location
     "Vaidik Wedding Lawns",
@@ -255,19 +257,17 @@ export const metadata = {
   },
   openGraph: {
     title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
-    description: "Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services.",
+    description: SITE_DESCRIPTION,
     type: "website",
     url: BASE_URL,
     siteName: "Vaidik Wedding Lawns",
     images: [
       {
-        // ✅ Use absolute URL
         url: `${BASE_URL}/images/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
         type: "image/png",
-        // ✅ Add secure URL for WhatsApp
         secureUrl: `${BASE_URL}/images/og-image.png`,
       },
     ],
@@ -277,7 +277,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
-    description: "Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services.",
+    description: SITE_DESCRIPTION,
     images: [`${BASE_URL}/images/og-image.png`],
     site: "@vaidikwedding",
     creator: "@vaidikwedding",
@@ -314,27 +314,24 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 
-        {/* ✅ WhatsApp Required Meta Tags - MUST use absolute URLs */}
+        {/* ✅ WhatsApp Required Meta Tags */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={BASE_URL} />
         <meta property="og:title" content="Vaidik Wedding Lawns | Where Dream Weddings Come True" />
-        <meta property="og:description" content="Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services." />
-
-        {/* ✅ WhatsApp requires image to be absolute URL and accessible */}
+        <meta property="og:description" content={SITE_DESCRIPTION} />
         <meta property="og:image" content={`${BASE_URL}/images/og-image.png`} />
         <meta property="og:image:secure_url" content={`${BASE_URL}/images/og-image.png`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:alt" content="Vaidik Wedding Lawns - Luxury Wedding Venue" />
-
         <meta property="og:site_name" content="Vaidik Wedding Lawns" />
         <meta property="og:locale" content="en_IN" />
 
         {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vaidik Wedding Lawns | Where Dream Weddings Come True" />
-        <meta name="twitter:description" content="Celebrate your royal wedding at Vaidik Wedding Lawns. Discover our premium outdoor venue, elegant banquet space, customizable mandap setups, and luxury event coordination services." />
+        <meta name="twitter:description" content={SITE_DESCRIPTION} />
         <meta name="twitter:image" content={`${BASE_URL}/images/og-image.png`} />
 
         {/* Additional Meta Tags */}
@@ -343,7 +340,7 @@ export default function RootLayout({ children }) {
         <meta name="googlebot" content="index, follow, max-image-preview:large" />
         <link rel="canonical" href={BASE_URL} />
 
-        {/* ✅ WhatsApp requires this */}
+        {/* WhatsApp requires this */}
         <meta name="theme-color" content="#d4a373" />
 
         {/* Contact Info */}
@@ -356,17 +353,12 @@ export default function RootLayout({ children }) {
             __html: `
               // Force WhatsApp to refresh its cache
               (function() {
-                // Add a cache-busting parameter for WhatsApp
                 if (typeof window !== 'undefined') {
                   const currentUrl = window.location.href;
                   const timestamp = Date.now();
                   
-                  // Check if URL already has cache buster
                   if (!currentUrl.includes('_wa_cache=')) {
-                    // Store the timestamp in session storage
                     sessionStorage.setItem('wa_timestamp', timestamp);
-                    
-                    // For WhatsApp debugging
                     console.log('WhatsApp cache buster set:', timestamp);
                   }
                 }
