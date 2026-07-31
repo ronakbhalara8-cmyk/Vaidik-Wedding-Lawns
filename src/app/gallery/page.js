@@ -57,6 +57,21 @@ const galleryItems = [
     category: "NightView",
     alt: "Elegant dining setups",
   },
+  {
+    video: "/videos/garden.mp4",
+    category: "DroneView",
+    alt: "Elegant dining setups",
+  },
+  {
+    video: "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/garden-view.mp4",
+    category: "DroneView",
+    alt: "Elegant dining setups",
+  },
 ];
 
 // Gallery Video Component - NO AUTOPLAY, plays on click

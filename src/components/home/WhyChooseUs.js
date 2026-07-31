@@ -8,7 +8,8 @@ import {
     Sparkles,
     MapPin,
     PartyPopper,
-    ArrowRight
+    ArrowRight,
+    UsersRound
 } from 'lucide-react';
 import Button from '../ui/Button';
 
@@ -54,6 +55,14 @@ export default function WhyChooseUs() {
             category: "Versatile Venue",
             desc: "Fully equipped to adapt seamlessly to royal weddings, receptions, grand celebrations, and corporate galas.",
             image: "/images/image-3.png"
+        },
+        {
+            "id": "06",
+            "icon": UsersRound,
+            "title": "Banquets & Celebrations Hall",
+            "category": "Banquet & Celebration",
+            "desc": "A premium venue for weddings, receptions, celebrations, and corporate events. Equipped a dedicated planning team.",
+            "image": "/images/banquet-hall.png"
         }
     ];
 
