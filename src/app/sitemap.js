@@ -1,46 +1,48 @@
 // src/app/sitemap.js
 
 export default function sitemap() {
+    const baseUrl = 'https://vaidik-wedding-lawns.vercel.app';
+
     return [
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app',
-            lastModified: new Date(),
+            url: baseUrl,
+            lastModified: new Date().toISOString(), // change: .toISOString() add karo
             changeFrequency: 'yearly',
             priority: 1,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/about',
-            lastModified: new Date(),
+            url: `${baseUrl}/about`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/gallery',
-            lastModified: new Date(),
+            url: `${baseUrl}/gallery`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'weekly',
             priority: 0.7,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/packages',
-            lastModified: new Date(),
+            url: `${baseUrl}/packages`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'weekly',
             priority: 0.7,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/venues',
-            lastModified: new Date(),
+            url: `${baseUrl}/venues`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/contact',
-            lastModified: new Date(),
+            url: `${baseUrl}/contact`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'monthly',
             priority: 0.6,
         },
         {
-            url: 'https://vaidik-wedding-lawns.vercel.app/services',
-            lastModified: new Date(),
+            url: `${baseUrl}/services`,
+            lastModified: new Date().toISOString(), // change
             changeFrequency: 'monthly',
             priority: 0.6,
         },
