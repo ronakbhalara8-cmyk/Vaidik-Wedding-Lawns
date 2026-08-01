@@ -11,7 +11,7 @@ export default function WhatsAppButton({ phoneNumber }) {
     return (
         <button
             onClick={handleClick}
-            className="fixed bottom-6 animate-bounce right-6 z-50 cursor-pointer"
+            className="fixed bottom-6 animate-bounce left-6 z-50 cursor-pointer"
             aria-label="Chat on WhatsApp"
         >
             <Image

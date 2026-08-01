@@ -1,4 +1,4 @@
-// layout.js - WhatsApp & Meta Tags Fully Fixed
+// layout.js - WhatsApp & Meta Tags Fully Fixed with Tawk.to Chat
 
 import { Marcellus, Poppins } from "next/font/google";
 import "./globals.css";
@@ -9,6 +9,7 @@ import RouteChangeHandler from "@/components/common/RouteChangeHandler";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
+import Script from "next/script";
 
 const heading = Marcellus({
   variable: "--font-heading",
@@ -243,6 +244,24 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full bg-cream text-charcoal font-body flex flex-col">
+
+        <Script id="crisp-chat" strategy="afterInteractive">
+          {`
+      window.$crisp = [];
+      window.CRISP_WEBSITE_ID = "8492a7b5-5f83-4689-8cdb-dbca6273bede";
+
+      (function () {
+        var d = document;
+        var s = d.createElement("script");
+
+        s.src = "https://client.crisp.chat/l.js";
+        s.async = 1;
+
+        d.getElementsByTagName("head")[0].appendChild(s);
+      })();
+    `}
+        </Script>
+
         <RouteChangeHandler />
         <Preloader />
         <ScrollProgress />
@@ -252,6 +271,7 @@ export default function RootLayout({ children }) {
           <Footer />
           <WhatsAppButton phoneNumber="9913303351" />
         </SmoothScroll>
+
       </body>
     </html>
   );

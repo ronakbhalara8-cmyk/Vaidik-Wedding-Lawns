@@ -38,6 +38,11 @@ const galleryItems = [
     alt: "Traditional royal mandap",
   },
   {
+    video: "/videos/Wedding-View-5.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
     video: "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
     category: "Haldi",
     alt: "Traditional royal mandap",
@@ -48,7 +53,27 @@ const galleryItems = [
     alt: "Traditional royal mandap",
   },
   {
+    video: "/videos/Wedding-View-4.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
+    video: "/videos/Gallery-Video-4.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
     video: "/videos/drone-view.mp4",
+    category: "DroneView",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/Wedding-View-3.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
+    video: "/videos/Gallery-Video-1.mp4",
     category: "DroneView",
     alt: "Traditional royal mandap",
   },
@@ -58,9 +83,29 @@ const galleryItems = [
     alt: "Elegant dining setups",
   },
   {
+    video: "/videos/Gallery-Video-3.mp4",
+    category: "NightView",
+    alt: "Elegant dining setups",
+  },
+  {
+    video: "/videos/Wedding-View-2.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
     video: "/videos/garden.mp4",
     category: "DroneView",
     alt: "Elegant dining setups",
+  },
+  {
+    video: "/videos/Gallery-Video-5.mp4",
+    category: "DroneView",
+    alt: "Elegant dining setups",
+  },
+  {
+    video: "/videos/Wedding-View-1.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
@@ -68,7 +113,17 @@ const galleryItems = [
     alt: "Traditional royal mandap",
   },
   {
+    video: "/videos/Gallery-Video-2.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
     video: "/videos/garden-view.mp4",
+    category: "DroneView",
+    alt: "Elegant dining setups",
+  },
+  {
+    video: "/videos/Gallery-Video-6.mp4",
     category: "DroneView",
     alt: "Elegant dining setups",
   },
