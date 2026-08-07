@@ -70,6 +70,8 @@ export default function ReviewSection() {
   const animationRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const [position, setPosition] = useState(0);
+  const positionRef = useRef(0);
+  const isPausedRef = useRef(false);
   const lastTimeRef = useRef(0);
 
   // Handle responsive card count
@@ -89,6 +91,14 @@ export default function ReviewSection() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    positionRef.current = position;
+  }, [position]);
+
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
+
   // Continuous marquee animation using requestAnimationFrame
   useEffect(() => {
     const totalItems = reviews.length;
@@ -101,9 +111,9 @@ export default function ReviewSection() {
       const delta = timestamp - lastTimeRef.current;
       lastTimeRef.current = timestamp;
 
-      if (!isPaused) {
+      if (!isPausedRef.current) {
         const speed = 0.12;
-        const newPosition = position + delta * speed;
+        let newPosition = positionRef.current + delta * speed;
 
         const firstChild = sliderRef.current?.children[0];
         if (firstChild) {
@@ -114,10 +124,11 @@ export default function ReviewSection() {
           const cardsPassed = newPosition / totalWidth;
 
           if (cardsPassed >= totalItems) {
-            setPosition(newPosition - (totalItems * totalWidth));
-          } else {
-            setPosition(newPosition);
+            newPosition -= totalItems * totalWidth;
           }
+
+          positionRef.current = newPosition;
+          setPosition(newPosition);
         }
       }
 
@@ -131,7 +142,7 @@ export default function ReviewSection() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPaused, position]);
+  }, []);
 
   // Apply transform to slider
   useEffect(() => {

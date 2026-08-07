@@ -1,10 +1,21 @@
 // === FULL SEO METADATA START (For Home Page Only) ===
 export const metadata = {
-  // ✅ IMPORTANT: Title sahi karo (Wedding nu rakho, Gardening nu nai)
   title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
   description: "Book the best wedding venue in Surat at Vaidik Wedding Lawns. Premium open lawns, AC banquet halls, and luxury event spaces for a royal celebration.",
 
   metadataBase: new URL('https://vaidiklawns.com'),
+
+  // ✅ GOOGLE SITE VERIFICATION - Added properly
+  verification: {
+    google: 'yOAFdVSx-SHrz8wWHQs8XcNJ9awMU4D0YPvfPcAs9Nk',
+  },
+
+  // ✅ FAVICON ADDED - This will link to your favicon.ico file
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 
   openGraph: {
     title: "Vaidik Wedding Lawns | Dream Wedding Venue in Surat",
@@ -47,8 +58,6 @@ export const metadata = {
 };
 // === FULL SEO METADATA END ===
 
-
-// Tamara badha existing imports
 import Hero from "@/components/home/Hero";
 import About from "@/components/home/About";
 import VenuesHorizontal from "@/components/home/VenuesHorizontal";

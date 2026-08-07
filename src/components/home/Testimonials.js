@@ -74,6 +74,8 @@ export default function TestimonialsSection() {
     const [isMounted, setIsMounted] = useState(false);
     const [position, setPosition] = useState(0);
     const sliderRef = useRef(null);
+    const positionRef = useRef(0);
+    const isHoveredRef = useRef(false);
     const animationRef = useRef(null);
     const lastTimeRef = useRef(0);
     const autoPlayRef = useRef(null);
@@ -82,6 +84,14 @@ export default function TestimonialsSection() {
     useEffect(() => {
         queueMicrotask(() => setIsMounted(true));
     }, []);
+
+    useEffect(() => {
+        positionRef.current = position;
+    }, [position]);
+
+    useEffect(() => {
+        isHoveredRef.current = isHovered;
+    }, [isHovered]);
 
     // Continuous marquee animation using requestAnimationFrame
     useEffect(() => {
@@ -97,9 +107,9 @@ export default function TestimonialsSection() {
             const delta = timestamp - lastTimeRef.current;
             lastTimeRef.current = timestamp;
 
-            if (!isHovered) {
+            if (!isHoveredRef.current) {
                 const speed = 0.08;
-                const newPosition = position + delta * speed;
+                let newPosition = positionRef.current + delta * speed;
 
                 const firstChild = sliderRef.current?.children[0];
                 if (firstChild) {
@@ -110,10 +120,11 @@ export default function TestimonialsSection() {
                     const cardsPassed = newPosition / totalWidth;
 
                     if (cardsPassed >= totalItems) {
-                        setPosition(newPosition - (totalItems * totalWidth));
-                    } else {
-                        setPosition(newPosition);
+                        newPosition -= totalItems * totalWidth;
                     }
+
+                    positionRef.current = newPosition;
+                    setPosition(newPosition);
                 }
             }
 
@@ -127,7 +138,7 @@ export default function TestimonialsSection() {
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [isHovered, position, isMounted]);
+    }, [isMounted]);
 
     // Apply transform to slider
     useEffect(() => {
