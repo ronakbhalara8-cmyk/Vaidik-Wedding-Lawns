@@ -8,6 +8,32 @@ import FadeIn from "@/components/ui/FadeIn";
 
 const galleryItems = [
   {
+    video: "/videos/Gallery-Video-16.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
+    video: "/videos/Gallery-Video-12.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/Gallery-Video-7.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+    rotate: true,
+  },
+  {
+    video: "/videos/Gallery-Video-9.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
+    video: "/videos/Gallery-Video-10.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
+  },
+  {
     video: "/videos/046A9880.mp4",
     category: "Wedding",
     alt: "Lawn evening setup",
@@ -20,11 +46,6 @@ const galleryItems = [
   {
     video: "/videos/slider-2.mp4",
     category: "Haldi",
-    alt: "Lawn evening setup",
-  },
-  {
-    video: "/videos/Video_20260514_170024.mp4",
-    category: "Wedding",
     alt: "Lawn evening setup",
   },
   {
@@ -68,6 +89,11 @@ const galleryItems = [
     alt: "Traditional royal mandap",
   },
   {
+    video: "/videos/Gallery-Video-17.mp4",
+    category: "NightView",
+    alt: "Traditional royal mandap",
+  },
+  {
     video: "/videos/Wedding-View-3.mp4",
     category: "Wedding",
     alt: "Lawn evening setup",
@@ -108,6 +134,11 @@ const galleryItems = [
     alt: "Lawn evening setup",
   },
   {
+    video: "/videos/Gallery-Video-15.mp4",
+    category: "Carnival",
+    alt: "Carnival setup with rides and games",
+  },
+  {
     video: "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
     category: "NightView",
     alt: "Traditional royal mandap",
@@ -116,6 +147,11 @@ const galleryItems = [
     video: "/videos/Gallery-Video-2.mp4",
     category: "NightView",
     alt: "Traditional royal mandap",
+  },
+  {
+    video: "/videos/Gallery-Video-18.mp4",
+    category: "Wedding",
+    alt: "Lawn evening setup",
   },
   {
     video: "/videos/garden-view.mp4",
@@ -127,10 +163,15 @@ const galleryItems = [
     category: "DroneView",
     alt: "Elegant dining setups",
   },
+  {
+    video: "/videos/Gallery-Video-19.mp4",
+    category: "Carnival",
+    alt: "Carnival setup with rides and games",
+  },
 ];
 
 // Gallery Video Component - NO AUTOPLAY, plays on click
-const GalleryVideo = memo(({ src, poster, className = "", isPlaying, onTogglePlay }) => {
+const GalleryVideo = memo(({ src, poster, className = "", isRotate, isPlaying, onTogglePlay }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -151,7 +192,7 @@ const GalleryVideo = memo(({ src, poster, className = "", isPlaying, onTogglePla
     >
       <video
         ref={videoRef}
-        className={`w-full h-full object-cover ${className}`}
+        className={`w-full h-full object-cover ${className} ${isRotate ? "-rotate-90" : ""}`}
         poster={poster || ""}
         playsInline
         muted
@@ -178,7 +219,7 @@ const GalleryVideo = memo(({ src, poster, className = "", isPlaying, onTogglePla
 GalleryVideo.displayName = "GalleryVideo";
 
 // Slider Video - PLAYS ONLY WHEN ACTIVE
-const SliderVideo = ({ src, poster, isActive }) => {
+const SliderVideo = ({ src, poster, isActive, isRotate }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -196,7 +237,7 @@ const SliderVideo = ({ src, poster, isActive }) => {
   return (
     <video
       ref={videoRef}
-      className="max-h-[85vh] w-auto object-contain"
+      className={`w-auto object-contain ${isRotate ? "-rotate-90 max-h-[150vh]" : "max-h-[85vh]"}`}
       poster={poster || ""}
       playsInline
       muted
@@ -300,6 +341,7 @@ const FullScreenSlider = ({ items, initialIndex, onClose }) => {
               poster={currentItem.image || ""}
               alt={currentItem.alt}
               isActive={true}
+              isRotate={currentItem.rotate}
             />
           ) : currentItem?.image ? (
             <Image
@@ -336,6 +378,7 @@ const GalleryItem = memo(({ item, index, onClick }) => {
         <GalleryVideo
           src={item.video}
           poster={item.image || ""}
+          isRotate={item.rotate}
           className="transition-transform duration-700 group-hover:scale-105"
           isPlaying={isPlaying}
           onTogglePlay={handleTogglePlay}
@@ -424,7 +467,7 @@ export default function GalleryPage() {
 
       <section className="container py-14 md:py-28">
         <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
-          {["all", "Wedding", "Reception", "Mehendi", "Haldi", "NightView", "DroneView"].map((cat) => (
+          {["all", "Wedding", "Reception", "Mehendi", "Haldi", "NightView", "DroneView", "Carnival"].map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}

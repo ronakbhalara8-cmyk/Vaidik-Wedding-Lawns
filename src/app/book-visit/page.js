@@ -23,21 +23,21 @@ const venues = [
   {
     id: "royal-lawn",
     name: "The Royal Grand Lawn",
-    capacity: "800 - 2,500 Guests",
+    capacity: "1500 - 2000 Guests",
     icon: Crown,
     description: "Our flagship venue with sprawling 5-acre manicured lawns"
   },
   {
     id: "mandap-lawn",
     name: "The Golden Mandap Lawn",
-    capacity: "300 - 1,000 Guests",
+    capacity: "1500 - 2000 Guests",
     icon: Flower2,
     description: "Intimate setting with ornate floral mandap arrangements"
   },
   {
     id: "banquet-hall",
     name: "The Vaidik Banquet Hall",
-    capacity: "200 - 800 Guests",
+    capacity: "1500 - 2000 Guests",
     icon: PartyPopper,
     description: "Elegant indoor space with crystal chandeliers"
   }

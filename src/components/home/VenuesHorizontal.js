@@ -8,7 +8,7 @@ const venues = [
   {
     title: "The Strategist Hall",
     subtitle: "Corporate & Elite Gatherings",
-    capacity: "Up to 2000 guests",
+    capacity: "Up to 1500 - 2000 guests",
     bestFor: "Board meetings, strategy sessions",
     features: "Interactive displays, soundproofing, ambient lighting",
     style: "Sleek, corporate-focused, minimalist",
@@ -19,7 +19,7 @@ const venues = [
   {
     title: "The Garden Courtyard",
     subtitle: "Open-Air Floral Elegance",
-    capacity: "Up to 2000+ guests",
+    capacity: "Up to 1500 - 2000 guests",
     bestFor: "Weddings, parties, and brunch events",
     features: "Manicured lawns, floral archways, lush greenery",
     style: "Romantic, nature-inspired",
@@ -30,7 +30,7 @@ const venues = [
   {
     title: "The Forever Pavilion",
     subtitle: "Grand Wedding Destination",
-    capacity: "Up to 2000+ guests",
+    capacity: "Up to 1500 - 2000 guests",
     bestFor: "Private weddings, grand functions",
     features: "Garden view, cozy layout, custom floral setups",
     style: "Intimate, nature-tucked, royal vibes",

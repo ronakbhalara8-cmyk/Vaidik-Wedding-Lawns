@@ -19,6 +19,9 @@ import {
 import SplitReveal from "@/components/ui/SplitReveal";
 import FadeIn from "@/components/ui/FadeIn";
 import ParallaxImage from "@/components/ui/ParallaxImage";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import { Play, Pause } from "lucide-react";
 
 // Key Stats Data
 const stats = [
@@ -30,7 +33,7 @@ const stats = [
   },
   {
     icon: Users,
-    value: "2000+",
+    value: "1500 - 2000",
     label: "Guest Capacity",
     subtext: "Grand Celebrations",
   },
@@ -94,6 +97,177 @@ const values = [
 const brandTagline =
   "First Choice for Weddings, Corporate Events & Laxmi Celebrations";
 
+const VideoPlayer = ({ src, title }) => {
+  const videoRef = useRef(null);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    const tempVideo = document.createElement("video");
+
+    tempVideo.src = src;
+    tempVideo.preload = "metadata";
+    tempVideo.muted = true;
+    tempVideo.crossOrigin = "anonymous";
+
+    const handleLoadedMetadata = () => {
+      tempVideo.currentTime = Math.min(1, tempVideo.duration * 0.1);
+    };
+
+    const handleSeeked = () => {
+      const canvas = document.createElement("canvas");
+
+      canvas.width = tempVideo.videoWidth;
+      canvas.height = tempVideo.videoHeight;
+
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(
+        tempVideo,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      setThumbnail(canvas.toDataURL("image/jpeg", 0.8));
+      setIsLoading(false);
+
+      tempVideo.src = "";
+      tempVideo.load();
+    };
+
+    tempVideo.addEventListener("loadedmetadata", handleLoadedMetadata);
+    tempVideo.addEventListener("seeked", handleSeeked);
+
+    return () => {
+      tempVideo.removeEventListener(
+        "loadedmetadata",
+        handleLoadedMetadata
+      );
+      tempVideo.removeEventListener("seeked", handleSeeked);
+
+      tempVideo.src = "";
+      tempVideo.load();
+    };
+  }, [src]);
+
+  const toggleVideo = () => {
+    if (!isVideoLoaded) {
+      setIsVideoLoaded(true);
+
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.load();
+
+          videoRef.current.play().then(() => {
+            setIsPlaying(true);
+          });
+        }
+      }, 100);
+
+      return;
+    }
+
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  return (
+    <div className="relative w-full h-full group overflow-hidden">
+
+      {/* Thumbnail */}
+      {thumbnail && (
+        <Image
+          src={thumbnail}
+          alt={title}
+          fill
+          className={`object-cover transition-all duration-500 ${isPlaying ? "opacity-0 scale-105" : "opacity-100 scale-100"
+            }`}
+        />
+      )}
+
+      {/* Video */}
+      {isVideoLoaded && (
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlaying ? "opacity-100" : "opacity-0"
+            }`}
+          playsInline
+          preload="none"
+          controls={false}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+          onEnded={() => {
+            setIsPlaying(false);
+
+            if (videoRef.current) {
+              videoRef.current.currentTime = 0;
+            }
+          }}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Loading */}
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-40">
+          <div className="w-10 h-10 rounded-full border-4 border-gold-base/30 border-t-gold-base animate-spin" />
+        </div>
+      )}
+
+      {/* Play / Pause Button */}
+      <button
+        onClick={toggleVideo}
+        className="
+        absolute inset-0
+        z-50
+        flex items-center justify-center
+        bg-black/0
+        hover:bg-black/20
+        transition-all
+        duration-300
+        group
+      "
+      >
+        <div
+          className="
+          w-20 h-20
+          rounded-full
+          bg-white/20
+          backdrop-blur-lg
+          border border-white/40
+          flex items-center justify-center
+          shadow-2xl
+          opacity-0
+          scale-75
+          group-hover:opacity-100
+          group-hover:scale-100
+          transition-all
+          duration-300
+        "
+        >
+          {isPlaying ? (
+            <Pause className="w-8 h-8 text-white fill-white" />
+          ) : (
+            <Play className="w-8 h-8 text-white fill-white ml-1" />
+          )}
+        </div>
+      </button>
+
+    </div>
+  );
+};
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-cream text-charcoal">
@@ -154,11 +328,9 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Parallax Image Grid */}
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-gold-base/20 shadow-2xl">
-            <ParallaxImage
-              src="/images/about-page.jpg"
-              alt="Lush gardens at Vaidik Wedding Lawns Surat"
-              className="w-full h-full object-cover"
-              yOffset={8}
+            <VideoPlayer
+              src="/videos/Gallery-Video-5.mp4"
+              title="About Vaidik Wedding Lawns"
             />
             {/* Elegant Decorative Frame */}
             <div className="absolute top-4 left-4 bottom-4 right-4 border border-gold-base/30 rounded-2xl pointer-events-none z-10" />
@@ -203,7 +375,7 @@ export default function AboutPage() {
               </p>
               <p>
                 Spanning over vast manicured greens, our venue comfortably accommodates{" "}
-                <strong className="font-semibold text-maroon-dark">2000+ guests</strong>. Designed with high-capacity rainwater drainage systems, state-of-the-art stage lighting setups, and dedicated vendor zones, we ensure your event runs smoothly regardless of scale.
+                <strong className="font-semibold text-maroon-dark">1500 - 2000 guests</strong>. Designed with high-capacity rainwater drainage systems, state-of-the-art stage lighting setups, and dedicated vendor zones, we ensure your event runs smoothly regardless of scale.
               </p>
               <p>
                 Whether it is a royal Wedding, Sangeet Sandhya, Ring Ceremony, or Corporate Celebration—our venue blends traditional hospitality with modern amenities to give your guests an unforgettable experience.

@@ -12,7 +12,7 @@ const items = [
   {
     title: "The Royal Grand Lawn",
     tag: "Flagship Outdoor Space",
-    capacity: "800 - 2,500 Guests",
+    capacity: "1500 - 2000 Guests",
     size: "45,000 Sq. Ft.",
     video: "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
     description: "Our crown jewel. A sprawling manicured green carpet illuminated by high-mast and architectural lighting arrays. Designed to frame grand receptions, starry dinners, and cinematic stages.",
@@ -27,7 +27,7 @@ const items = [
   {
     title: "The Golden Mandap Lawn",
     tag: "Traditional Phera Venue",
-    capacity: "300 - 1,000 Guests",
+    capacity: "1500 - 2000 Guests",
     size: "25,000 Sq. Ft.",
     video: "/videos/046A9880.mp4",
     description: "Designed specifically to cultivate an intimate, spiritual energy for traditional Indian pheras. Framed by delicate floral arches, standard temple-style setup capability, and premium acoustics.",
@@ -41,7 +41,7 @@ const items = [
   {
     title: "The Vaidik Banquet Hall",
     tag: "Luxury Indoor Space",
-    capacity: "200 - 800 Guests",
+    capacity: "1500 - 2000 Guests",
     size: "18,000 Sq. Ft.",
     video: "/videos/banquet-hall.mp4",
     description: "A state-of-the-art temperature-controlled indoor hall with soaring 22-foot double-height ceilings, majestic crystal chandeliers, and glass walls overlooking the lawns.",

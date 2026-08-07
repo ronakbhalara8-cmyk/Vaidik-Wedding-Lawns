@@ -6,12 +6,12 @@ import { gsap } from "@/lib/gsap";
 import Button from "../ui/Button";
 
 const VIDEOS = [
+  "/videos/Gallery-Video-18.mp4",
+  "/videos/Gallery-Video-1.mp4",
   "/videos/DJI_20260110213956_0015_D_stabilized.mp4",
-  "/videos/DJI_20260110213956_0016_D_stabilized.mp4",
-  "/videos/video_20260110_225342.mp4",
-  "/videos/DJI_20260110194459_0097_D_stabilized.mp4",
-  "/videos/DJI_20260110194732_0099_D_stabilized.mp4",
-  "/videos/DJI_20260110201254_0112_D_stabilized.mp4",
+  "/videos/Gallery-Video-4.mp4",
+  "/videos/Gallery-Video-17.mp4",
+  "/videos/046A9880.mp4",
 ];
 
 const SLIDE_CONTENT = [
@@ -183,7 +183,7 @@ export default function Hero() {
           preload
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover brightness-[0.45]"
+          className="object-cover brightness-[0.80]"
         />
         {VIDEOS.map((src, index) => {
           const isCurrent = index === currentSlide;
@@ -204,7 +204,7 @@ export default function Hero() {
                 playsInline
                 poster="/images/image-2.webp"
                 preload={isCurrent && shouldLoadVideo ? "auto" : "none"}
-                className="w-full h-full object-cover brightness-[0.45]"
+                className="w-full h-full object-cover brightness-[0.80]"
               />
             </div>
           );
@@ -212,8 +212,8 @@ export default function Hero() {
       </div>
 
       {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80 pointer-events-none z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_80%)] pointer-events-none z-10" />
+      {/* <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80 pointer-events-none z-10" /> */}
+      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_80%)] pointer-events-none z-10" /> */}
 
       {/* Next Slide Preview Button */}
       <div

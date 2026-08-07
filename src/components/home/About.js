@@ -45,7 +45,7 @@ export default function About() {
                   <span className="text-xs text-charcoal/70 uppercase tracking-wider">Established</span>
                 </div>
                 <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gold-base/20 shadow-sm text-center">
-                  <span className="block font-serif-heading text-2xl text-maroon-base font-bold">2000+</span>
+                  <span className="block font-serif-heading text-2xl text-maroon-base font-bold">1500 - 2000</span>
                   <span className="text-xs text-charcoal/70 uppercase tracking-wider">Guest Capacity</span>
                 </div>
               </div>

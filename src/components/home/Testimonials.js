@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Star, Quote, Award, Calendar, Sparkles, ThumbsUp } from "lucide-react";
+import Button from "../ui/Button";
 
 const testimonials = [
     {
@@ -289,6 +290,16 @@ export default function TestimonialsSection() {
                             </div>
                         ))}
                     </div>
+                </div>
+
+                <div className="mt-6 sm:mt-8 flex justify-center gap-2 sm:gap-3">
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() => window.open('https://search.google.com/local/writereview?placeid=ChIJwapvybRL4DsRhRvwx4J1eCM', '_blank')}
+                    >
+                        ⭐ Leave a Google Review
+                    </Button>
                 </div>
             </div>
         </section>

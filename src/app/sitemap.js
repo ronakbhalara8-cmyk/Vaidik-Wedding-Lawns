@@ -1,7 +1,7 @@
 // src/app/sitemap.js
 
 export default function sitemap() {
-    const baseUrl = 'https://vaidik-wedding-lawns.vercel.app';
+    const baseUrl = 'https://vaidiklawns.com';
 
     return [
         {

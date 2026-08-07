@@ -11,7 +11,7 @@ const packages = [
     subtitle: "Intimate & Elegant Ceremonies",
     price: "Custom Quote",
     features: [
-      "Lawn & Banquet access for up to 2000+ guests",
+      "Lawn & Banquet access for up to 1500 - 2000 guests",
       "Traditional floral mandap setup",
       "Curated multi-course vegetarian buffet dinner",
       "1 Luxury air-conditioned dressing suite",
@@ -25,7 +25,7 @@ const packages = [
     subtitle: "Grand & Regal Royal Celebrations",
     price: "Custom Quote",
     features: [
-      "Expanded Lawn capacity for up to 2000+ guests",
+      "Expanded Lawn capacity for up to 1500 - 2000 guests",
       "Premium thematic floral decor & entrance canopy",
       "Gourmet multi-cuisine live buffet counters",
       "2 Luxury air-conditioned dressing suites",
@@ -39,7 +39,7 @@ const packages = [
     subtitle: "Opulent & Bespoke Imperial Experience",
     price: "Custom Quote",
     features: [
-      "Full venue access for up to 2000+ guests",
+      "Full venue access for up to 1500 - 2000 guests",
       "Bespoke luxury theme decor & floral canopy styling",
       "Elite Michelin-inspired live culinary stations",
       "4 Luxury dressing suites & VIP lounge access",
