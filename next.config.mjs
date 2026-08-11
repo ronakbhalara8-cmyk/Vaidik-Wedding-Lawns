@@ -20,6 +20,16 @@ const nextConfig = {
         source: "/videos/:path*",
         headers: mediaCacheHeaders,
       },
+      {
+        // explicit root SVG (e.g. /whatsapp.svg)
+        source: "/whatsapp.svg",
+        headers: mediaCacheHeaders,
+      },
+      {
+        // match common image and media extensions at any path
+        source: "/:file*\\.(png|jpg|jpeg|webp|svg|gif)",
+        headers: mediaCacheHeaders,
+      },
     ];
   },
 };

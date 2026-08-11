@@ -15,12 +15,16 @@ const heading = Marcellus({
   variable: "--font-heading",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
+  preload: true,
 });
 
 const body = Poppins({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: true,
 });
 
 const BASE_URL = "https://vaidiklawns.com";

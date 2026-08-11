@@ -11,6 +11,7 @@ export default function Preloader() {
   const subtitleRef = useRef(null);
   const lineRef = useRef(null);
   const tlRef = useRef(null);
+  const fallbackTimerRef = useRef(null);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -22,6 +23,12 @@ export default function Preloader() {
       const tl = gsap.timeline({
         onComplete: () => {
           if (isMountedRef.current) {
+            // Clear any fallback timer if timeline completes normally
+            if (fallbackTimerRef.current) {
+              clearTimeout(fallbackTimerRef.current);
+              fallbackTimerRef.current = null;
+            }
+
             setIsLoaded(true);
             document.body.style.overflow = ""; // restore scrolling
           }
@@ -50,6 +57,18 @@ export default function Preloader() {
           ease: "power4.inOut",
           delay: 0.4,
         });
+
+      // Safety fallback: if animations fail or take too long, hide preloader
+      fallbackTimerRef.current = setTimeout(() => {
+        try {
+          if (isMountedRef.current) {
+            setIsLoaded(true);
+            document.body.style.overflow = "";
+          }
+        } catch (e) {
+          // silent
+        }
+      }, 4000);
     } catch (error) {
       console.warn("Preloader initialization error:", error);
       setIsLoaded(true);
@@ -63,6 +82,10 @@ export default function Preloader() {
         }
         tlRef.current = null;
         document.body.style.overflow = "";
+        if (fallbackTimerRef.current) {
+          clearTimeout(fallbackTimerRef.current);
+          fallbackTimerRef.current = null;
+        }
       } catch (error) {
         console.warn("Preloader cleanup error:", error);
         document.body.style.overflow = "";
@@ -70,15 +93,8 @@ export default function Preloader() {
     };
   }, []);
 
-  // **FIX: Reserve space by keeping a placeholder**
-  if (isLoaded) {
-    return (
-      <div
-        className="fixed inset-0 bg-maroon-dark z-[99999] pointer-events-none opacity-0"
-        style={{ display: 'none' }} // Hide but keep space reserved
-      />
-    );
-  }
+  // When loaded, remove the overlay entirely to avoid blocking/visual issues
+  if (isLoaded) return null;
 
   return (
     <div

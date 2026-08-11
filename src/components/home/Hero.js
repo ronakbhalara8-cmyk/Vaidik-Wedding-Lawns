@@ -236,7 +236,8 @@ export default function Hero() {
       {/* Main Content Area */}
       <div
         ref={contentRef}
-        className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-20 flex flex-col items-center justify-center w-full"
+        className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-20 flex flex-col items-center justify-center w-full min-h-[200px]"
+      // reserve vertical space to reduce layout shifts when fonts/images load
       >
         {/* Subtitle */}
         <div className="slide-anim-item mb-2 sm:mb-3">
