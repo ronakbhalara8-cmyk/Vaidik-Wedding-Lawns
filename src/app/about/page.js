@@ -281,7 +281,7 @@ export default function AboutPage() {
 
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
+            <span className="font-serif-heading text-sm tracking-[0.3em] text-gold-base uppercase mb-2 block">
               Surat&apos;s Premier Luxury Venue
             </span>
           </FadeIn>
@@ -315,7 +315,7 @@ export default function AboutPage() {
                   <p className="text-xs sm:text-sm font-semibold text-ivory/90 uppercase tracking-wider">
                     {stat.label}
                   </p>
-                  <p className="text-[11px] text-gold-light/90 font-light">{stat.subtext}</p>
+                  <p className="text-sm text-gold-light/90 font-light">{stat.subtext}</p>
                 </div>
               </div>
             );
@@ -346,7 +346,7 @@ export default function AboutPage() {
           <div className="flex flex-col gap-6">
             <div>
               <FadeIn direction="right" duration={0.8}>
-                <span className="font-serif-heading text-xs tracking-[0.25em] text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block uppercase font-medium mb-3">
+                <span className="font-serif-heading text-xs font-bold tracking-[0.25em] text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block uppercase mb-3">
                   The Vaidik Story
                 </span>
               </FadeIn>

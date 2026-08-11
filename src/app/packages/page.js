@@ -94,7 +94,7 @@ export default function PackagesPage() {
 
         <div className="relative z-20 text-center max-w-2xl px-4 sm:px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[10px] sm:text-xs tracking-[0.3em] text-gold-base uppercase mb-3 block">
+            <span className="font-serif-heading text-sm sm:text-xs tracking-[0.3em] text-gold-base uppercase mb-3 block">
               Curated Luxury Offerings
             </span>
           </FadeIn>
@@ -161,7 +161,7 @@ export default function PackagesPage() {
                     <span className={`font-serif-heading text-xl xl:text-2xl font-medium block ${pkg.highlighted ? "text-gold-light" : "text-maroon-dark"}`}>
                       {pkg.price}
                     </span>
-                    <span className={`text-[10px] xl:text-[11px] font-light block mt-1 leading-tight ${pkg.highlighted ? "text-gold-light/60" : "text-charcoal/50"}`}>
+                    <span className={`text-[12px] xl:text-[14px] block mt-1 leading-tight ${pkg.highlighted ? "text-gold-light/60" : "text-charcoal/50"}`}>
                       Tax inclusive, tailored to guest count & menu
                     </span>
                   </div>

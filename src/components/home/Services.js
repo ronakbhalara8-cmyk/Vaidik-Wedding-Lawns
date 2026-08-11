@@ -42,7 +42,7 @@ export default function Services() {
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-20 flex flex-col items-center">
           <FadeIn direction="down" duration={0.8}>
-            <span className="font-serif-heading text-xs tracking-[0.3em] uppercase text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block mb-4">
+            <span className="font-serif-heading text-xs font-bold tracking-[0.3em] uppercase text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block mb-4">
               Curated Experiences
             </span>
           </FadeIn>

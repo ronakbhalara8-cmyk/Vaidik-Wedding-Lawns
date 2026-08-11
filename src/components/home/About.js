@@ -20,7 +20,7 @@ export default function About() {
           {/* Story Copy Block */}
           <div className="flex flex-col gap-6">
             <FadeIn direction="right" duration={0.8}>
-              <span className="font-serif-heading text-xs tracking-[0.3em] uppercase text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block">
+              <span className="font-serif-heading font-bold text-xs tracking-[0.3em] uppercase text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block">
                 About Us
               </span>
             </FadeIn>

@@ -63,7 +63,7 @@ export default function Packages() {
         {/* Section Title */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20 flex flex-col items-center">
           <FadeIn direction="down" duration={0.8}>
-            <span className="font-serif-heading text-xs tracking-[0.3em] uppercase text-gold-base bg-gold-base/10 border border-gold-base/20 rounded-full px-4 py-1.5 inline-block mb-4">
+            <span className="font-serif-heading text-xs font-bold tracking-[0.3em] uppercase text-gold-base bg-gold-base/10 border border-gold-base/20 rounded-full px-4 py-1.5 inline-block mb-4">
               Curated Pricing
             </span>
           </FadeIn>
@@ -118,7 +118,7 @@ export default function Packages() {
                   <span className="font-serif-heading text-2xl text-gold-light font-medium block">
                     {pkg.price}
                   </span>
-                  <span className="text-xs text-gold-light/50 font-light block mt-1">
+                  <span className="text-[13px] text-gold-light font-bold block mt-1">
                     Tax inclusive, customized based on guest count & menu
                   </span>
                 </div>

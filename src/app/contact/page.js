@@ -71,7 +71,7 @@ export default function ContactPage() {
 
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
+            <span className="font-serif-heading text-sm tracking-[0.3em] text-gold-base uppercase mb-2 block">
               Start Planning
             </span>
           </FadeIn>
@@ -92,7 +92,7 @@ export default function ContactPage() {
           {/* Info Details */}
           <div className="flex flex-col gap-8 justify-center">
             <div>
-              <span className="font-serif-heading text-xs tracking-[0.25em] text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block mb-4">
+              <span className="font-serif-heading text-xs font-bold tracking-[0.25em] text-maroon-base bg-maroon-light/10 border border-maroon-base/15 rounded-full px-4 py-1.5 inline-block mb-4">
                 Connect Directly
               </span>
               <h2 className="font-serif-heading text-3xl sm:text-4xl text-maroon-dark uppercase leading-tight font-bold mb-4">
@@ -109,7 +109,7 @@ export default function ContactPage() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <strong className="font-serif-heading text-xs tracking-wider uppercase text-maroon-base block mb-1">Our Location</strong>
+                  <strong className="font-serif-heading text-xs font-bold tracking-wider uppercase text-maroon-base block mb-1">Our Location</strong>
                   Near Kanad fatak, 300 feet, Sayan Hazira Ring Road, opp. Variyav Check Post, Surat, Gujarat 394520
                 </div>
               </li>
@@ -118,7 +118,7 @@ export default function ContactPage() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <strong className="font-serif-heading text-xs tracking-wider uppercase text-maroon-base block mb-1">Call Booking Office</strong>
+                  <strong className="font-serif-heading text-xs font-bold tracking-wider uppercase text-maroon-base block mb-1">Call Booking Office</strong>
                   <a href="tel:+919913303351" className="hover:text-gold-base transition-colors duration-200">+91 99133 03351</a>
                 </div>
               </li>
@@ -127,7 +127,7 @@ export default function ContactPage() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <strong className="font-serif-heading text-xs tracking-wider uppercase text-maroon-base block mb-1">Email Inquiries</strong>
+                  <strong className="font-serif-heading text-xs font-bold tracking-wider uppercase text-maroon-base block mb-1">Email Inquiries</strong>
                   <a href="mailto:vaidiklawns@gmail.com" className="hover:text-gold-base transition-colors duration-200">vaidiklawns@gmail.com</a>
                 </div>
               </li>
@@ -136,7 +136,7 @@ export default function ContactPage() {
                   <Clock className="w-5 h-5" />
                 </div>
                 <div>
-                  <strong className="font-serif-heading text-xs tracking-wider uppercase text-maroon-base block mb-1">Office Hours</strong>
+                  <strong className="font-serif-heading text-xs font-bold tracking-wider uppercase text-maroon-base block mb-1">Office Hours</strong>
                   Mon - Sun: 09:00 AM - 09:00 PM
                 </div>
               </li>
@@ -280,13 +280,11 @@ export default function ContactPage() {
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.263742560714!2d72.7932418!3d21.2554343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04bb4c96faac1%3A0x23787582c7f01b85!2sVaidik%20Lawns!5e0!3m2!1sen!2sin!4v1690000000000"
             width="100%"
             height="100%"
-            style={{ border: 0, filter: "grayscale(1) invert(0.9) sepia(0.5) hue-rotate(330deg)" }}
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             title="Vaidik Wedding Lawns Location Map"
           />
-          <div className="absolute inset-0 bg-maroon-dark/10 pointer-events-none mix-blend-color group-hover:bg-transparent transition-all duration-500" />
         </div>
       </section>
     </div>

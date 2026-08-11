@@ -51,7 +51,7 @@ export default function ServicesPage() {
 
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
+            <span className="font-serif-heading text-sm tracking-[0.3em] text-gold-base uppercase mb-2 block">
               Bespoke Care
             </span>
           </FadeIn>

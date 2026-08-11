@@ -451,7 +451,7 @@ export default function GalleryPage() {
 
         <div className="relative z-20 text-center max-w-2xl px-6">
           <FadeIn direction="down" duration={0.6}>
-            <span className="font-serif-heading text-[10px] tracking-[0.3em] text-gold-base uppercase mb-2 block">
+            <span className="font-serif-heading text-sm tracking-[0.3em] text-gold-base uppercase mb-2 block">
               Visual Journey
             </span>
           </FadeIn>
@@ -471,7 +471,7 @@ export default function GalleryPage() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`font-serif-heading text-[10px] tracking-[0.25em] uppercase px-6 py-3.5 rounded-full border transition-all duration-300 ${filter === cat
+              className={`font-serif-heading font-bold text-[10px] tracking-[0.25em] uppercase px-6 py-3.5 rounded-full border transition-all duration-300 ${filter === cat
                 ? "bg-maroon-base text-gold-light border-gold-base shadow-md"
                 : "bg-white text-maroon-dark border-maroon-base/10 hover:border-gold-base/50"
                 }`}
