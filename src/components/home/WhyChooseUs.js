@@ -18,7 +18,7 @@ export default function WhyChooseUs() {
         {
             id: "01",
             icon: Trees,
-            title: "Spacious Lawn",
+            title: "Premium wedding and event venue",
             category: "Serene Environment",
             desc: "Expansive green lawns crafted to host grand gatherings, offering a fresh, natural, and opulent outdoor atmosphere.",
             image: "/images/image-6.webp"
@@ -26,7 +26,7 @@ export default function WhyChooseUs() {
         {
             id: "02",
             icon: ParkingCircle,
-            title: "Ample Parking",
+            title: "Convenient parking and guest facilities",
             category: "Seamless Arrival",
             desc: "Dedicated and secure parking layout designed to accommodate large guest volumes smoothly without any hassle.",
             image: "/images/image-1.png"
@@ -34,7 +34,7 @@ export default function WhyChooseUs() {
         {
             id: "03",
             icon: Sparkles,
-            title: "Premium Decor",
+            title: "Flexible event and decoration arrangements",
             category: "Bespoke Aesthetics",
             desc: "Exquisite decoration setups and sophisticated lighting concepts that add a royal touch to every celebration.",
             image: "/images/image-4.png"
@@ -42,7 +42,7 @@ export default function WhyChooseUs() {
         {
             id: "04",
             icon: MapPin,
-            title: "Prime Location",
+            title: "Convenient location near Sayan, Surat",
             category: "Convenient Access",
             desc: "Strategically situated near key city routes, ensuring effortless navigation and comfortable travel for attendees.",
             image: "",
@@ -51,7 +51,7 @@ export default function WhyChooseUs() {
         {
             id: "05",
             icon: PartyPopper,
-            title: "Events & Weddings",
+            title: "Suitable for weddings and receptions",
             category: "Versatile Venue",
             desc: "Fully equipped to adapt seamlessly to royal weddings, receptions, grand celebrations, and corporate galas.",
             image: "/images/image-3.png"
@@ -59,7 +59,7 @@ export default function WhyChooseUs() {
         {
             "id": "06",
             "icon": UsersRound,
-            "title": "Banquets & Celebrations Hall",
+            "title": "Ideal for engagement and social functions",
             "category": "Banquet & Celebration",
             "desc": "A premium venue for weddings, receptions, celebrations, and corporate events. Equipped a dedicated planning team.",
             "image": "/images/banquet-hall.png"
@@ -79,7 +79,7 @@ export default function WhyChooseUs() {
                         </span>
                     </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif-heading font-bold text-[#8d2c3f] tracking-wide">
-                        Why Choose Us
+                        Why Choose Vaidik Lawns?
                     </h2>
                 </div>
 

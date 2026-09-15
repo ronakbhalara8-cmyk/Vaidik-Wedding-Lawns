@@ -1,7 +1,7 @@
 // === FULL SEO METADATA START (For Home Page Only) ===
 export const metadata = {
-  title: "Vaidik Wedding Lawns | Where Dream Weddings Come True",
-  description: "Book the best wedding venue in Surat at Vaidik Wedding Lawns. Premium open lawns, AC banquet halls, and luxury event spaces for a royal celebration.",
+  title: "Best Wedding Lawn in Surat | Vaidik Lawns",
+  description: "Vaidik Lawns is a premium wedding venue in Surat near Sayan, ideal for weddings, receptions, engagements, social and corporate events.",
 
   metadataBase: new URL('https://vaidiklawns.com'),
 

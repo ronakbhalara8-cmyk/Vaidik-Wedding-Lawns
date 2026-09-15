@@ -9,27 +9,27 @@ import LazyVideo from "../ui/LazyVideo";
 const galleryItems = [
   {
     video: "/videos/slider-1.mp4",
-    alt: "Lawn Evening Lighting Setup",
+    alt: "Luxury wedding lawn Surat",
     title: "Royal Lawn"
   },
   {
     video: "/videos/046A9853.mp4",
-    alt: "Royal Canopy Mandap Decoration",
+    alt: "Vaidik Lawns stage decoration",
     title: "Vedic Mandap"
   },
   {
     video: "/videos/046A9856.mp4",
-    alt: "Grand Chandelier Banquet Hall",
+    alt: "Wedding reception venue in Surat",
     title: "Grand Banquet"
   },
   {
     video: "/videos/046A9880.mp4",
-    alt: "Outdoor Reception Lawn Area",
+    alt: "Vaidik Lawns wedding venue in Surat",
     title: "Starry Night"
   },
   {
     video: "/videos/046A9887.mp4",
-    alt: "Fresh Floral Mandap Details",
+    alt: "Wedding lawn near Sayan Surat",
     title: "Floral Canopy"
   },
   {

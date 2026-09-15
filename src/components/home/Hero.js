@@ -16,9 +16,9 @@ const VIDEOS = [
 
 const SLIDE_CONTENT = [
   {
-    subtitle: "The Quintessential Luxury Lawn",
-    title: "Vaidik Lawns - Where Dream Weddings Come True",
-    description: "Celebrate your grand union amidst lush manicured lawns, majestic mandaps, and curated hospitality crafted for royals.",
+    subtitle: "Vaidik Lawns – Premium Wedding Lawn & Event Venue in Surat",
+    title: "Premium Wedding Lawn & Event Venue in Surat",
+    description: "Make your special occasions truly memorable at Vaidik Lawns, a premium wedding and event venue near Sayan, Surat. Our spacious venue is designed for weddings, receptions, engagements, social celebrations and corporate events.",
     buttonText: "Book a Venue Visit",
     buttonLink: "/contact",
     secondButtonText: "Request a Quote",

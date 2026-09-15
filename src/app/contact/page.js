@@ -99,7 +99,7 @@ export default function ContactPage() {
                 Let&apos;s Shape Your Union
               </h2>
               <p className="text-sm md:text-base text-charcoal/65 leading-relaxed font-light">
-                Whether you wish to reserve a date, request customized catering quotes, or take a private tour of our banquet suites, our counselors are at your service.
+                Planning your wedding or next big celebration in Surat?
               </p>
             </div>
 
@@ -110,7 +110,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <strong className="font-serif-heading text-xs font-bold tracking-wider uppercase text-maroon-base block mb-1">Our Location</strong>
-                  Near Kanad fatak, 300 feet, Sayan Hazira Ring Road, opp. Variyav Check Post, Surat, Gujarat 394520
+                  near Sayan on the Hazira–Sayan Ring Road, Surat.
                 </div>
               </li>
               <li className="flex gap-4 items-start">

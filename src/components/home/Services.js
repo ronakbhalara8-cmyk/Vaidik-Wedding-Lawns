@@ -55,7 +55,7 @@ export default function Services() {
           </SplitReveal>
           <FadeIn direction="up" duration={1.0} delay={0.2} distance={15}>
             <p className="text-sm md:text-base text-charcoal/60 leading-relaxed font-light">
-              We handle every detail with refined craftsmanship, giving you the luxury of living and cherishing every single second of your wedding day.
+              Our team can help you plan the venue according to the size and nature of your function.
             </p>
           </FadeIn>
         </div>

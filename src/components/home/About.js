@@ -35,7 +35,7 @@ export default function About() {
 
             <FadeIn direction="up" duration={1.0} delay={0.3} distance={20} className="flex flex-col gap-4 text-base text-charcoal/80 font-light leading-relaxed">
               <p>
-                Established in <span className="font-semibold text-maroon-base">2021</span>, <span className="font-semibold text-maroon-base">Vaidik Wedding Lawns</span> is Surat's finest open-air luxury venue, offering the perfect setting for weddings, engagements, corporate events, and special celebrations.
+                Make your special occasions truly memorable at Vaidik Lawns, a premium wedding and event venue near Sayan, Surat. Our spacious venue is designed for weddings, receptions, engagements, social celebrations and corporate events, with the facilities and ambience needed to host memorable occasions.
               </p>
 
               {/* Key Highlights Grid */}
@@ -51,7 +51,7 @@ export default function About() {
               </div>
 
               <p className="text-sm">
-                <span className="font-semibold text-maroon-base">📍</span> Near Kanad fatak, 300 feet, Sayan Hazira Ring Road, opp. Variyav Check Post, Surat
+                <span className="font-semibold text-maroon-base">📍</span> Near Sayan on the Hazira–Sayan Ring Road, Surat.
               </p>
 
               <div className="flex flex-wrap gap-2 mt-1">
@@ -89,7 +89,7 @@ export default function About() {
             <div className="absolute bottom-[-10%] left-[-5%] w-[55%] aspect-square rounded-2xl overflow-hidden border border-gold-base/30 shadow-2xl z-20">
               <ParallaxImage
                 src="/images/about.webp"
-                alt="Vaidik Banquet Reception Setup"
+                alt="Wedding reception venue in Surat"
                 className="w-full h-full"
                 yOffset={20}
               />

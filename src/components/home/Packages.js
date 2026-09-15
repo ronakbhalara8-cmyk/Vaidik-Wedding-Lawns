@@ -76,7 +76,7 @@ export default function Packages() {
           </SplitReveal>
           <FadeIn direction="up" duration={1.0} delay={0.2} distance={15}>
             <p className="text-sm md:text-base text-gold-light/60 leading-relaxed font-light">
-              Select one of our meticulously detailed signature packages, or connect with our event planners to design a fully custom celebration.
+              Get in touch with Vaidik Lawns to check availability, discuss your requirements and plan your event.
             </p>
           </FadeIn>
         </div>
