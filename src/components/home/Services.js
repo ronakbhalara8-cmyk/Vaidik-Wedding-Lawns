@@ -9,25 +9,25 @@ const services = [
     icon: Compass,
     title: "Bespoke Decor & Design",
     description:
-      "From majestic traditional flowered mandap setups to high-modern crystal-lit reception halls, our in-house decorators translate your themes into physical luxury.",
+      "Looking for a wedding venue in Surat? Vaidik Lawns is an ideal choice for couples and families looking for a spacious and premium venue for their special day.",
   },
   {
     icon: UtensilsCrossed,
     title: "Royal Gourmet Catering",
     description:
-      "Indulge guests in a custom-tailored dining experience. Featuring live gourmet counters, traditional Indian feasts, and international multi-cuisine spreads.",
+      "Our location makes it a convenient option for families searching for a wedding lawn near Sayan or a wedding venue in Surat.",
   },
   {
     icon: Heart,
     title: "Bridal Suite Chambers",
     description:
-      "Soothing, air-conditioned private sanctuaries equipped with luxury mirrors, vanity lighting, and lounge seating for preparation and pre-wedding photo shoots.",
+      "Vaidik Lawns is designed to accommodate large events and gatherings. The spacious premises provide flexibility for stage setup, seating arrangements, dining areas, decorations and other event requirements.",
   },
   {
     icon: Award,
     title: "Signature Hospitality",
     description:
-      "A dedicated, professional service squad of hostesses and stewards to handle guest welcomes, seating, logistics, and VIP coordination flawlessly.",
+      "At Vaidik Lawns, our goal is to provide a venue where you and your guests can enjoy your special occasion comfortably and create lasting memories.",
   },
 ];
 

@@ -27,7 +27,7 @@ export default function About() {
 
             <SplitReveal
               type="words"
-              tag="h2"
+              tag="h1"
               className="font-serif-heading text-3xl sm:text-5xl tracking-wide text-maroon-dark uppercase leading-tight font-bold"
             >
               Where Elegance Meets the Open Sky

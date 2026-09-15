@@ -99,7 +99,7 @@ export default function ContactPage() {
                 Let&apos;s Shape Your Union
               </h2>
               <p className="text-sm md:text-base text-charcoal/65 leading-relaxed font-light">
-                Planning your wedding or next big celebration in Surat?
+                Planning your wedding or next big celebration in Surat? Contact Vaidik Lawns today and make your special occasion unforgettable.
               </p>
             </div>
 

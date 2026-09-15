@@ -26,7 +26,7 @@ const SLIDE_CONTENT = [
     nextPreview: "Celebrate Love"
   },
   {
-    subtitle: "Celebrate Love Under Open Skies",
+    subtitle: "Professional support for event planning",
     title: "Where Every Sunset Tells a Love Story",
     description: "Our scenic outdoor spaces offer the perfect backdrop for unforgettable weddings and romantic ceremonies.",
     buttonText: "Explore the Venue",
@@ -36,7 +36,7 @@ const SLIDE_CONTENT = [
     nextPreview: "Nature's Grandeur"
   },
   {
-    subtitle: "A Canvas of Natural Beauty",
+    subtitle: "Book Your Event at Vaidik Lawns",
     title: "Nature's Grandeur Meets Elegant Celebrations",
     description: "Immerse yourself in the serenity of our lush landscapes, where every corner is designed to create magical moments.",
     buttonText: "Discover More",
@@ -46,7 +46,7 @@ const SLIDE_CONTENT = [
     nextPreview: "Unforgettable"
   },
   {
-    subtitle: "Where Every Detail Matters",
+    subtitle: "Spacious premises for large gatherings",
     title: "Crafting Unforgettable Experiences",
     description: "From exquisite floral arrangements to personalized decor, we transform your vision into reality with meticulous attention.",
     buttonText: "View Packages",
@@ -56,7 +56,7 @@ const SLIDE_CONTENT = [
     nextPreview: "Your Dream"
   },
   {
-    subtitle: "Your Dream Wedding Awaits",
+    subtitle: "Celebrate Your Special Moments at Vaidik Lawns",
     title: "A Celebration of Love, Light & Laughter",
     description: "Join us in creating the wedding of your dreams. Our dedicated team ensures every moment is picture-perfect.",
     buttonText: "Plan Your Wedding",
@@ -247,9 +247,9 @@ export default function Hero() {
         </div>
 
         {/* Title */}
-        <h1 className="slide-anim-item font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory uppercase leading-[1.15] mb-3 sm:mb-4 font-bold tracking-wide">
+        <h2 className="slide-anim-item font-serif-heading text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-ivory uppercase leading-[1.15] mb-3 sm:mb-4 font-bold tracking-wide">
           {currentContent.title}
-        </h1>
+        </h2>
 
         {/* Description */}
         <div className="slide-anim-item max-w-xl lg:max-w-2xl mb-6 sm:mb-8">

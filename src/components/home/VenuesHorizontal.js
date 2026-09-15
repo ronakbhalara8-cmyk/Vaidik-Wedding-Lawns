@@ -10,7 +10,7 @@ const venues = [
     subtitle: "Wedding Venue in Surat for Every Celebration",
     capacity: "Up to 1500 - 2000 guests",
     bestFor: "Corporate events",
-    features: "The spacious premises provide flexibility for stage setup, seating arrangements, dining areas, decorations and other event requirements.",
+    features: "Vaidik Lawns provides a beautiful setting for traditional weddings, receptions, engagement ceremonies, family functions and other special occasions.",
     style: "Whether you are planning an intimate celebration or a large wedding gathering, Vaidik Lawns offers a spacious and elegant setting for your event.",
     video: "/videos/banquet-hall.mp4",
     image: "/images/about.webp",
@@ -140,7 +140,7 @@ export default function VenuesHorizontal() {
 
                     {/* Venue Information Container */}
                     <div className="relative z-10 space-y-2 sm:space-y-4 mt-auto pt-2 max-h-full">
-                      <h3 className="font-serif-heading text-lg sm:text-3xl lg:text-5xl font-bold text-[#FDF2EF] tracking-wide leading-tight drop-shadow-md">
+                      <h3 className="font-serif-heading text-lg sm:text-3xl lg:text-5xl font-bold text-[#FDF2EF] tracking-wide drop-shadow-md">
                         {venue.title}
                       </h3>
 
@@ -157,18 +157,18 @@ export default function VenuesHorizontal() {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
-                              Style
-                            </span>
-                            <span className="text-[#FDF2EF] font-medium mt-0.5 truncate">
-                              {venue.style}
-                            </span>
-                          </div>
-                          <div className="flex flex-col col-span-2 border-t border-white/10 pt-1.5 sm:pt-2">
-                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
                               Best For
                             </span>
                             <span className="text-[#FDF2EF] font-medium mt-0.5 line-clamp-1 sm:line-clamp-none">
                               {venue.bestFor}
+                            </span>
+                          </div>
+                          <div className="flex flex-col col-span-2 border-t border-white/10 pt-1.5 sm:pt-2">
+                            <span className="text-[9px] sm:text-xs text-[#DC873E] font-bold uppercase tracking-wider">
+                              Style
+                            </span>
+                            <span className="text-[#FDF2EF] font-medium mt-0.5">
+                              {venue.style}
                             </span>
                           </div>
                           <div className="flex flex-col col-span-2 border-t border-white/10 pt-1.5 sm:pt-2">
